@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    }
+                }
+            }
+        }
+    </script>
+    <title>About Us - Line Creek Figure Skating Club</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<!-- Navigation (same as home) -->
+<div class="bg-primary text-white py-2 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span class="text-gray-300">KC MOMENTUM Synchronized Skating Team</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="/login.html" class="hover:text-accent transition">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-white">⛸️ Line Creek FSC</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="text-accent font-medium">About</a>
+                <a href="programs.html" class="text-gray-200 hover:text-accent transition">Programs</a>
+                <a href="coaches.html" class="text-gray-200 hover:text-accent transition">Coaches</a>
+                <a href="events.html" class="text-gray-200 hover:text-accent transition">Events</a>
+                <a href="synchronized.html" class="text-gray-200 hover:text-accent transition">Synchro</a>
+                <a href="testing.html" class="text-gray-200 hover:text-accent transition">Testing</a>
+                <a href="registration.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">Register Now</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">About Line Creek FSC</h1>
+        <p class="text-xl text-gray-200">Building champions on and off the ice since 2010</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+            <div>
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
+                <div class="space-y-4 text-lg text-gray-700">
+                    <p>
+                        Line Creek Figure Skating Club was founded in 2010 with a simple mission: to provide a safe, supportive, and inspiring environment for skaters of all ages and abilities to pursue their dreams on the ice.
+                    </p>
+                    <p>
+                        As both an Ice Skating Institute (ISI) and US Figure Skating (USFS) affiliated club, we offer comprehensive programming that serves recreational skaters through elite competitive athletes.
+                    </p>
+                    <p>
+                        Located at the beautiful Line Creek Community Center in Kansas City, Missouri, our club has grown to become one of the premier figure skating destinations in the region.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gradient-to-br from-primary to-accent rounded-2xl h-96 flex items-center justify-center text-white text-9xl shadow-2xl">
+                ⛸️
+            </div>
+        </div>
+
+        <!-- Mission, Vision, Values -->
+        <div class="grid md:grid-cols-3 gap-8 mb-20">
+            <div class="bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl p-8">
+                <div class="text-5xl mb-4">🎯</div>
+                <h3 class="text-2xl font-bold mb-3">Our Mission</h3>
+                <p class="text-gray-200">
+                    To empower skaters of all ages and skill levels through quality instruction, fostering athletic excellence, personal growth, and lifelong love of figure skating.
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-accent to-purple-600 text-white rounded-2xl p-8">
+                <div class="text-5xl mb-4">👁️</div>
+                <h3 class="text-2xl font-bold mb-3">Our Vision</h3>
+                <p class="text-gray-200">
+                    To be the leading figure skating club in the Kansas City region, recognized for developing confident, skilled skaters who excel both on and off the ice.
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 rounded-2xl p-8">
+                <div class="text-5xl mb-4">⭐</div>
+                <h3 class="text-2xl font-bold mb-3">Our Values</h3>
+                <ul class="text-gray-800 space-y-2">
+                    <li>✓ Excellence in Coaching</li>
+                    <li>✓ Safety First</li>
+                    <li>✓ Supportive Community</li>
+                    <li>✓ Inclusive Environment</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Affiliations -->
+        <div class="bg-gray-50 rounded-2xl p-12">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Our Affiliations</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary mb-3">US Figure Skating</h3>
+                    <p class="text-gray-700 mb-4">
+                        As a USFS member club, we follow the highest standards in figure skating instruction and competition. Our skaters have access to test tracks, sanctioned competitions, and national-level opportunities.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                        <span class="font-semibold">Member since:</span> 2010
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary mb-3">Ice Skating Institute</h3>
+                    <p class="text-gray-700 mb-4">
+                        Our ISI affiliation provides recreational skaters with a fun, achievement-based program. Skaters can progress through ISI levels and participate in recreational competitions.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                        <span class="font-semibold">Member since:</span> 2010
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Board & Staff -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Club Leadership</h2>
+            <p class="text-xl text-gray-600">Meet the dedicated volunteers leading our club</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold">
+                    SE
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Sarah Edwards</h3>
+                <p class="text-accent font-semibold mb-2">President</p>
+                <p class="text-sm text-gray-600">15+ years skating experience</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-accent to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold">
+                    MJ
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Michael Johnson</h3>
+                <p class="text-accent font-semibold mb-2">Vice President</p>
+                <p class="text-sm text-gray-600">Parent & club supporter</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-ice-blue to-cyan-400 rounded-full mx-auto mb-4 flex items-center justify-center text-gray-900 text-3xl font-bold">
+                    LW
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Lisa Williams</h3>
+                <p class="text-accent font-semibold mb-2">Treasurer</p>
+                <p class="text-sm text-gray-600">Certified accountant</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-secondary to-purple-300 rounded-full mx-auto mb-4 flex items-center justify-center text-gray-900 text-3xl font-bold">
+                    DK
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">David Kim</h3>
+                <p class="text-accent font-semibold mb-2">Secretary</p>
+                <p class="text-sm text-gray-600">Communications lead</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Line Creek FSC</h3>
+                <p class="text-gray-400">KC MOMENTUM Synchronized Skating Team</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="about.html" class="hover:text-accent transition">About</a></li>
+                    <li><a href="programs.html" class="hover:text-accent transition">Programs</a></li>
+                    <li><a href="coaches.html" class="hover:text-accent transition">Coaches</a></li>
+                    <li><a href="events.html" class="hover:text-accent transition">Events</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Location</h3>
+                <p class="text-gray-400">5940 NW Waukomis Dr<br>Kansas City, MO 64151</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

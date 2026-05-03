@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Programs - Line Creek Figure Skating Club</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .card-hover {
+            transition: all 0.4s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(91, 44, 145, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<!-- Navigation -->
+<div class="bg-primary text-white py-2 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span class="text-gray-300">KC MOMENTUM Synchronized Skating Team</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="/login.html" class="hover:text-accent transition">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="home.html" class="text-2xl font-bold text-white">⛸️ Line Creek FSC</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="text-gray-200 hover:text-accent transition">About</a>
+                <a href="programs.html" class="text-accent font-medium">Programs</a>
+                <a href="coaches.html" class="text-gray-200 hover:text-accent transition">Coaches</a>
+                <a href="events.html" class="text-gray-200 hover:text-accent transition">Events</a>
+                <a href="synchronized.html" class="text-gray-200 hover:text-accent transition">Synchro</a>
+                <a href="testing.html" class="text-gray-200 hover:text-accent transition">Testing</a>
+                <a href="registration.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">Register Now</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Our Programs</h1>
+        <p class="text-xl text-gray-200">Quality instruction for skaters of all ages and levels</p>
+    </div>
+</section>
+
+<!-- Learn to Skate -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Learn to Skate USA</h2>
+            <p class="text-xl text-gray-600">Foundation skills for beginning skaters</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <!-- Basic Skills 1-2 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-primary">
+                <div class="bg-gradient-to-br from-primary to-primary-dark text-white p-6">
+                    <div class="text-4xl mb-2">🎓</div>
+                    <h3 class="text-2xl font-bold">Basic Skills 1-2</h3>
+                    <p class="text-sm text-gray-200 mt-2">Beginner</p>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Sit on ice and stand up</li>
+                        <li>✓ March forward across ice</li>
+                        <li>✓ Forward glides</li>
+                        <li>✓ Beginning backward motion</li>
+                        <li>✓ Two-foot stops</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$150</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">30-minute classes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Skills 3-4 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-primary-light">
+                <div class="bg-gradient-to-br from-primary-light to-primary text-white p-6">
+                    <div class="text-4xl mb-2">⛸️</div>
+                    <h3 class="text-2xl font-bold">Basic Skills 3-4</h3>
+                    <p class="text-sm text-gray-200 mt-2">Elementary</p>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Forward one-foot glides</li>
+                        <li>✓ Forward swizzles</li>
+                        <li>✓ Backward skating</li>
+                        <li>✓ Two-foot turns</li>
+                        <li>✓ Snowplow stops</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$150</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">30-minute classes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Skills 5-6 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-accent">
+                <div class="bg-gradient-to-br from-accent to-purple-600 text-white p-6">
+                    <div class="text-4xl mb-2">🌟</div>
+                    <h3 class="text-2xl font-bold">Basic Skills 5-6</h3>
+                    <p class="text-sm text-gray-200 mt-2">Intermediate</p>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Forward crossovers</li>
+                        <li>✓ Backward crossovers</li>
+                        <li>✓ Forward outside edges</li>
+                        <li>✓ Two-foot spins</li>
+                        <li>✓ Beginning jumps</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$150</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">30-minute classes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Skills 7-8 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-ice-blue">
+                <div class="bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 p-6">
+                    <div class="text-4xl mb-2">🏆</div>
+                    <h3 class="text-2xl font-bold">Basic Skills 7-8</h3>
+                    <p class="text-sm text-gray-700 mt-2">Advanced Beginner</p>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Advanced crossovers</li>
+                        <li>✓ Back crossovers (circles)</li>
+                        <li>✓ One-foot spins</li>
+                        <li>✓ Waltz jump</li>
+                        <li>✓ Half flip jump</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$150</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">30-minute classes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-primary to-accent text-white rounded-2xl p-8 shadow-xl">
+            <div class="md:flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold mb-2">Ready to Start?</h3>
+                    <p class="text-gray-200">New sessions start every 6 weeks. All equipment rental included.</p>
+                </div>
+                <a href="registration.html" class="inline-block mt-4 md:mt-0 bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition shadow-lg">
+                    Register Today
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Freestyle Classes -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Freestyle Classes</h2>
+            <p class="text-xl text-gray-600">Advanced skills and competitive training</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- Pre-Preliminary / Preliminary -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="bg-gradient-to-br from-primary to-primary-dark text-white p-6">
+                    <div class="text-4xl mb-2">💫</div>
+                    <h3 class="text-2xl font-bold">Pre-Preliminary / Preliminary</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-700 mb-4">
+                        Foundation freestyle skills including single jumps (waltz, salchow, toe loop) and basic spins. Introduction to USFS moves in the field.
+                    </p>
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Waltz, Salchow, Toe Loop</li>
+                        <li>✓ One-foot & scratch spins</li>
+                        <li>✓ Basic footwork sequences</li>
+                        <li>✓ Introduction to choreography</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$175</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">45-minute classes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pre-Juvenile / Juvenile -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="bg-gradient-to-br from-accent to-purple-600 text-white p-6">
+                    <div class="text-4xl mb-2">✨</div>
+                    <h3 class="text-2xl font-bold">Pre-Juvenile / Juvenile</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-700 mb-4">
+                        Intermediate freestyle including loop, flip, and lutz jumps. Advanced spins and combination elements. Competition preparation.
+                    </p>
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Loop, Flip, Lutz jumps</li>
+                        <li>✓ Sit & camel spins</li>
+                        <li>✓ Jump combinations</li>
+                        <li>✓ Intermediate moves</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$200</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">45-minute classes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intermediate / Novice / Senior -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 p-6">
+                    <div class="text-4xl mb-2">🏅</div>
+                    <h3 class="text-2xl font-bold">Intermediate / Novice / Senior</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-700 mb-4">
+                        Advanced and elite-level training. Double jumps, advanced spins, and complex footwork. High-level competition preparation.
+                    </p>
+                    <ul class="space-y-2 text-gray-700 mb-6">
+                        <li>✓ Double jumps (all types)</li>
+                        <li>✓ Advanced spin variations</li>
+                        <li>✓ Complex footwork</li>
+                        <li>✓ Elite competition prep</li>
+                    </ul>
+                    <div class="border-t pt-4">
+                        <div class="text-2xl font-bold text-primary mb-1">$225</div>
+                        <div class="text-sm text-gray-600">per 6-week session</div>
+                        <div class="text-sm text-gray-500 mt-2">60-minute classes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Adult Program -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Adult Skating Programs</h2>
+            <p class="text-xl text-gray-600">Never too late to learn</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <!-- Adult Learn to Skate -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-secondary">
+                <div class="bg-gradient-to-br from-secondary to-purple-300 text-gray-900 p-8">
+                    <div class="text-5xl mb-3">👥</div>
+                    <h3 class="text-3xl font-bold">Adult Learn to Skate</h3>
+                </div>
+                <div class="p-8">
+                    <p class="text-lg text-gray-700 mb-6">
+                        Start your skating journey! Our adult classes provide a supportive environment for beginners to learn basic skating skills. Ages 18+.
+                    </p>
+                    <ul class="space-y-3 text-gray-700 mb-8">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Basic balance and forward skating</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Stopping techniques</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Backward skating fundamentals</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Small group instruction (max 8 skaters)</span>
+                        </li>
+                    </ul>
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="text-3xl font-bold text-primary mb-2">$160</div>
+                        <div class="text-gray-600 mb-1">per 6-week session</div>
+                        <div class="text-sm text-gray-500">45-minute classes | Fridays 8:00 PM</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adult Freestyle -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border-2 border-primary">
+                <div class="bg-gradient-to-br from-primary to-accent text-white p-8">
+                    <div class="text-5xl mb-3">🌟</div>
+                    <h3 class="text-3xl font-bold">Adult Freestyle</h3>
+                </div>
+                <div class="p-8">
+                    <p class="text-lg text-gray-700 mb-6">
+                        For adults with skating experience who want to learn figure skating skills, jumps, and spins. Previous skating experience required.
+                    </p>
+                    <ul class="space-y-3 text-gray-700 mb-8">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Edges and turns</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Beginning jumps and spins</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Moves in the field elements</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Adult test track preparation</span>
+                        </li>
+                    </ul>
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="text-3xl font-bold text-primary mb-2">$185</div>
+                        <div class="text-gray-600 mb-1">per 6-week session</div>
+                        <div class="text-sm text-gray-500">45-minute classes | Fridays 8:45 PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Synchronized Skating -->
+<section class="py-20 bg-gradient-to-br from-primary to-primary-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">KC MOMENTUM Synchronized Skating</h2>
+            <p class="text-xl text-gray-200">Team skating at its finest</p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="text-6xl mb-6">👥</div>
+                    <h3 class="text-3xl font-bold mb-4">Join Our Team</h3>
+                    <p class="text-lg text-gray-200 mb-6">
+                        KC MOMENTUM is our competitive synchronized skating team, offering skaters the unique opportunity to combine technical skating skills with teamwork and artistry.
+                    </p>
+                    <ul class="space-y-3 text-gray-200 mb-8">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Multiple team levels (Beginner through Advanced)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Compete at regional and national events</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Build lasting friendships and team spirit</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <span>Professional choreography and coaching</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl p-8 text-gray-900">
+                    <h4 class="text-2xl font-bold text-primary mb-4">Team Information</h4>
+                    <div class="space-y-4 text-gray-700 mb-6">
+                        <div>
+                            <div class="font-semibold text-primary">Practice Schedule:</div>
+                            <div>Multiple teams, various times</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-primary">Season:</div>
+                            <div>August - March</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-primary">Requirements:</div>
+                            <div>Basic Skills 5+ or equivalent</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-primary">Competitions:</div>
+                            <div>3-5 events per season</div>
+                        </div>
+                    </div>
+                    <a href="synchronized.html" class="block w-full text-center bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">
+                        Learn More About KC MOMENTUM
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Private Lessons -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Private Lessons</h2>
+            <p class="text-xl text-gray-600">One-on-one instruction tailored to your goals</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-gradient-to-br from-primary to-accent text-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="p-8 md:p-12">
+                    <div class="flex items-center mb-6">
+                        <div class="text-6xl mr-6">🎯</div>
+                        <div>
+                            <h3 class="text-3xl font-bold mb-2">Personalized Coaching</h3>
+                            <p class="text-gray-200">Work directly with our professional coaches</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-6">
+                            <h4 class="text-xl font-bold mb-4">What You Get:</h4>
+                            <ul class="space-y-2 text-gray-200">
+                                <li>✓ Customized instruction</li>
+                                <li>✓ Focused skill development</li>
+                                <li>✓ Competition preparation</li>
+                                <li>✓ Test coaching</li>
+                                <li>✓ Flexible scheduling</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-6">
+                            <h4 class="text-xl font-bold mb-4">Pricing:</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="text-3xl font-bold text-accent mb-1">$50</div>
+                                    <div class="text-gray-200">per 30-minute lesson</div>
+                                </div>
+                                <div class="text-sm text-gray-300 border-t border-white/20 pt-4">
+                                    Package discounts available. Contact coaches directly for scheduling and rates.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white text-gray-900 rounded-xl p-6">
+                        <p class="text-lg mb-4">
+                            <span class="font-semibold text-primary">Ready to take your skating to the next level?</span><br>
+                            Private lessons are available with all of our professional coaches. Visit the Coaches page to learn more about our staff and contact them directly.
+                        </p>
+                        <a href="coaches.html" class="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition">
+                            Meet Our Coaches
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-r from-accent to-purple-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold mb-4">Ready to Get Started?</h2>
+        <p class="text-xl text-gray-100 mb-8">
+            Join Line Creek FSC and become part of our skating community
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="registration.html" class="bg-white text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-xl">
+                Register Now
+            </a>
+            <a href="coaches.html" class="bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary-dark transition transform hover:scale-105 shadow-xl">
+                Contact a Coach
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Line Creek FSC</h3>
+                <p class="text-gray-400">KC MOMENTUM Synchronized Skating Team</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="about.html" class="hover:text-accent transition">About</a></li>
+                    <li><a href="programs.html" class="hover:text-accent transition">Programs</a></li>
+                    <li><a href="coaches.html" class="hover:text-accent transition">Coaches</a></li>
+                    <li><a href="events.html" class="hover:text-accent transition">Events</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Location</h3>
+                <p class="text-gray-400">5940 NW Waukomis Dr<br>Kansas City, MO 64151</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

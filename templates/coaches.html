@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Coaches - Line Creek Figure Skating Club</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .card-hover {
+            transition: all 0.4s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(91, 44, 145, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<!-- Navigation -->
+<div class="bg-primary text-white py-2 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span class="text-gray-300">KC MOMENTUM Synchronized Skating Team</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="/login.html" class="hover:text-accent transition">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="home.html" class="text-2xl font-bold text-white">⛸️ Line Creek FSC</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="text-gray-200 hover:text-accent transition">About</a>
+                <a href="programs.html" class="text-gray-200 hover:text-accent transition">Programs</a>
+                <a href="coaches.html" class="text-accent font-medium">Coaches</a>
+                <a href="events.html" class="text-gray-200 hover:text-accent transition">Events</a>
+                <a href="synchronized.html" class="text-gray-200 hover:text-accent transition">Synchro</a>
+                <a href="testing.html" class="text-gray-200 hover:text-accent transition">Testing</a>
+                <a href="registration.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">Register Now</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Our Coaching Staff</h1>
+        <p class="text-xl text-gray-200">Experienced professionals dedicated to your skating success</p>
+    </div>
+</section>
+
+<!-- Main Coaches -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Meet Our Coaches</h2>
+            <p class="text-xl text-gray-600">Professional, certified, and passionate about figure skating</p>
+        </div>
+
+        <!-- Coach 1: Michelle Chen -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12 card-hover border-2 border-primary">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-primary to-accent p-12 flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border-4 border-white shadow-2xl">
+                        <div class="text-center">
+                            <div class="text-6xl font-bold mb-2">MC</div>
+                            <div class="text-sm">Head Coach</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 p-8">
+                    <div class="mb-4">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2">Michelle Chen</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Head Coach</span>
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">PSA Master Rated</span>
+                            <span class="bg-ice-blue text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">20+ Years</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-gray-700 mb-6">
+                        <p class="text-lg">
+                            Michelle is our head coach and has been with Line Creek FSC since 2015. With PSA Master Rating and over 20 years of coaching experience, she has guided numerous skaters to regional and national success.
+                        </p>
+                        <p>
+                            A former competitive skater herself, Michelle competed through the Senior level and brings a wealth of technical knowledge and competitive experience to her coaching. She specializes in advanced freestyle technique, competitive program development, and mental preparation.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Specialties:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ Advanced Freestyle (Jumps & Spins)</li>
+                                <li>✓ Competition Choreography</li>
+                                <li>✓ Test Preparation (All Levels)</li>
+                                <li>✓ Mental Training & Competition Prep</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Achievements:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ PSA Master Rated Coach</li>
+                                <li>✓ Former USFS Senior Competitor</li>
+                                <li>✓ 10+ Regional Champions Coached</li>
+                                <li>✓ 3 National Qualifiers</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="mailto:michelle.chen@linecreekfsc.org" class="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary-dark transition">
+                            📧 Contact Michelle
+                        </a>
+                        <a href="registration.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">
+                            Book a Lesson
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coach 2: Sarah Thompson -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12 card-hover border-2 border-accent">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-accent to-purple-600 p-12 flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border-4 border-white shadow-2xl">
+                        <div class="text-center">
+                            <div class="text-6xl font-bold mb-2">ST</div>
+                            <div class="text-sm">Basic Skills</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 p-8">
+                    <div class="mb-4">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2">Sarah Thompson</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">Basic Skills Director</span>
+                            <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">PSA Rated</span>
+                            <span class="bg-ice-blue text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">12 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-gray-700 mb-6">
+                        <p class="text-lg">
+                            Sarah directs our Learn to Skate USA program and specializes in working with beginning skaters of all ages. Her patient, encouraging teaching style helps new skaters build confidence and develop strong foundational skills.
+                        </p>
+                        <p>
+                            With 12 years of coaching experience, Sarah has helped hundreds of skaters take their first steps on the ice and progress through the Basic Skills levels. She's passionate about making skating accessible and fun for everyone.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Specialties:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ Learn to Skate (All Ages)</li>
+                                <li>✓ Basic Skills 1-8</li>
+                                <li>✓ Adult Beginner Programs</li>
+                                <li>✓ Pre-Freestyle Development</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Achievements:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ PSA Rated Coach</li>
+                                <li>✓ Learn to Skate USA Instructor</li>
+                                <li>✓ Safe Sport Certified</li>
+                                <li>✓ 500+ Students Taught</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="mailto:sarah.thompson@linecreekfsc.org" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">
+                            📧 Contact Sarah
+                        </a>
+                        <a href="registration.html" class="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary-dark transition">
+                            Book a Lesson
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coach 3: David Park -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12 card-hover border-2 border-ice-blue">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-ice-blue to-cyan-400 p-12 flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-gray-900 border-4 border-white shadow-2xl">
+                        <div class="text-center">
+                            <div class="text-6xl font-bold mb-2">DP</div>
+                            <div class="text-sm">Freestyle</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 p-8">
+                    <div class="mb-4">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2">David Park</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Freestyle Specialist</span>
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">PSA Certified</span>
+                            <span class="bg-ice-blue text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">8 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-gray-700 mb-6">
+                        <p class="text-lg">
+                            David brings elite competitive experience to Line Creek FSC. A former nationally competitive skater who landed double axel and triple jumps, he understands the technical demands and mental challenges of competitive skating.
+                        </p>
+                        <p>
+                            Since transitioning to coaching, David has focused on helping skaters master difficult technical elements, particularly jumps. His methodical approach breaks down complex skills into achievable steps, helping skaters progress safely and confidently.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Specialties:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ Jump Technique (All Levels)</li>
+                                <li>✓ Double & Triple Jumps</li>
+                                <li>✓ Freestyle Pre-Juvenile - Senior</li>
+                                <li>✓ Competition Strategy</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-bold text-primary mb-2">Achievements:</h4>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>✓ PSA Certified Coach</li>
+                                <li>✓ Former Juvenile National Competitor</li>
+                                <li>✓ Triple Jumps (Salchow, Toe, Loop)</li>
+                                <li>✓ Regional Medalist (Novice Men)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="mailto:david.park@linecreekfsc.org" class="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary-dark transition">
+                            📧 Contact David
+                        </a>
+                        <a href="registration.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition">
+                            Book a Lesson
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Coaching Philosophy -->
+<section class="py-20 bg-gradient-to-br from-primary to-primary-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">Our Coaching Philosophy</h2>
+            <p class="text-xl text-gray-200">Excellence through dedication, safety, and positive mentorship</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-5xl mb-4">🎯</div>
+                <h3 class="text-2xl font-bold mb-3">Individualized Approach</h3>
+                <p class="text-gray-200">
+                    Every skater is unique. We tailor our coaching to match each student's learning style, goals, and pace of development.
+                </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-5xl mb-4">🛡️</div>
+                <h3 class="text-2xl font-bold mb-3">Safety First</h3>
+                <p class="text-gray-200">
+                    Proper technique and progression ensure skaters develop skills safely. All our coaches are Safe Sport certified.
+                </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-5xl mb-4">💪</div>
+                <h3 class="text-2xl font-bold mb-3">Building Confidence</h3>
+                <p class="text-gray-200">
+                    We celebrate every achievement and help skaters develop resilience, discipline, and self-confidence that extends beyond the ice.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications & Standards -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Professional Standards</h2>
+            <p class="text-xl text-gray-600">All coaches meet or exceed industry requirements</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">✅</div>
+                <h3 class="text-xl font-bold mb-2">PSA Certified</h3>
+                <p class="text-sm text-gray-200">Professional Skaters Association members in good standing</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-accent to-purple-600 text-white rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">🛡️</div>
+                <h3 class="text-xl font-bold mb-2">Safe Sport</h3>
+                <p class="text-sm text-gray-200">All coaches are Safe Sport certified and background checked</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">🏥</div>
+                <h3 class="text-xl font-bold mb-2">First Aid / CPR</h3>
+                <p class="text-sm text-gray-700">Current CPR and First Aid certifications</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-secondary to-purple-300 text-gray-900 rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">📚</div>
+                <h3 class="text-xl font-bold mb-2">Ongoing Education</h3>
+                <p class="text-sm text-gray-700">Regular professional development and training</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Private Lessons CTA -->
+<section class="py-20 bg-gradient-to-r from-accent to-purple-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <div class="text-6xl mb-6">⛸️</div>
+            <h2 class="text-4xl font-bold mb-4">Interested in Private Lessons?</h2>
+            <p class="text-xl text-gray-100 mb-8">
+                Take your skating to the next level with personalized one-on-one instruction
+            </p>
+
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8">
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">What to Expect:</h3>
+                        <ul class="space-y-2 text-gray-200">
+                            <li>✓ Customized lesson plans</li>
+                            <li>✓ Flexible scheduling</li>
+                            <li>✓ Focused skill development</li>
+                            <li>✓ Competition & test prep</li>
+                            <li>✓ Video analysis available</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Pricing:</h3>
+                        <div class="bg-white text-gray-900 rounded-xl p-6">
+                            <div class="text-4xl font-bold text-primary mb-2">$50</div>
+                            <div class="text-gray-600 mb-4">per 30-minute lesson</div>
+                            <div class="text-sm text-gray-600 border-t pt-4">
+                                Package rates and family discounts available. Contact coaches directly for details.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="registration.html" class="bg-white text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-xl">
+                    Schedule a Lesson
+                </a>
+                <a href="programs.html" class="bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary-dark transition transform hover:scale-105 shadow-xl">
+                    View All Programs
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Line Creek FSC</h3>
+                <p class="text-gray-400">KC MOMENTUM Synchronized Skating Team</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="about.html" class="hover:text-accent transition">About</a></li>
+                    <li><a href="programs.html" class="hover:text-accent transition">Programs</a></li>
+                    <li><a href="coaches.html" class="hover:text-accent transition">Coaches</a></li>
+                    <li><a href="events.html" class="hover:text-accent transition">Events</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Location</h3>
+                <p class="text-gray-400">5940 NW Waukomis Dr<br>Kansas City, MO 64151</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

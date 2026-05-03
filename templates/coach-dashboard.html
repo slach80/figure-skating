@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Coach Dashboard - Line Creek FSC</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- Navigation -->
+<nav class="bg-primary shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="index.html" class="text-xl font-bold text-white">⛸️ Line Creek FSC · Coach Portal</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-1 text-sm">
+                <a href="coach-dashboard.html" class="px-3 py-2 rounded bg-accent/20 text-accent font-semibold">Dashboard</a>
+                <a href="#" class="px-3 py-2 rounded text-white hover:bg-white/10 transition">My Skaters</a>
+                <a href="#" class="px-3 py-2 rounded text-white hover:bg-white/10 transition">Schedule</a>
+                <a href="#" class="px-3 py-2 rounded text-white hover:bg-white/10 transition">Assessments</a>
+                <a href="#" class="px-3 py-2 rounded text-white hover:bg-white/10 transition">Test Tracking</a>
+                <div class="relative group">
+                    <button class="flex items-center gap-1 px-3 py-2 rounded text-white hover:bg-white/10 transition">
+                        Tools
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Quick Assessment</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Notify Parents</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Test Prep</a>
+                        <a href="index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Welcome Header -->
+    <div class="bg-gradient-to-r from-primary to-primary-dark rounded-xl p-6 mb-4 text-white flex justify-between items-center flex-wrap gap-3">
+        <div>
+            <h1 class="text-3xl font-bold">Welcome, Coach Michelle!</h1>
+            <p class="text-gray-200 text-sm mt-1">Saturday, May 3, 2026 · ⭐ 4.9 (47 reviews)</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="#" class="px-4 py-2 bg-white/10 text-white rounded-lg text-sm hover:bg-white/20 transition">My Skaters</a>
+            <a href="#" class="px-4 py-2 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition">
+                🔔 Notify Parents
+            </a>
+        </div>
+    </div>
+
+    <!-- Pending Assessment Banner -->
+    <div class="mb-4 flex items-center justify-between p-3 bg-yellow-50 border border-yellow-300 rounded-xl">
+        <div class="flex items-center gap-2">
+            <span>⚠️</span>
+            <p class="text-sm font-semibold text-yellow-800">3 lessons need assessment — skaters are waiting for feedback</p>
+        </div>
+        <a href="#" class="shrink-0 px-3 py-1 bg-yellow-500 text-white rounded-lg text-xs font-semibold hover:bg-yellow-600 transition ml-3">
+            Write Now →
+        </a>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <a href="#" class="bg-white rounded-xl shadow p-4 text-center hover:shadow-md hover:border-accent border-2 border-transparent transition group">
+            <p class="text-3xl font-bold text-accent group-hover:scale-110 transition">18</p>
+            <p class="text-gray-500 text-sm mt-1">Skaters This Week</p>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow p-4 text-center hover:shadow-md hover:border-blue-500 border-2 border-transparent transition group">
+            <p class="text-3xl font-bold text-blue-500 group-hover:scale-110 transition">24</p>
+            <p class="text-gray-500 text-sm mt-1">Lessons This Month</p>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow p-4 text-center hover:shadow-md hover:border-ice-blue border-2 border-transparent transition group">
+            <p class="text-3xl font-bold text-gray-700 group-hover:scale-110 transition">12</p>
+            <p class="text-gray-500 text-sm mt-1">Upcoming (30 days)</p>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow p-4 text-center hover:shadow-md hover:border-yellow-500 border-2 border-transparent transition group">
+            <p class="text-3xl font-bold text-yellow-600 group-hover:scale-110 transition">3</p>
+            <p class="text-gray-500 text-sm mt-1">Pending Assessments</p>
+        </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        <!-- Today's Lessons -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Today's Lessons</h2>
+                <a href="#" class="text-accent text-sm font-semibold hover:underline">View All →</a>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-start justify-between gap-2 p-3 bg-purple-50 border border-accent/30 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <p class="font-semibold text-sm">3:30 PM - 4:00 PM</p>
+                            <span class="text-xs font-bold text-accent bg-primary px-2 py-0.5 rounded-full">Starting Soon</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Emma Anderson · Private Lesson</p>
+                        <p class="text-xs text-gray-500 mt-1">Freestyle & Jumps</p>
+                    </div>
+                    <a href="#" class="shrink-0 bg-accent text-white px-3 py-1 rounded text-sm hover:bg-purple-600">Attendance</a>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">5:00 PM - 5:45 PM</p>
+                        <p class="text-sm text-gray-600">Intermediate Moves · Group (6)</p>
+                        <p class="text-xs text-gray-500 mt-1">Power 3-turns, brackets</p>
+                    </div>
+                    <a href="#" class="shrink-0 bg-ice-blue text-gray-900 px-3 py-1 rounded text-sm hover:bg-cyan-400">Attendance</a>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">6:00 PM - 6:30 PM</p>
+                        <p class="text-sm text-gray-600">Oliver Martinez · Private Lesson</p>
+                        <p class="text-xs text-gray-500 mt-1">Lutz preparation</p>
+                    </div>
+                    <a href="#" class="shrink-0 bg-ice-blue text-gray-900 px-3 py-1 rounded text-sm hover:bg-cyan-400">Attendance</a>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">6:45 PM - 7:15 PM</p>
+                        <p class="text-sm text-gray-600">Sophia Lee · Private Lesson</p>
+                        <p class="text-xs text-gray-500 mt-1">Program choreography</p>
+                    </div>
+                    <a href="#" class="shrink-0 bg-ice-blue text-gray-900 px-3 py-1 rounded text-sm hover:bg-cyan-400">Attendance</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next 14 Days -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Next 14 Days</h2>
+                <a href="#" class="text-accent text-sm font-semibold hover:underline">Full Schedule →</a>
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">Mon, May 5 · 4:00 PM</p>
+                        <p class="text-xs text-gray-600">Emma Anderson — Private</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Confirmed</span>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">Wed, May 7 · 4:00 PM</p>
+                        <p class="text-xs text-gray-600">Emma Anderson — Private</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Confirmed</span>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">Thu, May 8 · 5:30 PM</p>
+                        <p class="text-xs text-gray-600">Oliver Martinez — Private</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Confirmed</span>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">Sat, May 10 · 10:00 AM</p>
+                        <p class="text-xs text-gray-600">Emma Anderson — Test Session</p>
+                        <p class="text-xs text-accent font-semibold mt-1">Intermediate Moves</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Test Day</span>
+                </div>
+
+                <div class="flex items-start justify-between gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-semibold text-sm">Mon, May 12 · 6:00 PM</p>
+                        <p class="text-xs text-gray-600">Sophia Lee — Private</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Confirmed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Skaters & Test Prep -->
+    <div class="grid md:grid-cols-3 gap-6 mt-6">
+        <!-- Top Performers -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Top Performers</h2>
+                <span class="text-xs text-gray-500">This Month</span>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 p-2 bg-green-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        EA
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm text-gray-900">Emma Anderson</p>
+                        <p class="text-xs text-gray-600">95% attendance · 8 lessons</p>
+                    </div>
+                    <span class="text-xl">🏆</span>
+                </div>
+
+                <div class="flex items-center gap-3 p-2 bg-blue-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-br from-ice-blue to-cyan-400 rounded-full flex items-center justify-center text-gray-900 text-sm font-bold">
+                        OM
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm text-gray-900">Oliver Martinez</p>
+                        <p class="text-xs text-gray-600">100% attendance · 6 lessons</p>
+                    </div>
+                    <span class="text-xl">⭐</span>
+                </div>
+
+                <div class="flex items-center gap-3 p-2 bg-purple-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-br from-secondary to-purple-300 rounded-full flex items-center justify-center text-gray-900 text-sm font-bold">
+                        SL
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm text-gray-900">Sophia Lee</p>
+                        <p class="text-xs text-gray-600">90% attendance · 7 lessons</p>
+                    </div>
+                    <span class="text-xl">💪</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Preparation -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Test Prep</h2>
+                <a href="#" class="text-accent text-xs font-semibold hover:underline">Manage →</a>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-semibold text-sm text-gray-900">Emma Anderson</p>
+                            <p class="text-xs text-gray-600 mt-1">Intermediate Moves</p>
+                        </div>
+                        <span class="text-xs font-semibold text-yellow-600">May 10</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-600">Readiness</span>
+                            <span class="font-semibold text-gray-900">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-semibold text-sm text-gray-900">Sophia Lee</p>
+                            <p class="text-xs text-gray-600 mt-1">Novice Free Skate</p>
+                        </div>
+                        <span class="text-xs font-semibold text-blue-600">May 17</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-600">Readiness</span>
+                            <span class="font-semibold text-gray-900">70%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
+            <div class="space-y-2">
+                <a href="#" class="flex items-center gap-3 p-3 bg-accent/10 rounded-lg hover:bg-accent/20 transition">
+                    <span class="text-2xl">📋</span>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900">Write Assessment</p>
+                        <p class="text-xs text-gray-600">3 pending</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 p-3 bg-ice-blue/20 rounded-lg hover:bg-ice-blue/30 transition">
+                    <span class="text-2xl">🔔</span>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900">Notify Parents</p>
+                        <p class="text-xs text-gray-600">Send updates</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition">
+                    <span class="text-2xl">📅</span>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900">Manage Availability</p>
+                        <p class="text-xs text-gray-600">Update schedule</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 p-3 bg-purple-100 rounded-lg hover:bg-purple-200 transition">
+                    <span class="text-2xl">📊</span>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900">Progress Reports</p>
+                        <p class="text-xs text-gray-600">View analytics</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 p-3 bg-yellow-100 rounded-lg hover:bg-yellow-200 transition">
+                    <span class="text-2xl">🏅</span>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900">Test Tracker</p>
+                        <p class="text-xs text-gray-600">Monitor progress</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
