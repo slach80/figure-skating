@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',         // Deep purple
+                        'primary-dark': '#412069',  // Darker purple
+                        'primary-light': '#7B4DB8', // Lighter purple
+                        accent: '#D946EF',          // Bright magenta
+                        secondary: '#E0BBE4',       // Light lavender
+                        'ice-blue': '#B8E6F0',      // Ice blue
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Line Creek Figure Skating Club - Kansas City, MO</title>
+    <meta name="description" content="Line Creek Figure Skating Club - Ice Skating Institute and US Figure Skating affiliated club in Kansas City, MO. Programs for all ages and skill levels.">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(91, 44, 145, 0.95) 0%, rgba(184, 230, 240, 0.85) 100%),
+                        url('https://via.placeholder.com/1920x1080/5B2C91/FFFFFF?text=Figure+Skating');
+            background-size: cover;
+            background-position: center;
+        }
+        .card-hover {
+            transition: all 0.4s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(91, 44, 145, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<!-- Top Bar -->
+<div class="bg-primary text-white py-2 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span class="text-gray-300">KC MOMENTUM Synchronized Skating Team</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="/login" class="hover:text-accent transition">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="text-2xl font-bold text-white">
+                        ⛸️ Line Creek FSC
+                    </a>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-gray-200 hover:text-accent font-medium transition">About</a>
+                <a href="#programs" class="text-gray-200 hover:text-accent font-medium transition">Programs</a>
+                <a href="#coaches" class="text-gray-200 hover:text-accent font-medium transition">Coaches</a>
+                <a href="#events" class="text-gray-200 hover:text-accent font-medium transition">Events</a>
+                <a href="#synchronized" class="text-gray-200 hover:text-accent font-medium transition">Synchro</a>
+                <a href="#testing" class="text-gray-200 hover:text-accent font-medium transition">Testing</a>
+                <a href="/registration" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition transform hover:scale-105 shadow-lg">
+                    Register Now
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-primary-dark border-t border-primary-light">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="#about" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">About</a>
+            <a href="#programs" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Programs</a>
+            <a href="#coaches" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Coaches</a>
+            <a href="#events" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Events</a>
+            <a href="#synchronized" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Synchro</a>
+            <a href="#testing" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Testing</a>
+            <a href="/registration" class="block px-3 py-2 bg-accent text-white hover:bg-purple-600 rounded">Register Now</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-gradient text-white py-32 md:py-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                Welcome to Line Creek Figure Skating Club
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto">
+                Ice Skating Institute and US Figure Skating affiliated club dedicated to providing a safe and supportive environment for skaters of all ages and levels
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#programs" class="bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 transition transform hover:scale-105 shadow-xl">
+                    Explore Programs
+                </a>
+                <a href="#contact" class="bg-white text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-xl">
+                    Contact Us
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-6 mt-16 max-w-2xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
+                    <div class="text-4xl font-bold text-accent">15+</div>
+                    <div class="text-gray-200 text-sm">Years Experience</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
+                    <div class="text-4xl font-bold text-accent">100+</div>
+                    <div class="text-gray-200 text-sm">Active Skaters</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
+                    <div class="text-4xl font-bold text-accent">10+</div>
+                    <div class="text-gray-200 text-sm">Expert Coaches</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Links Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- About -->
+            <a href="#about" class="card-hover bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">ℹ️</div>
+                <h3 class="text-2xl font-bold mb-2">About</h3>
+                <p class="text-gray-200">Learn about our club, mission, and skating community</p>
+            </a>
+
+            <!-- Fall Fling -->
+            <a href="#events" class="card-hover bg-gradient-to-br from-accent to-purple-600 text-white rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">🎉</div>
+                <h3 class="text-2xl font-bold mb-2">Fall Fling</h3>
+                <p class="text-gray-200">Join us for our annual Fall Fling competition</p>
+            </a>
+
+            <!-- Club Membership -->
+            <a href="#membership" class="card-hover bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">⭐</div>
+                <h3 class="text-2xl font-bold mb-2">Club Membership</h3>
+                <p class="text-gray-700">Become a member and join our skating family</p>
+            </a>
+
+            <!-- Synchronized Skating -->
+            <a href="#synchronized" class="card-hover bg-gradient-to-br from-secondary to-purple-300 text-gray-900 rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">👥</div>
+                <h3 class="text-2xl font-bold mb-2">Synchronized Skating</h3>
+                <p class="text-gray-700">KC MOMENTUM - our competitive synchro team</p>
+            </a>
+
+            <!-- Programs -->
+            <a href="#programs" class="card-hover bg-gradient-to-br from-primary-light to-primary text-white rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">⛸️</div>
+                <h3 class="text-2xl font-bold mb-2">Programs</h3>
+                <p class="text-gray-200">Lessons and programs for all ages and skill levels</p>
+            </a>
+
+            <!-- Coaches -->
+            <a href="#coaches" class="card-hover bg-gradient-to-br from-gray-800 to-gray-600 text-white rounded-2xl p-8 shadow-xl">
+                <div class="text-5xl mb-4">🏆</div>
+                <h3 class="text-2xl font-bold mb-2">Coaches</h3>
+                <p class="text-gray-200">Meet our experienced coaching staff</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- News Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Latest News</h2>
+            <p class="text-xl text-gray-600">Stay updated with club announcements and events</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- News Item 1 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="h-48 bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                    <span class="text-7xl">🌸</span>
+                </div>
+                <div class="p-6">
+                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">2025 Spring Showcase</h3>
+                    <p class="text-gray-600 mb-4">Registration is now open for our Annual Spring Show! Sign up by 2/28 on the Registration page.</p>
+                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
+                </div>
+            </div>
+
+            <!-- News Item 2 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="h-48 bg-gradient-to-br from-accent to-pink-600 flex items-center justify-center">
+                    <span class="text-7xl">🐭</span>
+                </div>
+                <div class="p-6">
+                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Save the Date for 2025 Mouse Races!</h3>
+                    <p class="text-gray-600 mb-4">Mark Your Calendars! Don't miss the fun at our Mouse Races on April 12th, 2025, at 6 PM at Tiffany Greens Golf Club!</p>
+                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
+                </div>
+            </div>
+
+            <!-- News Item 3 -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                <div class="h-48 bg-gradient-to-br from-ice-blue to-cyan-500 flex items-center justify-center">
+                    <span class="text-7xl">⛸️</span>
+                </div>
+                <div class="p-6">
+                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">KC MOMENTUM Skating Skills Classes</h3>
+                    <p class="text-gray-600 mb-4">Moves in the field (skating skills) and ice dance classes start March 1st! Youth and adult tracks available.</p>
+                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="/news" class="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition shadow-lg">
+                More News →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Mission</h2>
+                <div class="space-y-4 text-lg text-gray-700">
+                    <p>
+                        Line Creek Figure Skating Club is an Ice Skating Institute and US Figure Skating affiliated club dedicated to providing a safe and supportive environment.
+                    </p>
+                    <p>
+                        We welcome skaters of all ages and levels to reach their goals at the Line Creek Community Center in Kansas City, MO.
+                    </p>
+                    <p>
+                        Whether you're taking your first steps on the ice or training for competitions, our experienced coaches and supportive community are here to help you succeed.
+                    </p>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="bg-gradient-to-br from-primary to-accent rounded-2xl h-96 flex items-center justify-center text-white text-9xl shadow-2xl">
+                    ⛸️
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-accent text-white p-6 rounded-2xl shadow-xl">
+                    <div class="text-3xl font-bold">15+ Years</div>
+                    <div class="text-lg">Serving KC Skaters</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 bg-gradient-to-r from-primary to-primary-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Contact Us</h2>
+            <p class="text-xl text-gray-200">Get in touch with Line Creek FSC</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Hours -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-4xl mb-4">🕐</div>
+                <h3 class="text-2xl font-bold mb-4">Hours</h3>
+                <div class="space-y-2 text-gray-200">
+                    <div class="flex justify-between"><span>Sun</span><span>09:00 AM - 04:00 PM</span></div>
+                    <div class="flex justify-between"><span>Mon-Fri</span><span>09:00 AM - 06:00 PM</span></div>
+                    <div class="flex justify-between"><span>Sat</span><span>09:00 AM - 04:00 PM</span></div>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-4xl mb-4">📍</div>
+                <h3 class="text-2xl font-bold mb-4">Address</h3>
+                <p class="text-gray-200">5940 NW Waukomis Dr<br>Kansas City, Missouri 64151</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=5940+NW+Waukomis+Dr+Kansas+City+MO+64151" target="_blank" class="inline-block mt-4 bg-accent text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition">
+                    Get Directions →
+                </a>
+            </div>
+
+            <!-- Contact -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <div class="text-4xl mb-4">✉️</div>
+                <h3 class="text-2xl font-bold mb-4">Email</h3>
+                <a href="mailto:kclcfscboard@gmail.com" class="text-accent hover:text-purple-300 text-lg">kclcfscboard@gmail.com</a>
+                <div class="mt-6">
+                    <h4 class="font-bold mb-2">Social Media</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/Line-Creek-Figure-Skating-Club-191282320943108" target="_blank" class="text-2xl hover:text-accent transition">📘</a>
+                        <a href="https://www.instagram.com/linecreekfsc" target="_blank" class="text-2xl hover:text-accent transition">📷</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Line Creek FSC</h3>
+                <p class="text-gray-400">KC MOMENTUM Synchronized Skating Team</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="#about" class="hover:text-accent transition">About</a></li>
+                    <li><a href="#programs" class="hover:text-accent transition">Programs</a></li>
+                    <li><a href="#coaches" class="hover:text-accent transition">Coaches</a></li>
+                    <li><a href="#events" class="hover:text-accent transition">Events</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Location</h3>
+                <p class="text-gray-400">5940 NW Waukomis Dr<br>Kansas City, MO 64151</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+</body>
+</html>
