@@ -698,7 +698,7 @@ Approve Phase 1 planning and design work to develop detailed requirements and fi
 - Next.js (React) with App Router
 - Tailwind CSS (matches existing design system)
 - shadcn/ui component library
-- Mobile: Expo (React Native) for iOS + Android
+- Mobile: PWA (installable, offline-capable) — Capacitor for App Store later if needed
 
 **Backend:**
 - Python / Django 4.x

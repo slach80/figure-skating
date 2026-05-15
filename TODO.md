@@ -146,13 +146,21 @@
 
 ## Phase 6: Mobile + Extras (Weeks 16-18)
 
-### Expo Mobile App
-- [ ] Shared TypeScript types/hooks with Next.js
-- [ ] Member login + dashboard
-- [ ] Push notifications (Expo Push)
-- [ ] Digital membership card (shows USFS#)
-- [ ] Quick lesson booking
-- [ ] Competition schedule + results
+### PWA (Progressive Web App)
+- [ ] Add next-pwa or @serwist/next to Next.js project
+- [ ] Service worker for offline support
+- [ ] Web app manifest (name, icons, theme color)
+- [ ] Install prompt / "Add to Home Screen" banner
+- [ ] Offline-capable member dashboard (cached data)
+- [ ] Digital membership card (shows USFS#, works offline)
+- [ ] Push notifications via Web Push API
+
+### Future: Capacitor (App Store presence)
+- [ ] Wrap Next.js app in Capacitor shell
+- [ ] Native push notifications (iOS + Android)
+- [ ] Apple Developer account ($99/yr)
+- [ ] Google Play Console ($25 one-time)
+- [ ] App Store submission + review
 
 ### Additional Modules
 - [ ] Volunteer management (event creation, shift signup, hour tracking)
