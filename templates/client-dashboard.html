@@ -203,6 +203,159 @@
         </div>
     </div>
 
+    <!-- Competition History (via Skater-Stats Integration) -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center gap-3">
+                <h2 class="text-xl font-bold text-gray-900">Competition History</h2>
+                <span class="px-2 py-0.5 bg-purple-100 text-primary text-xs font-semibold rounded-full">via Skater-Stats</span>
+            </div>
+            <a href="#" class="text-accent text-sm font-semibold hover:underline">View Full Stats →</a>
+        </div>
+
+        <!-- Skater Selector Tabs -->
+        <div class="flex gap-2 mb-5">
+            <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold">Emma Anderson</button>
+            <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-semibold hover:bg-gray-200 transition">Lucas Anderson</button>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+            <div class="bg-purple-50 rounded-lg p-3 text-center">
+                <p class="text-2xl font-bold text-primary">7</p>
+                <p class="text-xs text-gray-600">Competitions</p>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                <p class="text-2xl font-bold text-yellow-600">3</p>
+                <p class="text-xs text-gray-600">Gold Medals</p>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-3 text-center">
+                <p class="text-2xl font-bold text-gray-500">2</p>
+                <p class="text-xs text-gray-600">Silver Medals</p>
+            </div>
+            <div class="bg-orange-50 rounded-lg p-3 text-center">
+                <p class="text-2xl font-bold text-orange-600">1</p>
+                <p class="text-xs text-gray-600">Bronze Medal</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 text-center">
+                <p class="text-2xl font-bold text-blue-600">42.85</p>
+                <p class="text-xs text-gray-600">Personal Best</p>
+            </div>
+        </div>
+
+        <!-- Competition Results Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b-2 border-gray-200 text-left">
+                        <th class="py-3 px-3 font-semibold text-gray-700">Competition</th>
+                        <th class="py-3 px-3 font-semibold text-gray-700">Date</th>
+                        <th class="py-3 px-3 font-semibold text-gray-700">Event</th>
+                        <th class="py-3 px-3 font-semibold text-gray-700 text-center">Place</th>
+                        <th class="py-3 px-3 font-semibold text-gray-700 text-right">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-gray-100 bg-yellow-50">
+                        <td class="py-3 px-3 font-medium">KC Metro Open</td>
+                        <td class="py-3 px-3 text-gray-600">Apr 12, 2026</td>
+                        <td class="py-3 px-3 text-gray-600">Intermediate Free Skate</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-yellow-400 text-white rounded-full font-bold text-xs">1st</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">42.85</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-3 font-medium">KC Metro Open</td>
+                        <td class="py-3 px-3 text-gray-600">Apr 12, 2026</td>
+                        <td class="py-3 px-3 text-gray-600">Intermediate Short Program</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-300 text-white rounded-full font-bold text-xs">2nd</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">28.14</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-yellow-50">
+                        <td class="py-3 px-3 font-medium">Heart of America Classic</td>
+                        <td class="py-3 px-3 text-gray-600">Feb 8, 2026</td>
+                        <td class="py-3 px-3 text-gray-600">Intermediate Free Skate</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-yellow-400 text-white rounded-full font-bold text-xs">1st</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">40.22</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-3 font-medium">Midwest Sectional Qualifier</td>
+                        <td class="py-3 px-3 text-gray-600">Dec 14, 2025</td>
+                        <td class="py-3 px-3 text-gray-600">Intermediate Free Skate</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-300 text-white rounded-full font-bold text-xs">2nd</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">38.67</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-yellow-50">
+                        <td class="py-3 px-3 font-medium">Fall Fling Invitational</td>
+                        <td class="py-3 px-3 text-gray-600">Oct 18, 2025</td>
+                        <td class="py-3 px-3 text-gray-600">Juvenile Free Skate</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-yellow-400 text-white rounded-full font-bold text-xs">1st</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">36.91</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-3 font-medium">Show-Me State Games</td>
+                        <td class="py-3 px-3 text-gray-600">Aug 3, 2025</td>
+                        <td class="py-3 px-3 text-gray-600">Juvenile Free Skate</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-orange-400 text-white rounded-full font-bold text-xs">3rd</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">33.48</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-3 font-medium">KC Spring Showcase</td>
+                        <td class="py-3 px-3 text-gray-600">May 22, 2025</td>
+                        <td class="py-3 px-3 text-gray-600">Juvenile Short Program</td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 bg-primary text-white rounded-full font-bold text-xs">4th</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-semibold">26.15</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Score Trend -->
+        <div class="mt-6 pt-4 border-t">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Score Progression (Free Skate)</h3>
+            <div class="flex items-end gap-2 h-24">
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-purple-200 rounded-t" style="height: 45%"></div>
+                    <p class="text-xs text-gray-500 mt-1">May '25</p>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-purple-300 rounded-t" style="height: 55%"></div>
+                    <p class="text-xs text-gray-500 mt-1">Aug '25</p>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-purple-400 rounded-t" style="height: 65%"></div>
+                    <p class="text-xs text-gray-500 mt-1">Oct '25</p>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-purple-500 rounded-t" style="height: 72%"></div>
+                    <p class="text-xs text-gray-500 mt-1">Dec '25</p>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-purple-600 rounded-t" style="height: 82%"></div>
+                    <p class="text-xs text-gray-500 mt-1">Feb '26</p>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                    <div class="w-full bg-accent rounded-t" style="height: 95%"></div>
+                    <p class="text-xs text-gray-500 mt-1">Apr '26</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 text-right">Data provided by Skater-Stats.com · Updated daily</p>
+        </div>
+    </div>
+
     <!-- Upcoming Lessons -->
     <div class="grid md:grid-cols-2 gap-6">
         <!-- Lessons Schedule -->
