@@ -578,6 +578,100 @@ However, it offers less customization and may have ongoing higher costs.
 
 ---
 
+## Platform Vision: Beyond Line Creek
+
+### The Opportunity
+
+Line Creek FSC currently pays for multiple fragmented services:
+
+| Service | What It Does | Typical Cost |
+|---------|-------------|--------------|
+| SportsEngine | Club website hosting | $50-150/month |
+| EntryEeze | Registration & renewals | $150-750/year |
+| Separate booking tool | Lesson scheduling | $20-50/month |
+| Mailchimp/email tool | Communications | $15-30/month |
+| **Total** | **Fragmented, clunky** | **$100-250+/month** |
+
+**Our platform replaces all of them with a single, modern system.**
+
+### What EntryEeze Does (and What We Beat)
+
+EntryEeze is a third-party registration tool launched in 2008. After auditing their platform, here's what they offer and how we compare:
+
+| EntryEeze Feature | Our Platform | Advantage |
+|-------------------|-------------|-----------|
+| Member registration & renewals | ✅ | Modern UX, mobile-first |
+| Test session registration + payment | ✅ | Integrated with member profiles |
+| Contract Ice / Club Ice booking | ✅ | Full scheduling system (not just payment) |
+| USFS-formatted export | ✅ | One-click CSV matching USFS Batch Template |
+| Mass email to members | ✅ | + SMS + push notifications |
+| Permission form generation | ✅ | Auto-fill PDF with member data |
+| Electronic waivers | ✅ | Digital signatures with versioning |
+| Volunteer event tracking | ✅ | Shift signup + hour tracking |
+| Custom questions per club | ✅ | Configurable fields engine |
+| Advanced search/filtering | ✅ | + real-time dashboards |
+| Family-based accounts | ✅ | Full family group management |
+| **NOT in EntryEeze:** | | |
+| Club website hosting | ✅ | Branded, custom domain |
+| Lesson booking & scheduling | ✅ | Drag-and-drop, conflict detection |
+| Skater competition stats | ✅ | Via Skater-Stats API integration |
+| Mobile app | ✅ | iOS + Android (Expo) |
+| Coach/instructor portal | ✅ | Schedule, earnings, student management |
+| Progress tracking & assessments | ✅ | Skill levels, test prep, goals |
+| Merchandise store | ✅ | Club gear sales |
+| Donation collection | ✅ | Club-specific fund drives |
+| Real-time dashboards | ✅ | Client, Coach, and Admin views |
+
+### EntryEeze Pricing vs. Ours
+
+**EntryEeze costs:**
+- $50 one-time setup
+- $1.00 per member per year (on registration/renewal)
+- $0.50 per test registered
+- 1.5% of contract ice payments
+- 2.2% + $0.30 per card transaction (Stripe)
+- 3.5% for Amex
+
+**But EntryEeze is ONLY registration.** Clubs still pay separately for website, scheduling, email, etc.
+
+**Our all-in-one pricing (proposed):**
+
+| Tier | Price | Includes |
+|------|-------|----------|
+| Starter | $19/mo | Website + member registration + USFS export |
+| Standard | $49/mo | + Lesson booking, test sessions, contract ice, volunteer mgmt |
+| Pro | $79/mo | + Skater-Stats integration, merch store, custom domain, priority support |
+
+At **$49/month** we're cheaper than SportsEngine alone, and we replace 3-4 services.
+
+### Multi-Club SaaS Revenue Model
+
+450+ clubs currently use EntryEeze. If we capture even a fraction:
+
+| Clubs | Avg Monthly | Annual Revenue | Infra Cost | Profit |
+|-------|-------------|----------------|------------|--------|
+| 10 | $49 | $5,880 | $1,200 | $4,680 |
+| 25 | $49 | $14,700 | $1,500 | $13,200 |
+| 50 | $52 | $31,200 | $2,000 | $29,200 |
+| 100 | $55 | $66,000 | $3,000 | $63,000 |
+
+**Architecture supports multi-tenancy from day one** — each club gets their own branded subdomain, custom colors/logo, and isolated data.
+
+### USFS Integration Strategy
+
+- USFS does not offer an open API (EntryEeze's FAQ confirms: "United States Figure Skating does not currently allow software interaction with their database")
+- Our platform generates USFS-formatted CSV matching their Batch Upload Roster Template
+- Membership Chair downloads and uploads to USFS Members Only Portal
+- Future: Explore USFS web services RFE for programmatic upload (same path EntryEeze uses)
+
+### Skater-Stats.com Integration
+
+- Skater-Stats.com has an API (`api.skater-stats.com`) with competition results for every skater who has ever competed
+- Our platform pulls competition history and displays it on member profiles
+- Differentiator: No other club management tool offers this
+
+---
+
 ## Conclusion
 
 The modernized Line Creek FSC website represents a significant leap forward in how we operate as a club. By investing in this system, we:
@@ -598,39 +692,42 @@ Approve Phase 1 planning and design work to develop detailed requirements and fi
 
 ## Appendix: Technical Details
 
-### Technology Stack (for Option B)
+### Technology Stack (Decided)
 
 **Frontend:**
-- HTML5, CSS3, JavaScript
-- Tailwind CSS for styling
-- Responsive design framework
-- Modern browser compatibility
+- Next.js (React) with App Router
+- Tailwind CSS (matches existing design system)
+- shadcn/ui component library
+- Mobile: Expo (React Native) for iOS + Android
 
-**Backend Options:**
-- Python (Django/Flask) or
-- Node.js (Express) or
-- PHP (Laravel)
+**Backend:**
+- Python / Django 4.x
+- Django REST Framework (API for frontend + mobile)
+- Celery + Redis (async tasks, reminders, reports)
+- django-allauth (authentication)
 
 **Database:**
-- PostgreSQL or MySQL
+- PostgreSQL
 - Regular automated backups
 
 **Payment Integration:**
-- Stripe or Square API
-- PCI-compliant processing
+- Stripe (Checkout + Webhooks)
+- PCI-compliant (no card data on our servers)
 - Automatic receipt generation
+- Stripe Connect for multi-club payment routing
 
 **Hosting:**
-- AWS, DigitalOcean, or similar
-- SSL encryption
-- 99.9% uptime SLA
+- Vercel (frontend) — CDN, preview deployments
+- VPS or Railway (Django backend)
+- ~$47/month total for single club
 
 **Security:**
 - HTTPS everywhere
-- Password hashing (bcrypt)
+- Password hashing (bcrypt via Django)
+- Row-level data isolation (multi-tenant)
 - Role-based access control
 - Regular security updates
-- GDPR compliant
+- COPPA considerations for children's data
 
 ### Browser Compatibility
 - Chrome, Firefox, Safari, Edge (latest 2 versions)
@@ -648,5 +745,5 @@ Approve Phase 1 planning and design work to develop detailed requirements and fi
 *This presentation guide was created for the Line Creek Figure Skating Club board meeting. All data shown is for demonstration purposes only. Actual implementation details, costs, and timelines may vary based on specific requirements and vendor selection.*
 
 **Prepared by:** Website Modernization Committee  
-**Date:** May 3, 2026  
-**Version:** 1.0
+**Date:** May 15, 2026  
+**Version:** 2.0

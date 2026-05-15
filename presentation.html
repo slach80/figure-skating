@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Line Creek FSC — Platform Presentation</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .gradient-hero {
+            background: linear-gradient(135deg, #5B2C91 0%, #7B4DB8 40%, #D946EF 100%);
+        }
+        .gradient-section {
+            background: linear-gradient(180deg, #f8f4fc 0%, #ffffff 100%);
+        }
+        .card-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(91, 44, 145, 0.15);
+        }
+        .stat-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .check-green { color: #10b981; }
+        .cross-red { color: #ef4444; }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+
+<!-- Slide 1: Title -->
+<section class="slide gradient-hero text-white">
+    <div class="max-w-6xl mx-auto px-6 py-20 text-center">
+        <p class="text-lg font-medium text-purple-200 mb-4 uppercase tracking-wider">Line Creek Figure Skating Club</p>
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            One Platform.<br>Every Club Need.
+        </h1>
+        <p class="text-xl md:text-2xl text-purple-100 max-w-3xl mx-auto mb-10">
+            Replace EntryEeze, SportsEngine, and 3 other tools with a single modern system — website, registration, payments, scheduling, and more.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 mb-16">
+            <a href="index.html" class="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-50 transition shadow-lg">
+                View Club Demo
+            </a>
+            <a href="#problem" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition">
+                See the Pitch
+            </a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div>
+                <div class="text-4xl font-black">$49</div>
+                <div class="text-purple-200 text-sm">/month replaces everything</div>
+            </div>
+            <div>
+                <div class="text-4xl font-black">450+</div>
+                <div class="text-purple-200 text-sm">clubs in target market</div>
+            </div>
+            <div>
+                <div class="text-4xl font-black">5x</div>
+                <div class="text-purple-200 text-sm">more features than EntryEeze</div>
+            </div>
+            <div>
+                <div class="text-4xl font-black">$63K</div>
+                <div class="text-purple-200 text-sm">profit at 100 clubs</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 2: The Problem -->
+<section id="problem" class="slide gradient-section">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">The Problem</h2>
+        <p class="text-xl text-gray-500 text-center mb-16 max-w-2xl mx-auto">Skating clubs are paying $100-250+/month across fragmented, outdated tools</p>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div class="bg-red-50 border-2 border-red-100 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-red-700 mb-6">What clubs deal with today</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="cross-red text-xl mt-0.5">&#10005;</span>
+                        <div>
+                            <div class="font-semibold">SportsEngine</div>
+                            <div class="text-sm text-gray-500">$50-150/mo — just for a website</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="cross-red text-xl mt-0.5">&#10005;</span>
+                        <div>
+                            <div class="font-semibold">EntryEeze</div>
+                            <div class="text-sm text-gray-500">$150-750/yr — registration only, clunky UI (built 2008)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="cross-red text-xl mt-0.5">&#10005;</span>
+                        <div>
+                            <div class="font-semibold">Separate booking tool</div>
+                            <div class="text-sm text-gray-500">$20-50/mo — for lesson scheduling</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="cross-red text-xl mt-0.5">&#10005;</span>
+                        <div>
+                            <div class="font-semibold">Mailchimp / email tool</div>
+                            <div class="text-sm text-gray-500">$15-30/mo — another login, another bill</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="cross-red text-xl mt-0.5">&#10005;</span>
+                        <div>
+                            <div class="font-semibold">Google Sheets + paper waivers</div>
+                            <div class="text-sm text-gray-500">Free but chaos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-red-200">
+                    <div class="text-3xl font-black text-red-700">$100-250+/mo</div>
+                    <div class="text-sm text-red-500">spread across 4-5 services, none talking to each other</div>
+                </div>
+            </div>
+
+            <div class="bg-green-50 border-2 border-green-100 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-green-700 mb-6">Our platform: everything in one place</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Club website</div>
+                            <div class="text-sm text-gray-500">Modern, branded, custom domain</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Registration & renewals</div>
+                            <div class="text-sm text-gray-500">Multi-step wizard, family accounts, USFS export</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Lesson booking & scheduling</div>
+                            <div class="text-sm text-gray-500">Calendar, packages, conflict detection</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Test sessions & contract ice</div>
+                            <div class="text-sm text-gray-500">Registration, payment, results tracking</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Payments (Stripe)</div>
+                            <div class="text-sm text-gray-500">Auto-receipts, history, family billing</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Email + SMS + push notifications</div>
+                            <div class="text-sm text-gray-500">Reminders, broadcasts, targeted comms</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="check-green text-xl mt-0.5">&#10003;</span>
+                        <div>
+                            <div class="font-semibold">Mobile app (iOS + Android)</div>
+                            <div class="text-sm text-gray-500">Digital membership card, push notifications</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-green-200">
+                    <div class="text-3xl font-black text-green-700">$49/mo</div>
+                    <div class="text-sm text-green-600">everything included, one login, one bill</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 3: EntryEeze Comparison -->
+<section class="slide bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">EntryEeze vs. Our Platform</h2>
+        <p class="text-xl text-gray-500 text-center mb-12">Side-by-side feature comparison</p>
+
+        <div class="overflow-x-auto">
+            <table class="w-full max-w-4xl mx-auto text-left">
+                <thead>
+                    <tr class="border-b-2 border-gray-200">
+                        <th class="py-4 px-4 text-lg font-bold">Feature</th>
+                        <th class="py-4 px-4 text-center">
+                            <span class="text-gray-400 font-semibold">EntryEeze</span>
+                        </th>
+                        <th class="py-4 px-4 text-center">
+                            <span class="text-primary font-bold">Our Platform</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm md:text-base">
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4">Member registration & renewals</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4">Test session registration</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4">Contract ice / club ice</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4">USFS-formatted CSV export</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4">Mass email / targeted comms</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4">Volunteer tracking</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4 font-semibold">Club website hosting</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4 font-semibold">Lesson booking & scheduling</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4 font-semibold">Coach/instructor portal</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4 font-semibold">Skater competition stats</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4 font-semibold">Mobile app (iOS + Android)</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4 font-semibold">Progress tracking & assessments</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4 font-semibold">Merchandise store</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <td class="py-3 px-4 font-semibold">Real-time dashboards</td>
+                        <td class="py-3 px-4 text-center cross-red text-lg">&#10005;</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 font-semibold">Digital waivers with e-sign</td>
+                        <td class="py-3 px-4 text-center text-yellow-500 text-sm">Limited</td>
+                        <td class="py-3 px-4 text-center check-green text-lg">&#10003;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 4: Pricing -->
+<section class="slide gradient-section">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">Simple Pricing</h2>
+        <p class="text-xl text-gray-500 text-center mb-16">Everything your club needs. No per-member fees. No nickel-and-diming.</p>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl p-8 border-2 border-gray-100 card-lift">
+                <h3 class="text-lg font-bold text-gray-500 uppercase tracking-wider mb-2">Starter</h3>
+                <div class="flex items-baseline mb-6">
+                    <span class="text-5xl font-black text-gray-900">$19</span>
+                    <span class="text-gray-400 ml-2">/month</span>
+                </div>
+                <ul class="space-y-3 text-gray-600 mb-8">
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Club website with custom domain</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Member registration & renewals</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> USFS CSV batch export</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Payment processing (Stripe)</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Family accounts</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Email notifications</li>
+                </ul>
+                <div class="text-sm text-gray-400">Best for small clubs just starting out</div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 border-2 border-primary shadow-xl card-lift relative">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</div>
+                <h3 class="text-lg font-bold text-primary uppercase tracking-wider mb-2">Standard</h3>
+                <div class="flex items-baseline mb-6">
+                    <span class="text-5xl font-black text-gray-900">$49</span>
+                    <span class="text-gray-400 ml-2">/month</span>
+                </div>
+                <ul class="space-y-3 text-gray-600 mb-8">
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Everything in Starter</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Lesson booking & scheduling</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Test session management</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Contract ice registration</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Volunteer management</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Coach/instructor portal</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Progress tracking</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> SMS notifications</li>
+                </ul>
+                <div class="text-sm text-gray-400">Best for active clubs with full programs</div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 border-2 border-gray-100 card-lift">
+                <h3 class="text-lg font-bold text-gray-500 uppercase tracking-wider mb-2">Pro</h3>
+                <div class="flex items-baseline mb-6">
+                    <span class="text-5xl font-black text-gray-900">$79</span>
+                    <span class="text-gray-400 ml-2">/month</span>
+                </div>
+                <ul class="space-y-3 text-gray-600 mb-8">
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Everything in Standard</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Skater-Stats competition data</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Merchandise store</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Mobile app (iOS + Android)</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Digital waivers with e-sign</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Priority support</li>
+                    <li class="flex items-center gap-2"><span class="check-green">&#10003;</span> Advanced analytics</li>
+                </ul>
+                <div class="text-sm text-gray-400">Best for large clubs wanting everything</div>
+            </div>
+        </div>
+
+        <p class="text-center text-gray-400 mt-10 text-sm">All plans include unlimited members. Stripe processing fees (2.9% + $0.30) apply to transactions.</p>
+    </div>
+</section>
+
+<!-- Slide 5: Revenue Projections -->
+<section class="slide bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">Revenue at Scale</h2>
+        <p class="text-xl text-gray-500 text-center mb-16">450+ clubs use EntryEeze today. We only need a fraction.</p>
+
+        <div class="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-16">
+            <div class="text-center p-6 bg-purple-50 rounded-2xl">
+                <div class="text-sm text-gray-500 mb-2">10 clubs</div>
+                <div class="text-3xl font-black text-primary">$4.7K</div>
+                <div class="text-sm text-gray-400">profit/year</div>
+            </div>
+            <div class="text-center p-6 bg-purple-50 rounded-2xl">
+                <div class="text-sm text-gray-500 mb-2">25 clubs</div>
+                <div class="text-3xl font-black text-primary">$13.2K</div>
+                <div class="text-sm text-gray-400">profit/year</div>
+            </div>
+            <div class="text-center p-6 bg-purple-100 rounded-2xl border-2 border-primary">
+                <div class="text-sm text-gray-500 mb-2">50 clubs</div>
+                <div class="text-3xl font-black text-primary">$29.2K</div>
+                <div class="text-sm text-gray-400">profit/year</div>
+            </div>
+            <div class="text-center p-6 bg-purple-50 rounded-2xl">
+                <div class="text-sm text-gray-500 mb-2">100 clubs</div>
+                <div class="text-3xl font-black text-primary">$63K</div>
+                <div class="text-sm text-gray-400">profit/year</div>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto bg-gray-50 rounded-2xl p-8">
+            <h3 class="text-xl font-bold mb-4">Infrastructure scales cheaply</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="font-semibold">1 club:</span>
+                    <span class="text-gray-500"> ~$47/month hosting</span>
+                </div>
+                <div>
+                    <span class="font-semibold">10 clubs:</span>
+                    <span class="text-gray-500"> ~$100/month (same infra)</span>
+                </div>
+                <div>
+                    <span class="font-semibold">50 clubs:</span>
+                    <span class="text-gray-500"> ~$170/month</span>
+                </div>
+                <div>
+                    <span class="font-semibold">100 clubs:</span>
+                    <span class="text-gray-500"> ~$250/month</span>
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 mt-4">Multi-tenant architecture: all clubs share one deployment. Cost grows logarithmically.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 6: Tech Stack -->
+<section class="slide gradient-section">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Built on Proven Technology</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="text-3xl mb-4">&#9881;</div>
+                <h3 class="text-lg font-bold mb-2">Backend</h3>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><strong>Django</strong> — battle-tested Python framework</li>
+                    <li><strong>Django REST Framework</strong> — API for web + mobile</li>
+                    <li><strong>PostgreSQL</strong> — reliable, scalable database</li>
+                    <li><strong>Celery + Redis</strong> — background jobs, reminders</li>
+                    <li><strong>django-allauth</strong> — secure authentication</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="text-3xl mb-4">&#9889;</div>
+                <h3 class="text-lg font-bold mb-2">Frontend</h3>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><strong>Next.js</strong> — React framework, fast SSR/SSG</li>
+                    <li><strong>Tailwind CSS</strong> — modern, responsive design</li>
+                    <li><strong>shadcn/ui</strong> — accessible components</li>
+                    <li><strong>Vercel</strong> — global CDN, preview deploys</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="text-3xl mb-4">&#128241;</div>
+                <h3 class="text-lg font-bold mb-2">Mobile + Integrations</h3>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><strong>Expo</strong> — React Native for iOS + Android</li>
+                    <li><strong>Stripe</strong> — payments, PCI compliant</li>
+                    <li><strong>Skater-Stats API</strong> — competition data</li>
+                    <li><strong>USFS CSV export</strong> — batch upload support</li>
+                    <li><strong>Resend</strong> — transactional email</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto mt-12 bg-white rounded-2xl p-8 shadow-sm">
+            <h3 class="text-lg font-bold mb-3">30 production-ready modules from Hustle template</h3>
+            <p class="text-sm text-gray-600 mb-4">Built on an existing, tested booking/scheduling system already running in production for a sports coaching business. Not starting from scratch.</p>
+            <div class="flex flex-wrap gap-2 text-xs">
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Stripe Integration</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Team Management</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Digital Waivers</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Skill Assessments</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Referral Program</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Dynamic Pricing</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Waitlist System</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Notifications</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">REST API</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">SMS (Twilio)</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Gift Cards</span>
+                <span class="bg-purple-100 text-primary px-3 py-1 rounded-full">Analytics</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 7: Timeline -->
+<section class="slide bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Build Timeline</h2>
+
+        <div class="max-w-3xl mx-auto space-y-6">
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 1-3</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Foundation</h4>
+                    <p class="text-sm text-gray-500">Project setup, data model, auth, Django + Next.js scaffold</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 4-6</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Core Features</h4>
+                    <p class="text-sm text-gray-500">Registration, payments, USFS export, admin panel</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 7-9</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Scheduling & Booking</h4>
+                    <p class="text-sm text-gray-500">Lessons, test sessions, contract ice, packages</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 10-12</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Enhanced Features</h4>
+                    <p class="text-sm text-gray-500">Skater-Stats, coach portal, assessments, notifications</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 13-15</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Website Builder</h4>
+                    <p class="text-sm text-gray-500">Multi-tenant frontend, branding, CMS, custom domains</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-primary bg-purple-100 px-3 py-1 rounded-full">Wk 16-18</span>
+                </div>
+                <div class="flex-grow border-l-2 border-purple-200 pl-6 pb-6">
+                    <h4 class="font-bold">Mobile + Extras</h4>
+                    <p class="text-sm text-gray-500">Expo app, volunteer mgmt, merch store, waivers</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="flex-shrink-0 w-24 text-right">
+                    <span class="text-sm font-bold text-accent bg-pink-100 px-3 py-1 rounded-full">Wk 19-20</span>
+                </div>
+                <div class="flex-grow pl-6">
+                    <h4 class="font-bold">Launch</h4>
+                    <p class="text-sm text-gray-500">Line Creek go-live, data migration, multi-club onboarding</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 8: Live Demo Links -->
+<section class="slide gradient-hero text-white">
+    <div class="max-w-6xl mx-auto px-6 py-20 text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-6">See It In Action</h2>
+        <p class="text-xl text-purple-200 mb-12 max-w-2xl mx-auto">
+            Working demos of the club website, member portal, and coach dashboard.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
+            <a href="index.html" class="bg-white/10 backdrop-blur rounded-2xl p-8 hover:bg-white/20 transition group">
+                <div class="text-4xl mb-4">&#127968;</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-accent transition">Club Website</h3>
+                <p class="text-purple-200 text-sm">Public-facing homepage, programs, coaches</p>
+            </a>
+            <a href="templates/client-dashboard.html" class="bg-white/10 backdrop-blur rounded-2xl p-8 hover:bg-white/20 transition group">
+                <div class="text-4xl mb-4">&#128100;</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-accent transition">Member Portal</h3>
+                <p class="text-purple-200 text-sm">Dashboard, schedule, payments, progress</p>
+            </a>
+            <a href="templates/coach-dashboard.html" class="bg-white/10 backdrop-blur rounded-2xl p-8 hover:bg-white/20 transition group">
+                <div class="text-4xl mb-4">&#127947;</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-accent transition">Coach Portal</h3>
+                <p class="text-purple-200 text-sm">Schedule, students, earnings, attendance</p>
+            </a>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="templates/programs.html" class="text-purple-200 hover:text-white underline transition">Programs & Pricing</a>
+            <span class="text-purple-400">|</span>
+            <a href="templates/coaches.html" class="text-purple-200 hover:text-white underline transition">Coach Profiles</a>
+            <span class="text-purple-400">|</span>
+            <a href="templates/about.html" class="text-purple-200 hover:text-white underline transition">About Page</a>
+        </div>
+
+        <div class="mt-20 pt-10 border-t border-white/20">
+            <p class="text-purple-200 text-sm">
+                Line Creek Figure Skating Club — Platform Presentation v2.0 — May 2026
+            </p>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
