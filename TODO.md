@@ -190,6 +190,24 @@
 
 ---
 
+## Phase 7: Competition Entry Module (Weeks 19-21)
+
+> Differentiator — no US competitor combines this with membership + scheduling + website
+
+### Competition Entry (Pre-Event)
+- [ ] Competition creation (admin sets up event: name, date, venue, categories)
+- [ ] Skater registration for events (select events/categories, pay entry fees)
+- [ ] Coach account + registration on behalf of skaters
+- [ ] Entry deadline management + late fee logic
+- [ ] Music upload per entry
+- [ ] Draw management (flight assignments per event)
+- [ ] Accountability / protocol sheets export for judges
+- [ ] Accountant reports (entries by category, revenue summary)
+- [ ] Entry confirmation emails to skaters/coaches
+- [ ] Explore CompetitionSuite API or integration (day-of scoring)
+
+---
+
 ## External Dependencies & Research
 
 - [ ] Contact USFS Member Services — request Batch Upload Roster Template
@@ -197,6 +215,7 @@
 - [ ] Explore Skater-Stats API — document endpoints, auth, rate limits
 - [ ] Research EntryEeze data export — can Lana export current member roster as CSV?
 - [ ] Determine SportsEngine contract status — when can Line Creek switch?
+- [ ] Evaluate CompetitionSuite for day-of scoring integration (vs. building our own)
 
 ---
 

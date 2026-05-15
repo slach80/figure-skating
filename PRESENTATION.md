@@ -578,6 +578,35 @@ However, it offers less customization and may have ongoing higher costs.
 
 ---
 
+## Competitive Landscape
+
+### Key Finding: The US Market Has No Modern All-In-One Competitor
+
+We researched every platform serving figure skating clubs. EntryEeze owns the USFS niche by default — not because it's good, but because nobody has built a proper modern replacement.
+
+| Platform | Skating? | Comp Entry | Test Sessions | Membership | Lessons | Website | Pricing |
+|----------|----------|-----------|---------------|------------|---------|---------|---------|
+| **EntryEeze** | ✅ USFS/ISI | ✅ | ✅ | ✅ | ❌ | ❌ | $1/member/yr + fees |
+| **SkateReg** | ✅ Canada only | ✅ | ~ | ✅ | ❌ | ❌ | Canada only |
+| **CompetitionSuite** | ✅ (scoring) | Partial | ❌ | ❌ | ❌ | ❌ | $2-10/performance |
+| **SportsEngine** | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | $50-150/mo |
+| **iClassPro** | ❌ (gymnastics) | ❌ | ❌ | ✅ | ✅ | ✅ | $139-299/mo |
+| **Amilia** | ❌ (parks/rec) | ❌ | ❌ | ✅ | ✅ | ❌ | $99-499/mo + 1% fee |
+| **Our Platform** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | $49/mo flat |
+
+### What No Competitor Does
+- Full USFS/ISI skating domain knowledge (test levels, IJS scoring, draw management)
+- Lesson scheduling + test sessions + competition entry + membership + website in one platform
+- Skater-Stats integration
+- Modern mobile-first UX (EntryEeze is 2008-era ASPX)
+
+### Notable Observations
+- **Canada is ahead**: Skate Canada clubs have RAMP Interactive, SkateReg, and MemberLounge. The US USFS market is underserved by comparison.
+- **Clubs use 5-6 tools today**: EntryEeze + SportsEngine + Mindbody/Bookeo + Google Sheets + Mailchimp + paper waivers — none connected.
+- **Pricing room exists**: iClassPro gets $139-299/mo for scheduling alone (for gymnastics, not skating). Our $49/mo all-in is a compelling price.
+
+---
+
 ## Platform Vision: Beyond Line Creek
 
 ### The Opportunity
