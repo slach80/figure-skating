@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { login } from '@/lib/auth'
 import { Loader2, AlertCircle } from 'lucide-react'
@@ -87,6 +88,12 @@ export default function LoginPage() {
             {loading && <Loader2 size={16} className="animate-spin" />}
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
+
+          <div className="text-center">
+            <Link href="/forgot-password" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+              Forgot password?
+            </Link>
+          </div>
         </form>
       </div>
     </div>
