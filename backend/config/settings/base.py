@@ -20,6 +20,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "django_filters",
     "allauth",
@@ -193,6 +194,9 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=6, minute=30),  # 6:30 AM UTC daily
     },
 }
+
+# Frontend
+FRONTEND_URL = config("FRONTEND_URL", default="http://localhost:3000")
 
 # Stripe
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")

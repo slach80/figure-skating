@@ -24,11 +24,12 @@ def _handle_checkout_session_completed(event):
     """Activate skater membership after successful checkout."""
     session = event["data"]["object"]
     metadata = session.get("metadata", {})
+    skater_ids_raw = metadata.get("skater_ids")
     skater_id = metadata.get("skater_id")
     membership_type_id = metadata.get("membership_type_id")
 
-    if not skater_id:
-        logger.warning("checkout.session.completed missing skater_id, event=%s", event["id"])
+    if not skater_ids_raw and not skater_id:
+        logger.warning("checkout.session.completed missing skater_id(s), event=%s", event["id"])
         return
 
     subscription_id = session.get("subscription")
@@ -39,35 +40,56 @@ def _handle_checkout_session_completed(event):
         if period_end:
             expiry_date = datetime.fromtimestamp(period_end, tz=dt_timezone.utc).date()
 
-    update_fields = {
-        "membership_status": "active",
-    }
+    update_fields = {"membership_status": "active"}
     if expiry_date:
         update_fields["membership_expiry"] = expiry_date
-    if membership_type_id:
-        update_fields["membership_type_id"] = membership_type_id
 
-    skater, _ = Skater.all_objects.update_or_create(
-        id=skater_id,
-        defaults=update_fields,
-    )
+    if skater_ids_raw:
+        skater_ids = [sid.strip() for sid in skater_ids_raw.split(",") if sid.strip()]
+        Skater.all_objects.filter(id__in=skater_ids).update(**update_fields)
+        activated_skaters = list(Skater.all_objects.filter(id__in=skater_ids))
+        club = activated_skaters[0].club if activated_skaters else None
+        AuditLog.objects.create(
+            club=club,
+            action="membership.activated",
+            metadata={
+                "skater_ids": skater_ids,
+                "family_group_id": metadata.get("family_group_id"),
+                "membership_expiry": str(expiry_date) if expiry_date else None,
+                "stripe_event_id": event["id"],
+                "stripe_session_id": session.get("id"),
+            },
+        )
+        logger.info(
+            "checkout.session.completed: %d skaters activated (family), event=%s",
+            len(skater_ids),
+            event["id"],
+        )
+    else:
+        if membership_type_id:
+            update_fields["membership_type_id"] = membership_type_id
 
-    AuditLog.objects.create(
-        club=skater.club,
-        action="membership.activated",
-        metadata={
-            "skater_id": str(skater_id),
-            "membership_type_id": str(membership_type_id) if membership_type_id else None,
-            "membership_expiry": str(expiry_date) if expiry_date else None,
-            "stripe_event_id": event["id"],
-            "stripe_session_id": session.get("id"),
-        },
-    )
-    logger.info(
-        "checkout.session.completed: skater=%s activated, event=%s",
-        skater_id,
-        event["id"],
-    )
+        skater, _ = Skater.all_objects.update_or_create(
+            id=skater_id,
+            defaults=update_fields,
+        )
+
+        AuditLog.objects.create(
+            club=skater.club,
+            action="membership.activated",
+            metadata={
+                "skater_id": str(skater_id),
+                "membership_type_id": str(membership_type_id) if membership_type_id else None,
+                "membership_expiry": str(expiry_date) if expiry_date else None,
+                "stripe_event_id": event["id"],
+                "stripe_session_id": session.get("id"),
+            },
+        )
+        logger.info(
+            "checkout.session.completed: skater=%s activated, event=%s",
+            skater_id,
+            event["id"],
+        )
 
 
 def _handle_subscription_updated(event):

@@ -1,8 +1,9 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
-router = DefaultRouter()
+from apps.clubs.views import ClubMeView, MembershipTypeDetailView, MembershipTypeListCreateView
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path('me/', ClubMeView.as_view(), name='club-me'),
+    path('me/membership-types/', MembershipTypeListCreateView.as_view(), name='membership-type-list-create'),
+    path('me/membership-types/<uuid:pk>/', MembershipTypeDetailView.as_view(), name='membership-type-detail'),
 ]

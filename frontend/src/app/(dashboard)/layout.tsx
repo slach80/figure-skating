@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { BarChart3, Users, Calendar, CreditCard, Settings, LogOut } from 'lucide-react'
+import { BarChart3, Users, Calendar, CreditCard, Settings } from 'lucide-react'
+import { LogoutButton } from '@/components/ui/LogoutButton'
 
 export default function DashboardLayout({
   children,
@@ -11,6 +12,7 @@ export default function DashboardLayout({
     { href: '/dashboard/members', label: 'Members', icon: Users },
     { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
     { href: '/dashboard/payments', label: 'Payments', icon: CreditCard },
+    { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ]
 
   return (
@@ -43,15 +45,8 @@ export default function DashboardLayout({
         </nav>
 
         {/* Bottom section */}
-        <div className="p-4 border-t border-slate-700 space-y-2">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-700 text-slate-200">
-            <Settings size={18} />
-            Settings
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-red-900 text-slate-200">
-            <LogOut size={18} />
-            Logout
-          </button>
+        <div className="p-4 border-t border-slate-700">
+          <LogoutButton />
         </div>
       </aside>
 

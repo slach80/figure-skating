@@ -59,8 +59,10 @@ class Skater(ClubScopedModel, SoftDeleteModel):
     managed_by = models.ForeignKey(
         "accounts.User",
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
         related_name="managed_skaters",
-        help_text="Parent/guardian who manages this skater's account.",
+        help_text="Parent/guardian for minors; null means skater manages own account.",
     )
     family_group = models.ForeignKey(
         "accounts.FamilyGroup",

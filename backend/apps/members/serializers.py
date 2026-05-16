@@ -26,10 +26,7 @@ class SkaterDetailSerializer(serializers.ModelSerializer):
     is_minor = serializers.SerializerMethodField(read_only=True)
     is_active_member = serializers.SerializerMethodField(read_only=True)
     managed_by_email = serializers.SerializerMethodField(read_only=True)
-    managed_by = serializers.PrimaryKeyRelatedField(
-        queryset=None,
-        write_only=True
-    )
+    managed_by = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Skater
@@ -76,12 +73,6 @@ class SkaterDetailSerializer(serializers.ModelSerializer):
             'skater_stats_last_synced',
         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        request = self.context.get('request')
-        if request and hasattr(request, 'club'):
-            self.fields['managed_by'].queryset = request.club.users.all()
-
     def validate_usfs_number(self, value):
         if value and not value.isdigit() or (value and (len(value) < 6 or len(value) > 10)):
             raise serializers.ValidationError(
@@ -100,6 +91,11 @@ class SkaterDetailSerializer(serializers.ModelSerializer):
 
     def get_is_active_member(self, obj):
         return obj.is_active_member
+
+    def get_managed_by(self, obj):
+        if obj.managed_by is None:
+            return None
+        return f"{obj.managed_by.first_name} {obj.managed_by.last_name}".strip() or obj.managed_by.email
 
     def get_managed_by_email(self, obj):
         return obj.managed_by.email if obj.managed_by else None
