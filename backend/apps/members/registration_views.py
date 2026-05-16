@@ -11,10 +11,31 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.accounts.models import FamilyGroup
+from apps.accounts.models import User
 from apps.members.models import MembershipType, Skater
 from apps.payments.models import Payment
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+def _get_or_create_member_user(email: str, first_name: str, last_name: str, club) -> "User | None":
+    """Create a member-role User for a skater email if one doesn't exist yet."""
+    if not email:
+        return None
+    user, created = User.objects.get_or_create(
+        email=email,
+        defaults={
+            "first_name": first_name,
+            "last_name": last_name,
+            "club": club,
+            "role": User.ROLE_MEMBER,
+        },
+    )
+    if created:
+        # Set an unusable password — member must use "forgot password" to set their own
+        user.set_unusable_password()
+        user.save(update_fields=["password"])
+    return user
 
 
 def _resolve_club(request):
@@ -100,6 +121,10 @@ class RegistrationView(CreateAPIView):
 
         try:
             with transaction.atomic():
+                email_addr = data.get("email", "")
+                member_user = None if is_minor else _get_or_create_member_user(
+                    email_addr, data["first_name"], data["last_name"], club
+                )
                 skater = Skater.objects.create(
                     club=club,
                     first_name=data["first_name"],
@@ -112,10 +137,11 @@ class RegistrationView(CreateAPIView):
                     state=data["state"],
                     zip_code=data["zip_code"],
                     phone=data.get("phone", ""),
-                    email=data.get("email", ""),
+                    email=email_addr,
                     membership_type=membership_type,
                     membership_status="pending",
                     managed_by=request.user if is_minor else None,
+                    user=member_user,
                     emergency_contact_name=data.get("emergency_contact_name", ""),
                     emergency_contact_phone=data.get("emergency_contact_phone", ""),
                     emergency_contact_relation=data.get("emergency_contact_relation", ""),

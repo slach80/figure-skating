@@ -18,9 +18,13 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
     try {
-      await login({ email, password })
-      const next = searchParams.get('next') || '/dashboard'
-      router.push(next)
+      const result = await login({ email, password })
+      const next = searchParams.get('next')
+      if (next) {
+        router.push(next)
+      } else {
+        router.push(result.role === 'member' ? '/member' : '/dashboard')
+      }
     } catch {
       setError('Invalid email or password.')
     } finally {

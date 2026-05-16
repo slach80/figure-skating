@@ -1,13 +1,30 @@
 import api from './api'
 import type { LoginCredentials, TokenResponse } from '@/types/auth'
 
-export async function login(credentials: LoginCredentials): Promise<TokenResponse> {
+function decodeJwtPayload(token: string): Record<string, unknown> {
+  try {
+    const payload = token.split('.')[1]
+    return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
+  } catch {
+    return {}
+  }
+}
+
+export async function login(credentials: LoginCredentials): Promise<TokenResponse & { role?: string }> {
   const { data } = await api.post<TokenResponse>('/api/v1/auth/token/', credentials)
   localStorage.setItem('access_token', data.access)
   localStorage.setItem('refresh_token', data.refresh)
   // Mirror to cookie so Next.js middleware can read it (Edge runtime has no localStorage)
   document.cookie = `access_token=${data.access}; path=/; SameSite=Lax`
-  return data
+  const payload = decodeJwtPayload(data.access)
+  return { ...data, role: payload.role as string | undefined }
+}
+
+export function getTokenRole(): string | null {
+  const token = localStorage.getItem('access_token')
+  if (!token) return null
+  const payload = decodeJwtPayload(token)
+  return (payload.role as string) ?? null
 }
 
 export async function logout() {
