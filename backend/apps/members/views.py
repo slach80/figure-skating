@@ -96,6 +96,16 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
             return Response(status=204)
         return Response(data)
 
+    @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
+    def me(self, request):
+        """Return the authenticated user's own Skater profile."""
+        try:
+            skater = request.user.skater_profile
+        except Skater.DoesNotExist:
+            return Response({"detail": "No skater profile linked to this account."}, status=404)
+        serializer = SkaterDetailSerializer(skater, context={"request": request})
+        return Response(serializer.data)
+
     @action(detail=True, methods=["post"], url_path="renew", permission_classes=[IsAuthenticated])
     def renew(self, request, pk=None):
         """Renew an existing skater's membership — creates a new Stripe Checkout session."""
