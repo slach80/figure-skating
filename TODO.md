@@ -93,10 +93,10 @@
 ## Phase 4: Enhanced Features (Weeks 10-12)
 
 ### Skater-Stats API Integration
-- [ ] Explore api.skater-stats.com endpoints and auth
-- [ ] Build proxy/cache layer (24h cache in DB)
+- [x] Explore api.skater-stats.com endpoints and auth — confirmed internal API at `/skater?slug=`, requires x-client-version headers, returns full JSON (no scraping)
+- [ ] Build proxy/cache layer (24h cache in DB) — `SkaterStatsClient` designed, see docs/skater-stats-deep-research.md
 - [ ] Display competition history on member profiles
-- [ ] Lookup by name + club or USFS number
+- [ ] Lookup by name + club or USFS number — add `skater_stats_slug` field to Skater model
 - [ ] Graceful degradation when API unavailable
 
 ### Coach/Instructor Portal
@@ -212,7 +212,7 @@
 
 - [ ] Contact USFS Member Services — request Batch Upload Roster Template
 - [ ] Contact USFS — ask about programmatic upload / web services RFE
-- [ ] Explore Skater-Stats API — document endpoints, auth, rate limits
+- [x] Explore Skater-Stats API — documented in docs/skater-stats-deep-research.md. Internal API confirmed, free tier sufficient for MVP.
 - [ ] Research EntryEeze data export — can Lana export current member roster as CSV?
 - [ ] Determine SportsEngine contract status — when can Line Creek switch?
 - [ ] Evaluate CompetitionSuite for day-of scoring integration (vs. building our own)
