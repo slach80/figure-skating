@@ -366,33 +366,44 @@
             font-weight: 900;
             line-height: 1.1;
         }
+        /* Mobile-first: 2-col grid */
         .cards-marquee {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0 2rem;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            padding: 0 1.25rem;
         }
-        .cards-marquee::-webkit-scrollbar { display: none; }
+        /* Tablet: horizontal scroll tape */
+        @media (min-width: 600px) and (max-width: 1023px) {
+            .cards-marquee {
+                display: flex;
+                gap: 1.5rem;
+                padding: 0 2rem;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .cards-marquee::-webkit-scrollbar { display: none; }
+        }
+        /* Desktop: 3-col grid */
         @media (min-width: 1024px) {
             .cards-marquee {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 max-width: 1200px;
                 margin: 0 auto;
+                gap: 1.5rem;
+                padding: 0 2rem;
                 overflow: visible;
             }
         }
         .tilt-card {
-            flex: 0 0 320px;
-            scroll-snap-align: start;
             position: relative;
             background: linear-gradient(145deg, rgba(91, 44, 145, 0.15), rgba(10, 10, 15, 0.8));
             border: 1px solid rgba(217, 70, 239, 0.1);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
+            border-radius: 1.25rem;
+            padding: 1.25rem;
             transform-style: preserve-3d;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             cursor: pointer;
@@ -401,9 +412,30 @@
             display: block;
             opacity: 0;
             transform: scale(0.9) translateY(40px);
+            min-height: 120px;
+        }
+        /* Hide description on mobile, show icon+title only */
+        .tilt-card .card-content p { display: none; }
+        .tilt-card p { display: none; }
+        .tilt-card .card-icon { width: 40px; height: 40px; margin-bottom: 0.75rem; }
+        .tilt-card h3 { font-size: 0.9rem; margin-bottom: 0; }
+        @media (min-width: 600px) {
+            .tilt-card {
+                flex: 0 0 300px;
+                scroll-snap-align: start;
+            }
         }
         @media (min-width: 1024px) {
-            .tilt-card { flex: unset; }
+            .tilt-card {
+                flex: unset;
+                border-radius: 1.5rem;
+                padding: 2.5rem;
+                min-height: unset;
+            }
+            .tilt-card .card-content p { display: block; }
+            .tilt-card p { display: block; }
+            .tilt-card .card-icon { width: 60px; height: 60px; margin-bottom: 1.5rem; }
+            .tilt-card h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
         }
         .tilt-card:hover {
             box-shadow: 0 20px 60px rgba(217, 70, 239, 0.15), 0 0 0 1px rgba(217, 70, 239, 0.3);
@@ -835,6 +867,87 @@
             }
         }
 
+        /* ===== MOBILE OVERRIDES ===== */
+        @media (max-width: 767px) {
+            /* Nav: always show logo on mobile */
+            .nav-logo {
+                opacity: 1 !important;
+                transform: none !important;
+                font-size: 1rem;
+            }
+            .nav-container {
+                padding: 1rem 1.25rem;
+                background: rgba(10, 10, 15, 0.92);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+
+            /* Hero: tighter vertical rhythm */
+            .hero-section { min-height: 100svh; }
+            .hero-content { padding: 0 1.25rem; }
+            .hero-title { font-size: clamp(2.4rem, 12vw, 4rem); margin-bottom: 1.25rem; }
+            .hero-subtitle { font-size: 0.95rem; margin-bottom: 2rem; }
+            .hero-eyebrow { margin-bottom: 1.25rem; font-size: 0.65rem; }
+            .hero-btn-primary, .hero-btn-secondary {
+                padding: 0.85rem 1.75rem;
+                font-size: 0.85rem;
+            }
+            .hero-cta-group { gap: 0.75rem; }
+            .hero-scroll-indicator { bottom: 1.5rem; }
+
+            /* Stats: 3-col compact */
+            .stats-section { padding: 3rem 1rem; }
+            .stats-section > div { gap: 0.5rem; }
+            .stat-number { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+            .stat-label { font-size: 0.65rem; letter-spacing: 0.05em; }
+
+            /* Cards section spacing on mobile */
+            .cards-section { padding: 4rem 0; }
+            .section-header { margin-bottom: 2rem; }
+            .tilt-card .card-arrow { top: 0.75rem; right: 0.75rem; width: 22px; height: 22px; }
+
+            /* News: single column, shorter image */
+            .news-section { padding: 4rem 1.25rem; }
+            .news-card-image { height: 160px; }
+            .news-card-title { font-size: 1.1rem; }
+            .news-card-body { padding: 1.25rem; }
+
+            /* About: stack, hide visual box on mobile to save space */
+            .about-section { padding: 4rem 1.25rem; }
+            .about-grid { gap: 2rem; }
+            .about-text h2 { font-size: clamp(2rem, 9vw, 2.8rem); }
+            .about-visual { display: none; }
+            /* Show badge inline instead */
+            .about-badge {
+                position: static;
+                display: inline-flex;
+                flex-direction: column;
+                margin-top: 2rem;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* Contact: compact */
+            .contact-section { padding: 4rem 1.25rem; }
+            .contact-card { padding: 1.5rem; }
+            .contact-card h3 { font-size: 1.2rem; }
+
+            /* Footer */
+            .site-footer { padding: 3rem 1.25rem 2rem; }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            .footer-brand { grid-column: 1 / -1; }
+            .footer-bottom { margin-top: 2rem; flex-direction: column; align-items: flex-start; }
+        }
+
+        /* Tiny screens */
+        @media (max-width: 380px) {
+            .cards-marquee { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.2rem; }
+        }
+
         /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -962,8 +1075,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
             </div>
-            <h3>About</h3>
-            <p>Learn about our club, mission, and skating community</p>
+            <div class="card-content"><h3>About</h3>
+            <p>Learn about our club, mission, and skating community</p></div>
         </a>
 
         <a href="#events" class="tilt-card">
@@ -971,8 +1084,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
-            <h3>Fall Fling</h3>
-            <p>Join us for our annual Fall Fling competition</p>
+            <div class="card-content"><h3>Fall Fling</h3>
+            <p>Join us for our annual Fall Fling competition</p></div>
         </a>
 
         <a href="#membership" class="tilt-card">
@@ -980,8 +1093,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
             </div>
-            <h3>Club Membership</h3>
-            <p>Become a member and join our skating family</p>
+            <div class="card-content"><h3>Club Membership</h3>
+            <p>Become a member and join our skating family</p></div>
         </a>
 
         <a href="#synchronized" class="tilt-card">
@@ -989,8 +1102,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </div>
-            <h3>Synchronized Skating</h3>
-            <p>KC MOMENTUM - our competitive synchro team</p>
+            <div class="card-content"><h3>Synchronized Skating</h3>
+            <p>KC MOMENTUM - our competitive synchro team</p></div>
         </a>
 
         <a href="templates/programs.html" class="tilt-card">
@@ -998,8 +1111,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
-            <h3>Programs</h3>
-            <p>Lessons and programs for all ages and skill levels</p>
+            <div class="card-content"><h3>Programs</h3>
+            <p>Lessons and programs for all ages and skill levels</p></div>
         </a>
 
         <a href="templates/coaches.html" class="tilt-card">
@@ -1007,8 +1120,8 @@
             <div class="card-icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
             </div>
-            <h3>Coaches</h3>
-            <p>Meet our experienced coaching staff</p>
+            <div class="card-content"><h3>Coaches</h3>
+            <p>Meet our experienced coaching staff</p></div>
         </a>
     </div>
 </section>
