@@ -1,7 +1,8 @@
 # Skater-Stats API Integration Research
 
 **Date:** 2026-05-16  
-**Status:** Research complete — no public API available; web scraping is the viable integration path
+**Status:** ⚠️ SUPERSEDED — See `skater-stats-deep-research.md` for correct findings.  
+**Correction:** A real API exists at `api.skater-stats.com`. The 500 errors were caused by missing required client headers. Scraping is NOT needed.
 
 ---
 
