@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+/* Typography utilities */
+h1 {
+  @apply font-serif text-4xl font-bold text-slate-dark;
+}
+
+h2 {
+  @apply font-serif text-3xl font-bold text-slate-dark;
+}
+
+h3 {
+  @apply font-serif text-2xl font-semibold text-slate-dark;
+}
+
+h4 {
+  @apply font-serif text-lg font-semibold text-slate-dark;
+}
+
+/* Status badge animations */
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.status-active {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-green-50 text-green-700 border border-green-200;
+}
+
+.status-pending {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200;
+}
+
+.status-expired {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-700 border border-red-200;
+}
+
+.status-suspended {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700 border border-gray-300;
+}
+
+/* Refined focus states */
+button:focus-visible,
+a:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-0;
+}

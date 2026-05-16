@@ -174,6 +174,24 @@ CELERY_TASK_DEFAULT_QUEUE = "default"
 CELERY_TASK_ROUTES = {
     "apps.payments.*": {"queue": "payments"},
     "apps.competitions.*": {"queue": "sync"},
+    "apps.notifications.tasks.sync_skater_stats": {"queue": "sync"},
+}
+
+# Celery beat schedule (runs via django-celery-beat DatabaseScheduler)
+from celery.schedules import crontab
+CELERY_BEAT_SCHEDULE = {
+    "send-renewal-reminders-daily": {
+        "task": "apps.notifications.tasks.send_renewal_reminders",
+        "schedule": crontab(hour=8, minute=0),  # 8 AM UTC daily
+    },
+    "expire-lapsed-memberships-daily": {
+        "task": "apps.notifications.tasks.expire_lapsed_memberships",
+        "schedule": crontab(hour=6, minute=0),  # 6 AM UTC daily
+    },
+    "sync-skater-stats-daily": {
+        "task": "apps.notifications.tasks.sync_skater_stats",
+        "schedule": crontab(hour=6, minute=30),  # 6:30 AM UTC daily
+    },
 }
 
 # Stripe

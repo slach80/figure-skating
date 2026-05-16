@@ -10,7 +10,8 @@ djangorestframework-simplejwt>=5.3,<6.0
 django-filter>=24.0,<25.0
 
 # Auth
-django-allauth[google]>=0.63,<1.0
+django-allauth>=65.0,<66.0
+cryptography>=42.0,<44.0
 
 # Celery
 celery[redis]>=5.4,<6.0
