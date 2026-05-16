@@ -1,6 +1,8 @@
-import Link from 'next/link'
+'use client'
+
 import { BarChart3, Users, Calendar, CreditCard, Settings } from 'lucide-react'
 import { LogoutButton } from '@/components/ui/LogoutButton'
+import { NavLink } from '@/components/ui/NavLink'
 
 export default function DashboardLayout({
   children,
@@ -8,7 +10,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: BarChart3 },
+    { href: '/dashboard', label: 'Dashboard', icon: BarChart3, exact: true },
     { href: '/dashboard/members', label: 'Members', icon: Users },
     { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
     { href: '/dashboard/payments', label: 'Payments', icon: CreditCard },
@@ -29,19 +31,9 @@ export default function DashboardLayout({
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-700 text-slate-200"
-              >
-                <Icon size={18} />
-                {item.label}
-              </Link>
-            )
-          })}
+          {navItems.map((item) => (
+            <NavLink key={item.href} href={item.href} label={item.label} icon={item.icon} exact={item.exact} />
+          ))}
         </nav>
 
         {/* Bottom section */}
