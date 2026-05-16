@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#5B2C91',         // Deep purple
-                        'primary-dark': '#412069',  // Darker purple
-                        'primary-light': '#7B4DB8', // Lighter purple
-                        accent: '#D946EF',          // Bright magenta
-                        secondary: '#E0BBE4',       // Light lavender
-                        'ice-blue': '#B8E6F0',      // Ice blue
+                        primary: '#5B2C91',
+                        'primary-dark': '#412069',
+                        'primary-light': '#7B4DB8',
+                        accent: '#D946EF',
+                        secondary: '#E0BBE4',
+                        'ice-blue': '#B8E6F0',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
                     }
                 }
             }
@@ -26,304 +30,1134 @@
     <title>Line Creek Figure Skating Club - Kansas City, MO</title>
     <meta name="description" content="Line Creek Figure Skating Club - Ice Skating Institute and US Figure Skating affiliated club in Kansas City, MO. Programs for all ages and skill levels.">
     <style>
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .hero-gradient {
-            background: linear-gradient(135deg, rgba(91, 44, 145, 0.95) 0%, rgba(184, 230, 240, 0.85) 100%),
-                        url('https://via.placeholder.com/1920x1080/5B2C91/FFFFFF?text=Figure+Skating');
-            background-size: cover;
-            background-position: center;
+        /* ===== BASE STYLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
         }
-        .card-hover {
+
+        /* ===== SCROLL PROGRESS BAR ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #D946EF, #B8E6F0, #5B2C91);
+            z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== CUSTOM CURSOR ===== */
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #D946EF;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.15s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(217, 70, 239, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+        }
+        .cursor-ring.hovering {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(184, 230, 240, 0.8);
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 1.5rem 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-container.scrolled {
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(217, 70, 239, 0.1);
+        }
+        .nav-logo {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-container.scrolled .nav-logo {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            color: #D946EF;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: #D946EF;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        .nav-cta {
+            background: linear-gradient(135deg, #D946EF, #5B2C91);
+            padding: 0.65rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(217, 70, 239, 0.3);
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(217, 70, 239, 0.5);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-mesh {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(91, 44, 145, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(184, 230, 240, 0.15) 0%, transparent 40%),
+                radial-gradient(ellipse at 60% 80%, rgba(217, 70, 239, 0.2) 0%, transparent 45%),
+                radial-gradient(ellipse at 40% 30%, rgba(91, 44, 145, 0.3) 0%, transparent 40%);
+            animation: meshFloat 20s ease-in-out infinite;
+        }
+        @keyframes meshFloat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            33% { transform: scale(1.05) rotate(1deg); }
+            66% { transform: scale(0.98) rotate(-1deg); }
+        }
+        .hero-frost {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.3);
+            backdrop-filter: blur(1px);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1100px;
+            padding: 0 2rem;
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #B8E6F0;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 7.5rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+        .hero-title .line {
+            display: block;
+            opacity: 0;
+            transform: translateY(80px);
+        }
+        .hero-title .line-accent {
+            background: linear-gradient(135deg, #D946EF, #B8E6F0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 650px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-cta-group {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #D946EF, #5B2C91);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 30px rgba(217, 70, 239, 0.4);
+        }
+        .hero-btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.6);
+        }
+        .hero-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #B8E6F0;
+            transform: translateY(-3px);
+        }
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 2.5s forwards;
+        }
+        .hero-scroll-indicator span {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(217, 70, 239, 0.8), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        /* ===== PARTICLE CANVAS ===== */
+        #particles-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            position: relative;
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, #0a0a0f 0%, #0f0a1a 100%);
+        }
+        .stat-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #D946EF, #B8E6F0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.5rem;
+        }
+
+        /* ===== QUICK LINKS / CARDS SECTION ===== */
+        .cards-section {
+            padding: 8rem 0;
+            background: #0a0a0f;
+            overflow: hidden;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 0 2rem;
+        }
+        .section-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #D946EF;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .cards-marquee {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .cards-marquee::-webkit-scrollbar { display: none; }
+        @media (min-width: 1024px) {
+            .cards-marquee {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 1200px;
+                margin: 0 auto;
+                overflow: visible;
+            }
+        }
+        .tilt-card {
+            flex: 0 0 320px;
+            scroll-snap-align: start;
+            position: relative;
+            background: linear-gradient(145deg, rgba(91, 44, 145, 0.15), rgba(10, 10, 15, 0.8));
+            border: 1px solid rgba(217, 70, 239, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
+            opacity: 0;
+            transform: scale(0.9) translateY(40px);
+        }
+        @media (min-width: 1024px) {
+            .tilt-card { flex: unset; }
+        }
+        .tilt-card:hover {
+            box-shadow: 0 20px 60px rgba(217, 70, 239, 0.15), 0 0 0 1px rgba(217, 70, 239, 0.3);
+        }
+        .tilt-card .card-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(217, 70, 239, 0.2), rgba(91, 44, 145, 0.3));
+            border-radius: 1rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .tilt-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .tilt-card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .tilt-card .card-arrow {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .tilt-card:hover .card-arrow {
+            background: rgba(217, 70, 239, 0.3);
+            color: white;
+            transform: translate(3px, -3px);
+        }
+
+        /* ===== NEWS SECTION ===== */
+        .news-section {
+            padding: 8rem 2rem;
+            background: linear-gradient(180deg, #0a0a0f 0%, #0d0818 100%);
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .news-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .news-card {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(91, 44, 145, 0.1), rgba(10, 10, 15, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .news-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 20px 50px rgba(91, 44, 145, 0.2);
+        }
+        .news-card-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        .news-card-image .gradient-bg {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .news-card:hover .news-card-image .gradient-bg {
+            transform: scale(1.1);
+        }
+        .news-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(91, 44, 145, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .news-card:hover .news-card-overlay {
+            opacity: 1;
+        }
+        .news-card-overlay span {
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 100px;
+            transform: translateY(10px);
+            transition: transform 0.4s ease;
+        }
+        .news-card:hover .news-card-overlay span {
+            transform: translateY(0);
+        }
+        .news-card-body {
+            padding: 1.75rem;
+        }
+        .news-card-date {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        .news-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+        .news-card-excerpt {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about-section {
+            padding: 8rem 2rem;
+            background: #0a0a0f;
+            overflow: hidden;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .about-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .about-text {
+            opacity: 0;
+            transform: translateX(-60px);
+        }
+        .about-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.25rem;
+        }
+        .about-visual {
+            position: relative;
+            opacity: 0;
+            transform: translateX(60px);
+        }
+        .about-visual-box {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: 2rem;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(217, 70, 239, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(184, 230, 240, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(91, 44, 145, 0.5) 0%, transparent 60%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            border: 1px solid rgba(217, 70, 239, 0.2);
+            box-shadow: 0 40px 80px rgba(91, 44, 145, 0.3);
+        }
+        .about-badge {
+            position: absolute;
+            bottom: -1.5rem;
+            left: -1.5rem;
+            background: linear-gradient(135deg, #D946EF, #5B2C91);
+            padding: 1.5rem 2rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.4);
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .about-badge.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+        .about-badge .badge-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        .about-badge .badge-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            padding: 8rem 2rem;
+            background: linear-gradient(180deg, #0f0a1a 0%, #1a0e2e 50%, #0a0a0f 100%);
+            position: relative;
+        }
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(91, 44, 145, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .contact-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .contact-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(40px);
             transition: all 0.4s ease;
         }
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(91, 44, 145, 0.25);
+        .contact-card:hover {
+            border-color: rgba(217, 70, 239, 0.2);
+            background: rgba(217, 70, 239, 0.03);
+        }
+        .contact-card-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(217, 70, 239, 0.2), rgba(91, 44, 145, 0.3));
+            border-radius: 0.75rem;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+        .contact-card p, .contact-card a {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .contact-card a {
+            color: #B8E6F0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-card a:hover {
+            color: #D946EF;
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            padding: 5rem 2rem 2rem;
+            background: #050508;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .footer-brand p {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .footer-col h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.25rem;
+        }
+        .footer-col a {
+            display: block;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 0.3rem 0;
+            transition: color 0.3s ease;
+        }
+        .footer-col a:hover {
+            color: #D946EF;
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover {
+            background: rgba(217, 70, 239, 0.2);
+            color: #D946EF;
+        }
+
+        /* ===== REVEAL ANIMATIONS ===== */
+        .reveal { opacity: 0; transform: translateY(50px); }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-left { opacity: 0; transform: translateX(-60px); }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-right { opacity: 0; transform: translateX(60px); }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-scale { opacity: 0; transform: scale(0.9); }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            .nav-links { display: none !important; }
+            .nav-links.active {
+                display: flex !important;
+                position: fixed;
+                inset: 0;
+                background: rgba(10, 10, 15, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                z-index: 100;
+            }
+            .nav-links.active .nav-link {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .hero-title .line,
+            .hero-eyebrow,
+            .hero-subtitle,
+            .hero-cta-group,
+            .reveal, .reveal-left, .reveal-right, .reveal-scale,
+            .stat-item, .tilt-card, .news-card, .contact-card,
+            .about-text, .about-visual {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .cursor-dot, .cursor-ring { display: none; }
+            #particles-canvas { display: none; }
+        }
+
+        /* ===== KEYFRAMES ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
 
-<!-- Top Bar -->
-<div class="bg-primary text-white py-2 text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <span class="text-gray-300">KC MOMENTUM Synchronized Skating Team</span>
-        </div>
-        <div class="hidden md:flex items-center space-x-4">
-            <a href="/login" class="hover:text-accent transition">Sign In</a>
-        </div>
-    </div>
-</div>
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- Navigation -->
-<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="/" class="text-2xl font-bold text-white">
-                        ⛸️ Line Creek FSC
-                    </a>
-                </div>
-            </div>
+<nav class="nav-container" id="mainNav">
+    <div style="max-width:80rem; margin:0 auto; display:flex; align-items:center; justify-content:space-between;">
+        <a href="/" class="nav-logo" style="font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:900; color:white; text-decoration:none; letter-spacing:-0.02em;">
+            Line Creek FSC
+        </a>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="templates/about.html" class="text-gray-200 hover:text-accent font-medium transition">About</a>
-                <a href="templates/programs.html" class="text-gray-200 hover:text-accent font-medium transition">Programs</a>
-                <a href="templates/coaches.html" class="text-gray-200 hover:text-accent font-medium transition">Coaches</a>
-                <a href="#events" class="text-gray-200 hover:text-accent font-medium transition">Events</a>
-                <a href="#synchronized" class="text-gray-200 hover:text-accent font-medium transition">Synchro</a>
-                <a href="#testing" class="text-gray-200 hover:text-accent font-medium transition">Testing</a>
-                <a href="templates/client-dashboard.html" class="bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition transform hover:scale-105 shadow-lg">
-                    Member Portal
-                </a>
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden flex items-center">
-                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
+        <div class="nav-links" id="navLinks" style="display:flex; align-items:center; gap:1.5rem;">
+            <a href="templates/about.html" class="nav-link">About</a>
+            <a href="templates/programs.html" class="nav-link">Programs</a>
+            <a href="templates/coaches.html" class="nav-link">Coaches</a>
+            <a href="#events" class="nav-link">Events</a>
+            <a href="#synchronized" class="nav-link">Synchro</a>
+            <a href="#testing" class="nav-link">Testing</a>
+            <a href="templates/client-dashboard.html" class="nav-cta">Member Portal</a>
         </div>
-    </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-primary-dark border-t border-primary-light">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="templates/about.html" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">About</a>
-            <a href="templates/programs.html" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Programs</a>
-            <a href="templates/coaches.html" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Coaches</a>
-            <a href="#events" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Events</a>
-            <a href="#synchronized" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Synchro</a>
-            <a href="#testing" class="block px-3 py-2 text-gray-200 hover:bg-primary-light rounded">Testing</a>
-            <a href="templates/client-dashboard.html" class="block px-3 py-2 bg-accent text-white hover:bg-purple-600 rounded">Member Portal</a>
-            <a href="templates/coach-dashboard.html" class="block px-3 py-2 bg-ice-blue text-gray-900 hover:bg-cyan-400 rounded">Coach Portal</a>
-        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+            </svg>
+        </button>
     </div>
 </nav>
 
 <!-- Hero Section -->
-<section class="hero-gradient text-white py-32 md:py-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                Welcome to Line Creek Figure Skating Club
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto">
-                Ice Skating Institute and US Figure Skating affiliated club dedicated to providing a safe and supportive environment that allows skaters of all ages and levels to reach their goals at the Line Creek Community Center
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#programs" class="bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 transition transform hover:scale-105 shadow-xl">
-                    Explore Programs
-                </a>
-                <a href="#contact" class="bg-white text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-xl">
-                    Contact Us
-                </a>
-            </div>
+<section class="hero-section">
+    <div class="hero-mesh"></div>
+    <div class="hero-frost"></div>
+    <canvas id="particles-canvas"></canvas>
 
-            <!-- Stats -->
-            <div class="grid grid-cols-3 gap-6 mt-16 max-w-2xl mx-auto">
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
-                    <div class="text-4xl font-bold text-accent">90+</div>
-                    <div class="text-gray-200 text-sm">KC MOMENTUM Skaters</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
-                    <div class="text-4xl font-bold text-accent">9</div>
-                    <div class="text-gray-200 text-sm">Synchro Teams</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
-                    <div class="text-4xl font-bold text-accent">USFS</div>
-                    <div class="text-gray-200 text-sm">Affiliated Club</div>
-                </div>
-            </div>
+    <div class="hero-content">
+        <span class="hero-eyebrow">ISI &amp; US Figure Skating Affiliated</span>
+        <h1 class="hero-title">
+            <span class="line">Line Creek</span>
+            <span class="line line-accent">Figure Skating</span>
+            <span class="line">Club</span>
+        </h1>
+        <p class="hero-subtitle">
+            A safe and supportive environment for skaters of all ages and levels to reach their goals at the Line Creek Community Center in Kansas City, MO.
+        </p>
+        <div class="hero-cta-group">
+            <a href="#programs" class="hero-btn-primary">
+                Explore Programs
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5-5-5-5"/></svg>
+            </a>
+            <a href="#contact" class="hero-btn-secondary">
+                Contact Us
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div style="max-width:56rem; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;">
+        <div class="stat-item">
+            <div class="stat-number" data-target="90" data-suffix="+">0</div>
+            <div class="stat-label">KC Momentum Skaters</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="9" data-suffix="">0</div>
+            <div class="stat-label">Synchro Teams</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="15" data-suffix="+">0</div>
+            <div class="stat-label">Years Serving KC</div>
         </div>
     </div>
 </section>
 
-<!-- Quick Links Section -->
-<section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- About -->
-            <a href="#about" class="card-hover bg-gradient-to-br from-primary to-primary-dark text-white rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">ℹ️</div>
-                <h3 class="text-2xl font-bold mb-2">About</h3>
-                <p class="text-gray-200">Learn about our club, mission, and skating community</p>
-            </a>
+<!-- Quick Links / Cards Section -->
+<section class="cards-section" id="programs">
+    <div class="section-header">
+        <div class="section-eyebrow reveal">Explore</div>
+        <h2 class="section-title reveal">What We Offer</h2>
+    </div>
 
-            <!-- Fall Fling -->
-            <a href="#events" class="card-hover bg-gradient-to-br from-accent to-purple-600 text-white rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">🎉</div>
-                <h3 class="text-2xl font-bold mb-2">Fall Fling</h3>
-                <p class="text-gray-200">Join us for our annual Fall Fling competition</p>
-            </a>
+    <div class="cards-marquee">
+        <a href="#about" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            </div>
+            <h3>About</h3>
+            <p>Learn about our club, mission, and skating community</p>
+        </a>
 
-            <!-- Club Membership -->
-            <a href="#membership" class="card-hover bg-gradient-to-br from-ice-blue to-cyan-400 text-gray-900 rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">⭐</div>
-                <h3 class="text-2xl font-bold mb-2">Club Membership</h3>
-                <p class="text-gray-700">Become a member and join our skating family</p>
-            </a>
+        <a href="#events" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <h3>Fall Fling</h3>
+            <p>Join us for our annual Fall Fling competition</p>
+        </a>
 
-            <!-- Synchronized Skating -->
-            <a href="#synchronized" class="card-hover bg-gradient-to-br from-secondary to-purple-300 text-gray-900 rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">👥</div>
-                <h3 class="text-2xl font-bold mb-2">Synchronized Skating</h3>
-                <p class="text-gray-700">KC MOMENTUM - our competitive synchro team</p>
-            </a>
+        <a href="#membership" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            </div>
+            <h3>Club Membership</h3>
+            <p>Become a member and join our skating family</p>
+        </a>
 
-            <!-- Programs -->
-            <a href="#programs" class="card-hover bg-gradient-to-br from-primary-light to-primary text-white rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">⛸️</div>
-                <h3 class="text-2xl font-bold mb-2">Programs</h3>
-                <p class="text-gray-200">Lessons and programs for all ages and skill levels</p>
-            </a>
+        <a href="#synchronized" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <h3>Synchronized Skating</h3>
+            <p>KC MOMENTUM - our competitive synchro team</p>
+        </a>
 
-            <!-- Coaches -->
-            <a href="#coaches" class="card-hover bg-gradient-to-br from-gray-800 to-gray-600 text-white rounded-2xl p-8 shadow-xl">
-                <div class="text-5xl mb-4">🏆</div>
-                <h3 class="text-2xl font-bold mb-2">Coaches</h3>
-                <p class="text-gray-200">Meet our experienced coaching staff</p>
-            </a>
-        </div>
+        <a href="templates/programs.html" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3>Programs</h3>
+            <p>Lessons and programs for all ages and skill levels</p>
+        </a>
+
+        <a href="templates/coaches.html" class="tilt-card">
+            <div class="card-arrow">&nearr;</div>
+            <div class="card-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            </div>
+            <h3>Coaches</h3>
+            <p>Meet our experienced coaching staff</p>
+        </a>
     </div>
 </section>
 
 <!-- News Section -->
-<section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Latest News</h2>
-            <p class="text-xl text-gray-600">Stay updated with club announcements and events</p>
-        </div>
+<section class="news-section" id="events">
+    <div class="section-header">
+        <div class="section-eyebrow reveal">Updates</div>
+        <h2 class="section-title reveal">Latest News</h2>
+    </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- News Item 1 -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                <div class="h-48 bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <span class="text-7xl">🌸</span>
+    <div class="news-grid">
+        <div class="news-card">
+            <div class="news-card-image">
+                <div class="gradient-bg" style="background: linear-gradient(135deg, #5B2C91, #D946EF); display:flex; align-items:center; justify-content:center;">
+                    <svg width="60" height="60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"><path d="M30 10c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20zm0 5a5 5 0 11-1 10 5 5 0 011-10zm-8 25c0-5 4-8 8-8s8 3 8 8"/></svg>
                 </div>
-                <div class="p-6">
-                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">2025 Spring Showcase</h3>
-                    <p class="text-gray-600 mb-4">Registration is now open for our Annual Spring Show! Sign up by 2/28 on the Registration page.</p>
-                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
+                <div class="news-card-overlay">
+                    <span>Learn More</span>
                 </div>
             </div>
-
-            <!-- News Item 2 -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                <div class="h-48 bg-gradient-to-br from-accent to-pink-600 flex items-center justify-center">
-                    <span class="text-7xl">🐭</span>
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Save the Date for 2025 Mouse Races!</h3>
-                    <p class="text-gray-600 mb-4">Mark Your Calendars! Don't miss the fun at our Mouse Races on April 12th, 2025, at 6 PM at Tiffany Greens Golf Club!</p>
-                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
-                </div>
-            </div>
-
-            <!-- News Item 3 -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                <div class="h-48 bg-gradient-to-br from-ice-blue to-cyan-500 flex items-center justify-center">
-                    <span class="text-7xl">⛸️</span>
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-gray-500 mb-2">Feb 18, 2025</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">KC MOMENTUM Skating Skills Classes</h3>
-                    <p class="text-gray-600 mb-4">Moves in the field (skating skills) and ice dance classes start March 1st! Youth and adult tracks available.</p>
-                    <a href="#" class="text-accent font-semibold hover:underline">Learn More →</a>
-                </div>
+            <div class="news-card-body">
+                <div class="news-card-date">Feb 18, 2025</div>
+                <h3 class="news-card-title">2025 Spring Showcase</h3>
+                <p class="news-card-excerpt">Registration is now open for our Annual Spring Show! Sign up by 2/28 on the Registration page.</p>
             </div>
         </div>
 
-        <div class="text-center mt-12">
-            <a href="/news" class="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition shadow-lg">
-                More News →
-            </a>
+        <div class="news-card">
+            <div class="news-card-image">
+                <div class="gradient-bg" style="background: linear-gradient(135deg, #D946EF, #ec4899); display:flex; align-items:center; justify-content:center;">
+                    <svg width="60" height="60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"><rect x="10" y="15" width="40" height="30" rx="3"/><path d="M15 35h30M20 25h5m5 0h10"/></svg>
+                </div>
+                <div class="news-card-overlay">
+                    <span>Learn More</span>
+                </div>
+            </div>
+            <div class="news-card-body">
+                <div class="news-card-date">Feb 18, 2025</div>
+                <h3 class="news-card-title">Save the Date for 2025 Mouse Races!</h3>
+                <p class="news-card-excerpt">Mark Your Calendars! Don't miss the fun at our Mouse Races on April 12th, 2025, at 6 PM at Tiffany Greens Golf Club!</p>
+            </div>
         </div>
+
+        <div class="news-card">
+            <div class="news-card-image">
+                <div class="gradient-bg" style="background: linear-gradient(135deg, #B8E6F0, #06b6d4); display:flex; align-items:center; justify-content:center;">
+                    <svg width="60" height="60" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"><path d="M20 45 Q30 10 40 45"/><path d="M15 40 Q30 15 45 40"/><line x1="30" y1="45" x2="30" y2="50"/></svg>
+                </div>
+                <div class="news-card-overlay">
+                    <span>Learn More</span>
+                </div>
+            </div>
+            <div class="news-card-body">
+                <div class="news-card-date">Feb 18, 2025</div>
+                <h3 class="news-card-title">KC MOMENTUM Skating Skills Classes</h3>
+                <p class="news-card-excerpt">Moves in the field (skating skills) and ice dance classes start March 1st! Youth and adult tracks available.</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-top:3rem;">
+        <a href="/news" class="hero-btn-secondary" style="display:inline-flex;">
+            More News
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5-5-5-5"/></svg>
+        </a>
     </div>
 </section>
 
 <!-- About Section -->
-<section id="about" class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Mission</h2>
-                <div class="space-y-4 text-lg text-gray-700">
-                    <p>
-                        Line Creek Figure Skating Club is an Ice Skating Institute and US Figure Skating affiliated club dedicated to providing a safe and supportive environment.
-                    </p>
-                    <p>
-                        We welcome skaters of all ages and levels to reach their goals at the Line Creek Community Center in Kansas City, MO.
-                    </p>
-                    <p>
-                        Whether you're taking your first steps on the ice or training for competitions, our experienced coaches and supportive community are here to help you succeed.
-                    </p>
-                </div>
+<section class="about-section" id="about">
+    <div class="about-grid">
+        <div class="about-text reveal-left">
+            <div class="section-eyebrow" style="text-align:left;">Our Mission</div>
+            <h2>Building Champions<br>On &amp; Off The Ice</h2>
+            <p>Line Creek Figure Skating Club is an Ice Skating Institute and US Figure Skating affiliated club dedicated to providing a safe and supportive environment.</p>
+            <p>We welcome skaters of all ages and levels to reach their goals at the Line Creek Community Center in Kansas City, MO.</p>
+            <p>Whether you're taking your first steps on the ice or training for competitions, our experienced coaches and supportive community are here to help you succeed.</p>
+        </div>
+        <div class="about-visual reveal-right">
+            <div class="about-visual-box">
+                <svg width="120" height="120" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" viewBox="0 0 120 120">
+                    <path d="M60 20 C40 20 25 40 30 60 C35 80 55 95 60 100 C65 95 85 80 90 60 C95 40 80 20 60 20Z"/>
+                    <path d="M45 55 L55 65 L75 45" stroke="rgba(217,70,239,0.5)" stroke-width="2"/>
+                    <circle cx="60" cy="60" r="35" stroke-dasharray="4 4"/>
+                </svg>
             </div>
-            <div class="relative">
-                <div class="bg-gradient-to-br from-primary to-accent rounded-2xl h-96 flex items-center justify-center text-white text-9xl shadow-2xl">
-                    ⛸️
-                </div>
-                <div class="absolute -bottom-6 -left-6 bg-accent text-white p-6 rounded-2xl shadow-xl">
-                    <div class="text-3xl font-bold">15+ Years</div>
-                    <div class="text-lg">Serving KC Skaters</div>
-                </div>
+            <div class="about-badge" id="aboutBadge">
+                <div class="badge-number">15+ Years</div>
+                <div class="badge-label">Serving KC Skaters</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="py-20 bg-gradient-to-r from-primary to-primary-dark text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">Contact Us</h2>
-            <p class="text-xl text-gray-200">Get in touch with Line Creek FSC</p>
-        </div>
+<section class="contact-section" id="contact">
+    <div class="section-header" style="position:relative; z-index:1;">
+        <div class="section-eyebrow reveal">Get In Touch</div>
+        <h2 class="section-title reveal">Contact Us</h2>
+    </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Hours -->
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
-                <div class="text-4xl mb-4">🕐</div>
-                <h3 class="text-2xl font-bold mb-4">Hours</h3>
-                <div class="space-y-2 text-gray-200">
-                    <div class="flex justify-between"><span>Sun</span><span>09:00 AM - 04:00 PM</span></div>
-                    <div class="flex justify-between"><span>Mon-Fri</span><span>09:00 AM - 06:00 PM</span></div>
-                    <div class="flex justify-between"><span>Sat</span><span>09:00 AM - 04:00 PM</span></div>
+    <div class="contact-grid">
+        <div class="contact-card">
+            <div class="contact-card-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="9"/><path d="M10 5v5l3 3"/></svg>
+            </div>
+            <h3>Hours</h3>
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
+                    <span>Sun</span><span>09:00 AM - 04:00 PM</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
+                    <span>Mon-Fri</span><span>09:00 AM - 06:00 PM</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
+                    <span>Sat</span><span>09:00 AM - 04:00 PM</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Address -->
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
-                <div class="text-4xl mb-4">📍</div>
-                <h3 class="text-2xl font-bold mb-4">Address</h3>
-                <p class="text-gray-200">Line Creek Community Center<br>5940 NW Waukomis Dr<br>Kansas City, Missouri 64151</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=5940+NW+Waukomis+Dr+Kansas+City+MO+64151" target="_blank" class="inline-block mt-4 bg-accent text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition">
-                    Get Directions →
-                </a>
+        <div class="contact-card">
+            <div class="contact-card-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 1C6.13 1 3 4.13 3 7.5 3 12.25 10 19 10 19s7-6.75 7-11.5C17 4.13 13.87 1 10 1z"/><circle cx="10" cy="7.5" r="2.5"/></svg>
             </div>
+            <h3>Address</h3>
+            <p>Line Creek Community Center<br>5940 NW Waukomis Dr<br>Kansas City, Missouri 64151</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=5940+NW+Waukomis+Dr+Kansas+City+MO+64151" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; margin-top:1rem; padding:0.5rem 1rem; border:1px solid rgba(184,230,240,0.3); border-radius:100px; font-size:0.8rem; font-weight:500;">
+                Get Directions
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5-5-5-5"/></svg>
+            </a>
+        </div>
 
-            <!-- Contact -->
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8">
-                <div class="text-4xl mb-4">📞</div>
-                <h3 class="text-2xl font-bold mb-4">Contact</h3>
-                <p class="text-gray-200 mb-2">Phone: 314-800-8994</p>
-                <a href="mailto:kclcfscboard@gmail.com" class="text-accent hover:text-purple-300 text-lg">kclcfscboard@gmail.com</a>
-                <div class="mt-6">
-                    <h4 class="font-bold mb-2">Social Media</h4>
-                    <div class="flex space-x-4">
-                        <a href="https://www.facebook.com/Line-Creek-Figure-Skating-Club-191282320943108" target="_blank" class="text-2xl hover:text-accent transition">📘</a>
-                        <a href="https://www.instagram.com/linecreekfsc" target="_blank" class="text-2xl hover:text-accent transition">📷</a>
-                    </div>
+        <div class="contact-card">
+            <div class="contact-card-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"/><path d="M3 7l7 5 7-5"/></svg>
+            </div>
+            <h3>Contact</h3>
+            <p>Phone: 314-800-8994</p>
+            <p><a href="mailto:kclcfscboard@gmail.com">kclcfscboard@gmail.com</a></p>
+            <div style="margin-top:1.25rem;">
+                <p style="font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:0.75rem;">Social</p>
+                <div style="display:flex; gap:0.75rem;">
+                    <a href="https://www.facebook.com/Line-Creek-Figure-Skating-Club-191282320943108" target="_blank" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.05); transition:all 0.3s ease;">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/linecreekfsc" target="_blank" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.05); transition:all 0.3s ease;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -331,53 +1165,439 @@
 </section>
 
 <!-- Footer -->
-<footer class="bg-gray-900 text-white py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-xl font-bold mb-4">Line Creek FSC</h3>
-                <p class="text-gray-400">KC MOMENTUM Synchronized Skating Team</p>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-                <ul class="space-y-2 text-gray-400">
-                    <li><a href="#about" class="hover:text-accent transition">About</a></li>
-                    <li><a href="#programs" class="hover:text-accent transition">Programs</a></li>
-                    <li><a href="#coaches" class="hover:text-accent transition">Coaches</a></li>
-                    <li><a href="#events" class="hover:text-accent transition">Events</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Location</h3>
-                <p class="text-gray-400">5940 NW Waukomis Dr<br>Kansas City, MO 64151</p>
-            </div>
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Line Creek FSC</h3>
+            <p>KC MOMENTUM Synchronized Skating Team. An ISI and US Figure Skating affiliated club dedicated to excellence on and off the ice.</p>
         </div>
-        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        <div class="footer-col">
+            <h4>Club</h4>
+            <a href="templates/about.html">About</a>
+            <a href="templates/programs.html">Programs</a>
+            <a href="templates/coaches.html">Coaches</a>
+            <a href="#events">Events</a>
+        </div>
+        <div class="footer-col">
+            <h4>Skating</h4>
+            <a href="#synchronized">Synchro</a>
+            <a href="#testing">Testing</a>
+            <a href="#membership">Membership</a>
+            <a href="/news">News</a>
+        </div>
+        <div class="footer-col">
+            <h4>Location</h4>
+            <a href="https://www.google.com/maps/search/?api=1&query=5940+NW+Waukomis+Dr+Kansas+City+MO+64151" target="_blank" style="line-height:1.6;">
+                5940 NW Waukomis Dr<br>Kansas City, MO 64151
+            </a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Line Creek Figure Skating Club. All rights reserved.</p>
+        <div class="footer-social">
+            <a href="https://www.facebook.com/Line-Creek-Figure-Skating-Club-191282320943108" target="_blank" aria-label="Facebook">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/linecreekfsc" target="_blank" aria-label="Instagram">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
+            </a>
         </div>
     </div>
 </footer>
 
 <script>
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+(function() {
+    'use strict';
+
+    // ===== REDUCED MOTION CHECK =====
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ===== SCROLL PROGRESS =====
+    const scrollProgress = document.getElementById('scrollProgress');
+    function updateScrollProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        scrollProgress.style.width = progress + '%';
+    }
+
+    // ===== NAVIGATION SCROLL BEHAVIOR =====
+    const mainNav = document.getElementById('mainNav');
+    function updateNav() {
+        if (window.scrollY > 80) {
+            mainNav.classList.add('scrolled');
+        } else {
+            mainNav.classList.remove('scrolled');
+        }
+    }
+
+    // ===== CUSTOM CURSOR =====
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    if (!prefersReducedMotion && window.innerWidth > 768) {
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX - 4 + 'px';
+            cursorDot.style.top = mouseY - 4 + 'px';
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = ringX - 20 + 'px';
+            cursorRing.style.top = ringY - 20 + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        // Hover effect on interactive elements
+        document.querySelectorAll('a, button, .tilt-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
+        });
+    } else {
+        cursorDot.style.display = 'none';
+        cursorRing.style.display = 'none';
+    }
+
+    // ===== HERO ANIMATIONS =====
+    function animateHero() {
+        const eyebrow = document.querySelector('.hero-eyebrow');
+        const lines = document.querySelectorAll('.hero-title .line');
+        const subtitle = document.querySelector('.hero-subtitle');
+        const ctaGroup = document.querySelector('.hero-cta-group');
+
+        if (prefersReducedMotion) {
+            eyebrow.style.opacity = '1';
+            eyebrow.style.transform = 'none';
+            lines.forEach(l => { l.style.opacity = '1'; l.style.transform = 'none'; });
+            subtitle.style.opacity = '1';
+            subtitle.style.transform = 'none';
+            ctaGroup.style.opacity = '1';
+            ctaGroup.style.transform = 'none';
+            return;
+        }
+
+        setTimeout(() => {
+            eyebrow.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            eyebrow.style.opacity = '1';
+            eyebrow.style.transform = 'translateY(0)';
+        }, 300);
+
+        lines.forEach((line, i) => {
+            setTimeout(() => {
+                line.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                line.style.opacity = '1';
+                line.style.transform = 'translateY(0)';
+            }, 500 + (i * 200));
+        });
+
+        setTimeout(() => {
+            subtitle.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            subtitle.style.opacity = '1';
+            subtitle.style.transform = 'translateY(0)';
+        }, 1200);
+
+        setTimeout(() => {
+            ctaGroup.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            ctaGroup.style.opacity = '1';
+            ctaGroup.style.transform = 'translateY(0)';
+        }, 1500);
+    }
+
+    // ===== PARTICLES (ICE CRYSTALS) =====
+    function initParticles() {
+        if (prefersReducedMotion) return;
+
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = window.innerWidth < 768 ? 30 : 60;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.3 - 0.2;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                    this.y = canvas.height + 10;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.globalAlpha = this.opacity;
+
+                // Draw a simple 6-pointed star (ice crystal)
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i * 60) * Math.PI / 180;
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(Math.cos(angle) * this.size, Math.sin(angle) * this.size);
+                }
+                ctx.strokeStyle = '#B8E6F0';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    // ===== INTERSECTION OBSERVER FOR REVEALS =====
+    function initRevealObserver() {
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stat-item, .tilt-card, .news-card, .contact-card, .about-text, .about-visual');
+
+        if (prefersReducedMotion) {
+            revealElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.dataset.delay || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'none';
+                        entry.target.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach((el) => {
+            // Stagger items in the same section
+            const parent = el.parentElement;
+            const siblings = parent ? Array.from(parent.children).filter(c =>
+                c.classList.contains('tilt-card') ||
+                c.classList.contains('stat-item') ||
+                c.classList.contains('news-card') ||
+                c.classList.contains('contact-card')
+            ) : [];
+            const siblingIndex = siblings.indexOf(el);
+            if (siblingIndex >= 0) {
+                el.dataset.delay = siblingIndex * 100;
+            }
+            observer.observe(el);
+        });
+    }
+
+    // ===== STATS COUNTER =====
+    function initCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+
+        if (prefersReducedMotion) {
+            statNumbers.forEach(el => {
+                el.textContent = el.dataset.target + (el.dataset.suffix || '');
+            });
+            return;
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    const suffix = el.dataset.suffix || '';
+                    const duration = 2000;
+                    const start = performance.now();
+
+                    function updateCount(now) {
+                        const elapsed = now - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        // Ease out cubic
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const current = Math.floor(eased * target);
+                        el.textContent = current + suffix;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            el.textContent = target + suffix;
+                        }
+                    }
+                    requestAnimationFrame(updateCount);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => counterObserver.observe(el));
+    }
+
+    // ===== TILT CARD EFFECT =====
+    function initTiltCards() {
+        if (prefersReducedMotion || window.innerWidth < 768) return;
+
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+
+                card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+    }
+
+    // ===== MAGNETIC NAV LINKS =====
+    function initMagneticNav() {
+        if (prefersReducedMotion || window.innerWidth < 768) return;
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('mousemove', (e) => {
+                const rect = link.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                link.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.3) + 'px)';
+            });
+
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'translate(0, 0)';
+                link.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                setTimeout(() => { link.style.transition = ''; }, 400);
+            });
+        });
+    }
+
+    // ===== ABOUT BADGE SPRING ANIMATION =====
+    function initAboutBadge() {
+        const badge = document.getElementById('aboutBadge');
+        if (!badge) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        badge.classList.add('visible');
+                    }, 600);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(badge.parentElement);
+    }
+
+    // ===== MOBILE MENU =====
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
 
     mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+        navLinks.classList.toggle('active');
+        // Toggle icon
+        const svg = mobileMenuBtn.querySelector('svg');
+        if (navLinks.classList.contains('active')) {
+            svg.innerHTML = '<path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/>';
+        } else {
+            svg.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>';
+        }
     });
 
-    // Smooth scrolling
+    // Close mobile menu on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            const svg = mobileMenuBtn.querySelector('svg');
+            svg.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>';
+        });
+    });
+
+    // ===== SMOOTH SCROLL =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                mobileMenu.classList.add('hidden');
             }
         });
     });
+
+    // ===== SCROLL EVENT LISTENER (THROTTLED) =====
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                updateScrollProgress();
+                updateNav();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // ===== INITIALIZATION =====
+    window.addEventListener('DOMContentLoaded', () => {
+        updateNav();
+        updateScrollProgress();
+        animateHero();
+        initParticles();
+        initRevealObserver();
+        initCounters();
+        initTiltCards();
+        initMagneticNav();
+        initAboutBadge();
+    });
+
+})();
 </script>
 </body>
 </html>
