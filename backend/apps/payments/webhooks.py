@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 
 from apps.common.models import AuditLog
 from apps.members.models import Skater
@@ -199,6 +200,7 @@ EVENT_HANDLERS = {
 
 @csrf_exempt
 @require_POST
+@ratelimit(key='ip', rate='60/m', method='POST', block=True)
 def stripe_webhook(request):
     """Verify and dispatch Stripe webhook events."""
     payload = request.body

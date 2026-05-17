@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: linecreek_test
+          POSTGRES_USER: linecreek
+          POSTGRES_PASSWORD: linecreek
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://linecreek:linecreek@localhost:5432/linecreek_test
+          REDIS_URL: redis://localhost:6379/0
+          CELERY_BROKER_URL: redis://localhost:6379/1
+          CELERY_RESULT_BACKEND: redis://localhost:6379/2
+          DJANGO_SECRET_KEY: ci-test-secret-key-not-real
+          DJANGO_DEBUG: 'True'
+          DJANGO_ALLOWED_HOSTS: localhost
+          FRONTEND_URL: http://localhost:3000
+        run: python manage.py migrate
+
+      - name: Run tests
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://linecreek:linecreek@localhost:5432/linecreek_test
+          REDIS_URL: redis://localhost:6379/0
+          CELERY_BROKER_URL: redis://localhost:6379/1
+          CELERY_RESULT_BACKEND: redis://localhost:6379/2
+          DJANGO_SECRET_KEY: ci-test-secret-key-not-real
+          DJANGO_DEBUG: 'True'
+          DJANGO_ALLOWED_HOSTS: localhost
+          FRONTEND_URL: http://localhost:3000
+        run: >-
+          pytest
+          apps/members/tests/
+          apps/scheduling/tests/
+          apps/notifications/tests/
+          -v --tb=short
+
+      - name: Django system check
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://linecreek:linecreek@localhost:5432/linecreek_test
+          REDIS_URL: redis://localhost:6379/0
+          CELERY_BROKER_URL: redis://localhost:6379/1
+          CELERY_RESULT_BACKEND: redis://localhost:6379/2
+          DJANGO_SECRET_KEY: ci-test-secret-key-not-real
+          DJANGO_DEBUG: 'True'
+          DJANGO_ALLOWED_HOSTS: localhost
+          FRONTEND_URL: http://localhost:3000
+        run: python manage.py check
+
+  frontend-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: TypeScript strict check
+        working-directory: frontend
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        working-directory: frontend
+        run: npm run lint

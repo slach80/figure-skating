@@ -102,6 +102,10 @@ CACHES = {
     }
 }
 
+# Rate limiting (django-ratelimit)
+RATELIMIT_USE_CACHE = "default"
+RATELIMIT_FAIL_OPEN = False  # block on cache failure rather than silently allow
+
 # Auth
 AUTH_USER_MODEL = "accounts.User"
 
@@ -242,3 +246,18 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Sentry
+SENTRY_DSN = config("SENTRY_DSN", default="")
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
+        traces_sample_rate=config("SENTRY_TRACES_SAMPLE_RATE", default=0.1, cast=float),
+        send_default_pii=False,  # COPPA: never send PII
+        environment=config("DJANGO_ENV", default="development"),
+    )

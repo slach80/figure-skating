@@ -41,3 +41,7 @@ frontend/.next/
 frontend/tsconfig.tsbuildinfo
 frontend/public/sw.js
 frontend/public/workbox-*.js
+
+# Playwright output
+frontend/test-results/
+frontend/playwright-report/

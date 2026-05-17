@@ -1,8 +1,10 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.urls import path, include
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django_ratelimit.decorators import ratelimit
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.routers import DefaultRouter
@@ -27,10 +29,12 @@ class ClubTokenSerializer(TokenObtainPairSerializer):
         return token
 
 
+@method_decorator(ratelimit(key='ip', rate='10/m', method='POST', block=True), name='post')
 class ClubTokenObtainPairView(TokenObtainPairView):
     serializer_class = ClubTokenSerializer
 
 
+@method_decorator(ratelimit(key='ip', rate='5/m', method='POST', block=True), name='post')
 class PasswordResetRequestView(APIView):
     """POST {email} → sends reset link to that address."""
     permission_classes = []
@@ -61,6 +65,7 @@ class PasswordResetRequestView(APIView):
         return Response({"detail": "If that email is registered, a reset link has been sent."})
 
 
+@method_decorator(ratelimit(key='ip', rate='5/m', method='POST', block=True), name='post')
 class PasswordResetConfirmView(APIView):
     """POST {uid, token, password} → sets the new password."""
     permission_classes = []

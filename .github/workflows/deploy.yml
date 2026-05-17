@@ -1,0 +1,17 @@
+# TODO: wire to Fly.io / Railway / Render for backend, Vercel for frontend
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy placeholder
+        run: echo "Deploy step not yet configured — hosting provider TBD"
