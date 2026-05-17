@@ -1,0 +1,51 @@
+'use client'
+
+import Link from 'next/link'
+import { CalendarDays, Users, ClipboardList, Star } from 'lucide-react'
+import { LogoutButton } from '@/components/ui/LogoutButton'
+import { NavLink } from '@/components/ui/NavLink'
+
+const navItems = [
+  { href: '/coach', label: "Today's Schedule", icon: CalendarDays, exact: true },
+  { href: '/coach/students', label: 'My Students', icon: Users },
+  { href: '/coach/notes', label: 'Session Notes', icon: ClipboardList },
+  { href: '/coach/evaluations', label: 'Evaluations', icon: Star },
+]
+
+export default function CoachLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-screen bg-slate-100">
+      <aside className="w-60 bg-slate-900 text-white flex flex-col">
+        <div className="p-5 border-b border-slate-700">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">⛸</span>
+            <div>
+              <p className="font-serif font-bold text-base leading-tight">Line Creek FSC</p>
+              <p className="text-xs text-slate-400">Coach Portal</p>
+            </div>
+          </div>
+        </div>
+        <nav className="flex-1 px-3 py-5 space-y-1">
+          {navItems.map(item => (
+            <NavLink key={item.href} href={item.href} label={item.label} icon={item.icon} exact={item.exact} />
+          ))}
+        </nav>
+        <div className="p-3 border-t border-slate-700">
+          <LogoutButton />
+        </div>
+      </aside>
+
+      <main className="flex-1 overflow-auto">
+        <header className="bg-white border-b border-slate-200 px-8 py-4 sticky top-0 z-10">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-slate-700">Coach Portal</h2>
+            <Link href="/dashboard" className="text-xs text-slate-500 hover:text-primary underline">
+              Switch to Admin →
+            </Link>
+          </div>
+        </header>
+        <div className="p-6">{children}</div>
+      </main>
+    </div>
+  )
+}

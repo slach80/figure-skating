@@ -1,5 +1,15 @@
 from rest_framework import serializers
-from apps.members.models import MembershipType, Skater
+from apps.members.models import MembershipType, Skater, SkaterLevel
+
+
+class SkaterLevelSerializer(serializers.ModelSerializer):
+    discipline_display = serializers.CharField(source='get_discipline_display', read_only=True)
+    level_display = serializers.CharField(source='get_level_display', read_only=True)
+
+    class Meta:
+        model = SkaterLevel
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'created_at', 'updated_at']
 
 
 class MembershipTypeSerializer(serializers.ModelSerializer):

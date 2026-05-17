@@ -13,6 +13,7 @@ urlpatterns = [
     path("api/v1/ice/", include("apps.ice.urls")),
     path("api/v1/payments/", include("apps.payments.urls")),
     path("api/v1/website/", include("apps.website.urls")),
+    path("api/v1/notifications/", include("apps.notifications.urls")),
     path("accounts/", include("allauth.urls")),
 ]
 

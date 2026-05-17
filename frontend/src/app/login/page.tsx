@@ -24,7 +24,9 @@ export default function LoginPage() {
       if (next) {
         router.push(next)
       } else {
-        router.push(result.role === 'member' ? '/member' : '/dashboard')
+        if (result.role === 'member') router.push('/member')
+        else if (result.role === 'coach') router.push('/coach')
+        else router.push('/dashboard')
       }
     } catch {
       setError('Invalid email or password.')

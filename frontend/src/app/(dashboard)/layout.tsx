@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart3, Users, Calendar, CreditCard, Settings } from 'lucide-react'
+import { BarChart3, Users, Calendar, CreditCard, Mail, Settings, Trophy } from 'lucide-react'
 import { LogoutButton } from '@/components/ui/LogoutButton'
 import { NavLink } from '@/components/ui/NavLink'
 
@@ -13,7 +13,9 @@ export default function DashboardLayout({
     { href: '/dashboard', label: 'Dashboard', icon: BarChart3, exact: true },
     { href: '/dashboard/members', label: 'Members', icon: Users },
     { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
+    { href: '/dashboard/competitions', label: 'Competitions', icon: Trophy },
     { href: '/dashboard/payments', label: 'Payments', icon: CreditCard },
+    { href: '/dashboard/communications', label: 'Communications', icon: Mail },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ]
 

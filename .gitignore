@@ -24,3 +24,20 @@ Thumbs.db
 *.tmp
 *.log
 /tmp/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Screenshots / research artifacts
+*.png
+*.jpg
+*.jpeg
+skater-stats-*.json
+
+# Next.js build
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+frontend/public/sw.js
+frontend/public/workbox-*.js

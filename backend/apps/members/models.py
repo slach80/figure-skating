@@ -171,6 +171,58 @@ class Skater(ClubScopedModel, SoftDeleteModel):
         return client.get_skater(self.skater_stats_slug)
 
 
+class SkaterLevel(ClubScopedModel):
+    """Records a skater's current USFS level per discipline."""
+
+    DISCIPLINE_MITF = 'moves'
+    DISCIPLINE_FREESTYLE = 'freestyle'
+    DISCIPLINE_DANCE = 'dance'
+    DISCIPLINE_PAIRS = 'pairs'
+    DISCIPLINE_CHOICES = [
+        ('moves', 'Moves in the Field'),
+        ('freestyle', 'Freestyle'),
+        ('dance', 'Ice Dance'),
+        ('pairs', 'Pairs'),
+    ]
+
+    LEVEL_CHOICES = [
+        ('pre_alpha', 'Pre-Alpha'),
+        ('alpha', 'Alpha'),
+        ('beta', 'Beta'),
+        ('gamma', 'Gamma'),
+        ('delta', 'Delta'),
+        ('pre_juvenile', 'Pre-Juvenile'),
+        ('juvenile', 'Juvenile'),
+        ('intermediate', 'Intermediate'),
+        ('novice', 'Novice'),
+        ('junior', 'Junior'),
+        ('senior', 'Senior'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    skater = models.ForeignKey(Skater, on_delete=models.CASCADE, related_name='levels')
+    discipline = models.CharField(max_length=20, choices=DISCIPLINE_CHOICES)
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    passed_date = models.DateField(null=True, blank=True)
+    judge_name = models.CharField(max_length=200, blank=True)
+    notes = models.TextField(blank=True)
+    recorded_by = models.ForeignKey(
+        'accounts.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='recorded_levels',
+    )
+
+    class Meta:
+        ordering = ['discipline', 'level']
+        unique_together = [['skater', 'discipline']]
+        indexes = [models.Index(fields=['club', 'skater'])]
+
+    def __str__(self):
+        return f"{self.skater.full_name} — {self.discipline}: {self.level}"
+
+
 class ConsentRecord(models.Model):
     """
     Auditable COPPA consent. Append-only — never update, only add new rows.

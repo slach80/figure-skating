@@ -193,6 +193,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "apps.notifications.tasks.sync_skater_stats",
         "schedule": crontab(hour=6, minute=30),  # 6:30 AM UTC daily
     },
+    "send-lesson-reminders-daily": {
+        "task": "apps.notifications.tasks.send_lesson_reminders",
+        "schedule": crontab(hour=8, minute=30),  # 8:30 AM UTC daily
+    },
 }
 
 # Frontend
@@ -228,6 +232,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://100.100.169.34:3000",
 ]
 
 # i18n

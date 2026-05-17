@@ -22,6 +22,9 @@ SUBSCRIPTION_STATUS_MAP = {
 
 def _handle_checkout_session_completed(event):
     """Activate skater membership after successful checkout."""
+    from apps.payments.models import Payment
+    from apps.notifications.tasks import send_payment_confirmation
+
     session = event["data"]["object"]
     metadata = session.get("metadata", {})
     skater_ids_raw = metadata.get("skater_ids")
@@ -90,6 +93,22 @@ def _handle_checkout_session_completed(event):
             skater_id,
             event["id"],
         )
+
+    # Mark Payment record as succeeded and send confirmation email
+    payment_id = metadata.get("payment_id")
+    if payment_id:
+        try:
+            updated = Payment.objects.filter(id=payment_id, status="pending").update(
+                status=Payment.STATUS_SUCCEEDED
+            )
+            if updated:
+                send_payment_confirmation.delay(payment_id)
+        except Exception:
+            logger.warning(
+                "checkout.session.completed: failed to update/notify payment=%s event=%s",
+                payment_id,
+                event["id"],
+            )
 
 
 def _handle_subscription_updated(event):

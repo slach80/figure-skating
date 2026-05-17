@@ -1,7 +1,9 @@
 from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.response import Response
 
 from apps.payments.models import Payment
 
@@ -55,3 +57,27 @@ class PaymentListView(ListAPIView):
             qs = qs.filter(payment_type=payment_type)
 
         return qs
+
+
+class MemberPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = [
+            "id",
+            "payment_type",
+            "status",
+            "amount",
+            "currency",
+            "description",
+            "created_at",
+        ]
+
+
+class MyPaymentsView(APIView):
+    """Returns payments made by the currently authenticated user."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        qs = Payment.objects.filter(payer=request.user).order_by("-created_at")
+        serializer = MemberPaymentSerializer(qs, many=True)
+        return Response({"results": serializer.data})

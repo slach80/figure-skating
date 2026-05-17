@@ -1,104 +1,191 @@
 from rest_framework import serializers
-from django.utils import timezone
-from apps.scheduling.models import LessonType, InstructorSlot, LessonBooking
+from .models import Coach, LessonType, AvailabilitySlot, Booking, CoachEvaluation, LessonPackage, PurchasedPackage, TestSession, TestRegistration
+
+
+class CoachListSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Coach
+        fields = ["id", "user_name", "specialties", "is_active"]
+
+    def get_user_name(self, obj):
+        return obj.user.get_full_name()
+
+
+class CoachDetailSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+    user_email = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Coach
+        fields = ["id", "user_name", "user_email", "bio", "specialties", "is_active", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+    def get_user_name(self, obj):
+        return obj.user.get_full_name()
+
+    def get_user_email(self, obj):
+        return obj.user.email
 
 
 class LessonTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonType
-        fields = ['id', 'name', 'lesson_format', 'skill_level', 'duration_minutes', 'price', 'drop_in_price', 'max_participants', 'color', 'is_active']
-        read_only_fields = ['id', 'name', 'lesson_format', 'skill_level', 'duration_minutes', 'price', 'drop_in_price', 'max_participants', 'color', 'is_active']
+        fields = [
+            "id", "name", "description", "lesson_format", "duration_minutes",
+            "price", "drop_in_price", "max_participants", "color", "is_active",
+            "created_at", "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
 
 
-class InstructorSlotSerializer(serializers.ModelSerializer):
+class AvailabilitySlotSerializer(serializers.ModelSerializer):
+    coach = CoachListSerializer(read_only=True)
+    coach_id = serializers.UUIDField(write_only=True)
     lesson_type = LessonTypeSerializer(read_only=True)
-    effective_price = serializers.SerializerMethodField(read_only=True)
-    spots_remaining = serializers.SerializerMethodField(read_only=True)
-    is_available = serializers.SerializerMethodField(read_only=True)
+    lesson_type_id = serializers.UUIDField(write_only=True)
+    spots_remaining = serializers.SerializerMethodField()
+    effective_price = serializers.SerializerMethodField()
 
     class Meta:
-        model = InstructorSlot
+        model = AvailabilitySlot
         fields = [
-            'id',
-            'instructor',
-            'lesson_type',
-            'date',
-            'start_time',
-            'end_time',
-            'rink_location',
-            'recurrence',
-            'recurrence_end_date',
-            'max_bookings',
-            'current_bookings',
-            'status',
-            'price_override',
-            'effective_price',
-            'spots_remaining',
-            'is_available',
+            "id", "coach", "coach_id", "lesson_type", "lesson_type_id",
+            "date", "start_time", "end_time", "recurrence", "recurrence_end_date",
+            "parent_slot", "max_bookings", "current_bookings", "status",
+            "price_override", "effective_price", "spots_remaining", "notes",
+            "created_at", "updated_at",
         ]
         read_only_fields = [
-            'id',
-            'lesson_type',
-            'effective_price',
-            'spots_remaining',
-            'is_available',
+            "id", "current_bookings", "status", "effective_price",
+            "spots_remaining", "created_at", "updated_at",
         ]
-
-    def get_effective_price(self, obj):
-        return str(obj.effective_price)
 
     def get_spots_remaining(self, obj):
         return obj.spots_remaining
 
-    def get_is_available(self, obj):
-        return obj.is_available
+    def get_effective_price(self, obj):
+        return str(obj.effective_price)
 
 
-class LessonBookingSerializer(serializers.ModelSerializer):
-    lesson_type = LessonTypeSerializer(read_only=True)
-    can_cancel = serializers.SerializerMethodField(read_only=True)
-    can_reschedule = serializers.SerializerMethodField(read_only=True)
+class BookingListSerializer(serializers.ModelSerializer):
+    skater_name = serializers.SerializerMethodField()
+    coach_name = serializers.SerializerMethodField()
+    lesson_type_name = serializers.SerializerMethodField()
 
     class Meta:
-        model = LessonBooking
+        model = Booking
         fields = [
-            'id',
-            'skater',
-            'instructor',
-            'availability_slot',
-            'lesson_type',
-            'scheduled_date',
-            'scheduled_time',
-            'duration_minutes',
-            'status',
-            'payment_status',
-            'amount_paid',
-            'cancellation_reason',
-            'skater_notes',
-            'lesson_notes',
-            'confirmed_at',
-            'completed_at',
-            'can_cancel',
-            'can_reschedule',
-            'created_at',
-        ]
-        read_only_fields = [
-            'id',
-            'lesson_type',
-            'can_cancel',
-            'can_reschedule',
-            'confirmed_at',
-            'completed_at',
-            'created_at',
+            "id", "skater_name", "coach_name", "lesson_type_name",
+            "scheduled_date", "scheduled_time", "status", "payment_status", "amount_paid",
         ]
 
-    def validate_scheduled_date(self, value):
-        if value < timezone.now().date():
-            raise serializers.ValidationError("Scheduled date cannot be in the past.")
-        return value
+    def get_skater_name(self, obj):
+        return str(obj.skater)
+
+    def get_coach_name(self, obj):
+        return obj.coach.user.get_full_name()
+
+    def get_lesson_type_name(self, obj):
+        return obj.lesson_type.name
+
+
+class BookingDetailSerializer(serializers.ModelSerializer):
+    skater_name = serializers.SerializerMethodField()
+    coach = CoachListSerializer(read_only=True)
+    coach_id = serializers.UUIDField(write_only=True)
+    lesson_type = LessonTypeSerializer(read_only=True)
+    lesson_type_id = serializers.UUIDField(write_only=True)
+    can_cancel = serializers.SerializerMethodField()
+    can_reschedule = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id", "skater", "skater_name", "coach", "coach_id",
+            "availability_slot", "lesson_type", "lesson_type_id",
+            "scheduled_date", "scheduled_time", "duration_minutes",
+            "status", "payment_status", "amount_paid",
+            "cancellation_reason", "cancellation_notes", "cancelled_at", "cancelled_by",
+            "rescheduled_from", "client_notes", "coach_notes",
+            "can_cancel", "can_reschedule",
+            "created_at", "updated_at",
+        ]
+        read_only_fields = [
+            "id", "cancelled_at", "cancelled_by",
+            "can_cancel", "can_reschedule",
+            "created_at", "updated_at",
+        ]
+
+    def get_skater_name(self, obj):
+        return str(obj.skater)
 
     def get_can_cancel(self, obj):
         return obj.can_cancel
 
     def get_can_reschedule(self, obj):
         return obj.can_reschedule
+
+
+class CoachEvaluationSerializer(serializers.ModelSerializer):
+    skater_name = serializers.CharField(source='skater.full_name', read_only=True)
+    coach_name = serializers.SerializerMethodField()
+    average_score = serializers.FloatField(read_only=True)
+
+    class Meta:
+        model = CoachEvaluation
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'created_at', 'updated_at']
+
+    def get_coach_name(self, obj):
+        return obj.coach.user.get_full_name()
+
+
+class LessonPackageSerializer(serializers.ModelSerializer):
+    lesson_type_name = serializers.CharField(source='lesson_type.name', read_only=True)
+    price_per_lesson = serializers.DecimalField(source='price_per_lesson', max_digits=8, decimal_places=2, read_only=True)
+    savings_vs_individual = serializers.DecimalField(source='savings_vs_individual', max_digits=8, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = LessonPackage
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'created_at', 'updated_at']
+
+
+class PurchasedPackageSerializer(serializers.ModelSerializer):
+    package_name = serializers.CharField(source='package.name', read_only=True)
+    lesson_type_name = serializers.CharField(source='package.lesson_type.name', read_only=True)
+    lessons_remaining = serializers.IntegerField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
+    skater_name = serializers.CharField(source='skater.full_name', read_only=True)
+
+    class Meta:
+        model = PurchasedPackage
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'lessons_used', 'created_at', 'updated_at']
+
+
+class TestSessionSerializer(serializers.ModelSerializer):
+    spots_remaining = serializers.IntegerField(read_only=True)
+    is_registration_open = serializers.BooleanField(read_only=True)
+    registration_count = serializers.SerializerMethodField()
+
+    def get_registration_count(self, obj):
+        return obj.registrations.count()
+
+    class Meta:
+        model = TestSession
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'created_at', 'updated_at']
+
+
+class TestRegistrationSerializer(serializers.ModelSerializer):
+    skater_name = serializers.CharField(source='skater.full_name', read_only=True)
+    skater_usfs = serializers.CharField(source='skater.usfs_number', read_only=True)
+    fee = serializers.DecimalField(source='fee', max_digits=8, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = TestRegistration
+        fields = '__all__'
+        read_only_fields = ['id', 'club', 'created_at', 'updated_at', 'amount_paid', 'payment_status']

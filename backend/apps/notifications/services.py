@@ -43,7 +43,7 @@ def send_booking_confirmation_email(booking):
         f"  Type: {booking.lesson_type.name}\n"
         f"  Date: {booking.scheduled_date}\n"
         f"  Time: {booking.scheduled_time}\n"
-        f"  Instructor: {booking.instructor.get_full_name()}\n\n"
+        f"  Instructor: {booking.coach.user.get_full_name()}\n\n"
         f"— {booking.club.name}"
     )
     send_mail(
@@ -54,3 +54,61 @@ def send_booking_confirmation_email(booking):
         fail_silently=False,
     )
     logger.info("Booking confirmation sent to %s for booking %s", recipient.email, booking.id)
+
+
+def send_payment_confirmation_email(payment):
+    """Send payment confirmation to the payer."""
+    recipient = payment.payer
+    if not recipient or not recipient.email:
+        return
+
+    subject = f"Payment confirmed — {payment.get_payment_type_display()} ${payment.amount}"
+    body = (
+        f"Hi {recipient.first_name or 'there'},\n\n"
+        f"We've received your payment:\n"
+        f"  Type: {payment.get_payment_type_display()}\n"
+        f"  Amount: ${payment.amount} {payment.currency}\n"
+        f"  Date: {payment.created_at.strftime('%B %d, %Y')}\n"
+    )
+    if payment.description:
+        body += f"  Description: {payment.description}\n"
+    body += f"\nThank you!\n\n— {payment.club.name}"
+
+    send_mail(
+        subject=subject,
+        message=body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[recipient.email],
+        fail_silently=False,
+    )
+    logger.info("Payment confirmation sent to %s for payment %s", recipient.email, payment.id)
+
+
+def send_lesson_reminder_email(booking):
+    """Send day-before reminder for a confirmed lesson booking."""
+    skater = booking.skater
+    recipient = getattr(skater, "managed_by", None)
+    if not recipient or not recipient.email:
+        user = getattr(skater, "user", None)
+        if not user or not user.email:
+            return
+        recipient = user
+
+    subject = f"Reminder: lesson tomorrow — {booking.lesson_type.name} at {booking.scheduled_time}"
+    body = (
+        f"Hi {recipient.first_name or 'there'},\n\n"
+        f"This is a reminder that {skater.full_name} has a lesson tomorrow:\n"
+        f"  Type: {booking.lesson_type.name}\n"
+        f"  Date: {booking.scheduled_date}\n"
+        f"  Time: {booking.scheduled_time}\n"
+        f"  Instructor: {booking.coach.user.get_full_name()}\n\n"
+        f"— {booking.club.name}"
+    )
+    send_mail(
+        subject=subject,
+        message=body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[recipient.email],
+        fail_silently=False,
+    )
+    logger.info("Lesson reminder sent to %s for booking %s", recipient.email, booking.id)

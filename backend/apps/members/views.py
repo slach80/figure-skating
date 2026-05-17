@@ -16,8 +16,8 @@ from rest_framework.response import Response
 from apps.common.mixins import ClubScopedViewMixin
 from apps.common.models import AuditLog
 from apps.common.permissions import IsClubAdmin
-from apps.members.models import ConsentRecord, MembershipType, Skater
-from apps.members.serializers import SkaterDetailSerializer, SkaterListSerializer
+from apps.members.models import ConsentRecord, MembershipType, Skater, SkaterLevel
+from apps.members.serializers import SkaterDetailSerializer, SkaterListSerializer, SkaterLevelSerializer
 from apps.payments.models import Payment
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -78,6 +78,36 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
             ).count(),
         })
 
+    @action(detail=True, methods=["get"], url_path="skater-stats")
+    def skater_stats(self, request, pk=None):
+        """Proxy Skater-Stats data for a skater. Cached 24h in Redis."""
+        skater = self.get_object()
+        if not skater.skater_stats_slug:
+            return Response({"detail": "No Skater-Stats slug configured."}, status=404)
+        from apps.competitions.services import SkaterStatsClient
+        client = SkaterStatsClient()
+        data = client.get_skater(skater.skater_stats_slug)
+        if data is None:
+            return Response({"detail": "Skater-Stats data unavailable."}, status=503)
+        return Response({
+            "name": data.get("name"),
+            "slug": data.get("slug"),
+            "club": data.get("club"),
+            "totalEvents": data.get("totalEvents"),
+            "totalCompetitions": data.get("totalCompetitions"),
+            "coaches": data.get("coaches", []),
+            "history": data.get("history", [])[:20],
+        })
+
+    @action(detail=True, methods=["patch"], url_path="set-skater-stats-slug", permission_classes=[IsClubAdmin])
+    def set_skater_stats_slug(self, request, pk=None):
+        """Allow admins to link a skater to their Skater-Stats slug."""
+        skater = self.get_object()
+        slug = request.data.get("slug", "").strip()
+        skater.skater_stats_slug = slug
+        skater.save(update_fields=["skater_stats_slug"])
+        return Response({"slug": slug})
+
     @action(detail=True, methods=["get"], url_path="competition-history")
     def competition_history(self, request, pk=None):
         """Return Skater-Stats competition history; enforce COPPA consent for minors."""
@@ -95,6 +125,31 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
         if data is None:
             return Response(status=204)
         return Response(data)
+
+    @action(detail=True, methods=['get', 'post'], url_path='levels')
+    def levels(self, request, pk=None):
+        """GET: list all levels for a skater. POST: upsert a level by discipline."""
+        skater = self.get_object()
+        if request.method == 'GET':
+            levels = SkaterLevel.objects.filter(skater=skater)
+            return Response(SkaterLevelSerializer(levels, many=True).data)
+        # POST — upsert by discipline
+        serializer = SkaterLevelSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        club = self._get_club()
+        discipline = request.data.get('discipline')
+        if not discipline:
+            return Response({'discipline': 'This field is required.'}, status=400)
+        level_obj, _ = SkaterLevel.objects.update_or_create(
+            skater=skater,
+            discipline=discipline,
+            defaults={
+                **serializer.validated_data,
+                'club': club,
+                'recorded_by': request.user,
+            },
+        )
+        return Response(SkaterLevelSerializer(level_obj).data)
 
     @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
     def me(self, request):
