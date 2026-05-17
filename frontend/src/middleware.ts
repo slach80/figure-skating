@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PUBLIC_PATHS = ['/login', '/register', '/forgot-password', '/set-password']
+const PUBLIC_PATHS = [
+  '/login', '/register', '/forgot-password', '/set-password',
+  '/home', '/about', '/coaches', '/contact',
+]
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // Root redirects to /home (handled by app/page.tsx) — don't intercept
+  if (pathname === '/') return NextResponse.next()
 
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
     return NextResponse.next()
@@ -23,5 +29,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|manifest.json|icon.svg|sw.js|api).*)'],
 }
