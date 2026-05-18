@@ -6,18 +6,25 @@ from decimal import Decimal
 import stripe
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.common.mixins import ClubScopedViewMixin
 from apps.common.models import AuditLog
-from apps.common.permissions import IsClubAdmin
+from apps.common.permissions import IsClubAdmin, IsClubMember
 from apps.members.models import ConsentRecord, MembershipType, Skater, SkaterLevel
-from apps.members.serializers import SkaterDetailSerializer, SkaterListSerializer, SkaterLevelSerializer
+from apps.members.serializers import (
+    MembershipCardSerializer,
+    SkaterDetailSerializer,
+    SkaterListSerializer,
+    SkaterLevelSerializer,
+)
 from apps.payments.models import Payment
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -285,3 +292,41 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
         response = HttpResponse(buffer.getvalue(), content_type="text/csv")
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         return response
+
+
+class MembershipCardView(APIView):
+    """
+    GET /api/v1/members/card/<skater_uuid>/
+
+    Returns membership card data for a skater.
+    Accessible by:
+      - The skater themselves (skater.user == request.user)
+      - A guardian managing the skater (skater.managed_by == request.user)
+      - Club admin / super_admin
+    All callers must be authenticated club members (IsClubMember).
+    """
+
+    permission_classes = [IsClubMember]
+
+    def get(self, request, skater_uuid: str) -> Response:
+        club = getattr(request, 'club', None)
+        if club is None and request.user.is_authenticated:
+            club = getattr(request.user, 'club', None)
+
+        skater = get_object_or_404(
+            Skater.objects.select_related('membership_type', 'club', 'user', 'managed_by'),
+            id=skater_uuid,
+            club=club,
+            deleted_at__isnull=True,
+        )
+
+        user = request.user
+        is_own = skater.user_id == user.pk
+        is_guardian = skater.managed_by_id == user.pk
+        is_admin = user.role in ('admin', 'super_admin')
+
+        if not (is_own or is_guardian or is_admin):
+            raise PermissionDenied("You do not have permission to view this membership card.")
+
+        serializer = MembershipCardSerializer(skater, context={'request': request})
+        return Response(serializer.data)

@@ -42,6 +42,7 @@ LOCAL_APPS = [
     "apps.payments",
     "apps.website",
     "apps.notifications",
+    "apps.waivers",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -212,6 +213,11 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_CONNECT_CLIENT_ID = config("STRIPE_CONNECT_CLIENT_ID", default="")
 
+# VAPID (Web Push)
+VAPID_PUBLIC_KEY = config("VAPID_PUBLIC_KEY", default="")
+VAPID_PRIVATE_KEY = config("VAPID_PRIVATE_KEY", default="")
+VAPID_ADMIN_EMAIL = config("VAPID_ADMIN_EMAIL", default="admin@linecreekfsc.com")
+
 # Skater-Stats
 SKATER_STATS_BASE_URL = config("SKATER_STATS_BASE_URL", default="https://api.skater-stats.com")
 SKATER_STATS_CLIENT_VERSION = config("SKATER_STATS_CLIENT_VERSION", default="2.1.28")
@@ -259,6 +265,8 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         traces_sample_rate=config("SENTRY_TRACES_SAMPLE_RATE", default=0.1, cast=float),
+        profiles_sample_rate=config("SENTRY_PROFILES_SAMPLE_RATE", default=0.0, cast=float),
+        release=config("SENTRY_RELEASE", default=""),
         send_default_pii=False,  # COPPA: never send PII
         environment=config("DJANGO_ENV", default="development"),
     )

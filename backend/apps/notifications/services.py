@@ -5,6 +5,72 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
+def send_push_notification(user_id: int, title: str, body: str, url: str = "/") -> int:
+    """
+    Send a Web Push notification to all subscriptions for the given user.
+
+    Returns the count of successful sends. Stale subscriptions (HTTP 410 Gone)
+    are automatically removed.
+    """
+    if not getattr(settings, "VAPID_PRIVATE_KEY", "") or not getattr(settings, "VAPID_PUBLIC_KEY", ""):
+        logger.debug("VAPID keys not configured — skipping push notification for user %s", user_id)
+        return 0
+
+    from pywebpush import webpush, WebPushException
+    from .models import PushSubscription
+    import json
+
+    subscriptions = list(PushSubscription.objects.filter(user_id=user_id))
+    sent = 0
+
+    for sub in subscriptions:
+        subscription_info = {
+            "endpoint": sub.endpoint,
+            "keys": {
+                "p256dh": sub.p256dh,
+                "auth": sub.auth,
+            },
+        }
+        payload = json.dumps({"title": title, "body": body, "url": url})
+        try:
+            webpush(
+                subscription_info=subscription_info,
+                data=payload,
+                vapid_private_key=settings.VAPID_PRIVATE_KEY,
+                vapid_claims={
+                    "sub": f"mailto:{settings.VAPID_ADMIN_EMAIL}",
+                },
+            )
+            sent += 1
+        except WebPushException as exc:
+            response = getattr(exc, "response", None)
+            status_code = response.status_code if response is not None else None
+            if status_code == 410:
+                logger.info(
+                    "Push subscription gone (410) for user %s, endpoint %s — deleting",
+                    user_id,
+                    sub.endpoint[:60],
+                )
+                sub.delete()
+            else:
+                logger.warning(
+                    "WebPushException for user %s (status=%s): %s",
+                    user_id,
+                    status_code,
+                    exc,
+                )
+        except Exception as exc:
+            logger.warning("Unexpected error sending push to user %s: %s", user_id, exc)
+
+    logger.info(
+        "Push notification sent to %d/%d subscriptions for user %s",
+        sent,
+        len(subscriptions),
+        user_id,
+    )
+    return sent
+
+
 def send_renewal_reminder_email(skater, days_remaining: int):
     """Send membership renewal reminder to the skater's managing user."""
     recipient = skater.managed_by

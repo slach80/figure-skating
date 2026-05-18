@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, CalendarDays, CreditCard, Users, Trophy } from 'lucide-react'
+import { Home, CalendarDays, CreditCard, Users, Trophy, FileText } from 'lucide-react'
 import { InstallPrompt } from '@/components/pwa/InstallPrompt'
 
 const NAV = [
@@ -12,6 +12,7 @@ const NAV = [
   { href: '/member/competitions', label: 'Competitions', icon: Trophy },
   { href: '/member/payments', label: 'Payments', icon: CreditCard },
   { href: '/member/family', label: 'Family', icon: Users },
+  { href: '/member/waivers', label: 'Waivers', icon: FileText },
 ]
 
 export default function MemberLayout({ children }: { children: ReactNode }) {

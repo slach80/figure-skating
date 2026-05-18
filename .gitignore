@@ -33,6 +33,7 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.staging.example
+frontend/.env.local
 
 # Screenshots / research artifacts
 *.png

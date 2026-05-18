@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from apps.members.views import SkaterViewSet
+from apps.members.views import MembershipCardView, SkaterViewSet
 from apps.members.registration_views import FamilyRegistrationView, MembershipTypeListView, RegistrationView
 
 router = DefaultRouter()
@@ -10,5 +10,6 @@ urlpatterns = [
     path("membership-types/", MembershipTypeListView.as_view(), name="membership-type-list"),
     path("register/", RegistrationView.as_view(), name="skater-register"),
     path("register/family/", FamilyRegistrationView.as_view(), name="family-register"),
+    path("card/<uuid:skater_uuid>/", MembershipCardView.as_view(), name="membership-card"),
     path("", include(router.urls)),
 ]

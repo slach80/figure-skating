@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from rest_framework import serializers, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import RetrieveUpdateAPIView
@@ -6,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.clubs.models import Club
+from apps.clubs.onboarding import ClubOnboardingSerializer
+from apps.common.permissions import IsSuperAdmin
 from apps.members.models import MembershipType
 
 
@@ -34,6 +38,62 @@ class ClubMeView(RetrieveUpdateAPIView):
         if club is None:
             raise PermissionDenied("No club context.")
         return club
+
+
+class ClubOnboardView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    @transaction.atomic
+    def post(self, request):
+        serializer = ClubOnboardingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        # 1. Create the club
+        club = Club.objects.create(
+            name=data['club_name'],
+            slug=data['club_slug'],
+            email=data['admin_email'],
+            city=data.get('city', ''),
+            state=data.get('state', ''),
+            zip_code=data.get('zip_code', ''),
+            primary_color=data.get('primary_color', '#5B2C91'),
+            accent_color=data.get('accent_color', '#D946EF'),
+            current_season_start=data.get('current_season_start'),
+            current_season_end=data.get('current_season_end'),
+            season_label=data.get('season_label', ''),
+        )
+
+        # 2. Create the club admin user
+        from apps.accounts.models import User
+        admin_user = User(
+            email=data['admin_email'],
+            role=User.ROLE_ADMIN,
+            club=club,
+            is_primary_contact=True,
+        )
+        admin_user.set_password(data['admin_password'])
+        admin_user.save()
+
+        # 3. Create a django.contrib.sites Site record if the Sites framework is enabled
+        try:
+            from django.contrib.sites.models import Site
+            Site.objects.get_or_create(
+                domain=f"{club.slug}.linecreekfsc.com",
+                defaults={'name': club.name},
+            )
+        except Exception:
+            pass
+
+        return Response(
+            {
+                'club_id': str(club.id),
+                'club_slug': club.slug,
+                'admin_email': admin_user.email,
+                'message': 'Club created successfully',
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class MembershipTypeSerializer(serializers.ModelSerializer):

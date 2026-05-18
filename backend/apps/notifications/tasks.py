@@ -129,6 +129,18 @@ def sync_skater_stats(self):
 
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
+def send_push_to_user(self, user_id: int, title: str, body: str, url: str = "/"):
+    """Send a Web Push notification to all subscriptions for a user."""
+    from apps.notifications.services import send_push_notification
+
+    try:
+        return send_push_notification(user_id, title, body, url)
+    except Exception as exc:
+        logger.warning("send_push_to_user failed for user %s: %s", user_id, exc)
+        raise self.retry(exc=exc)
+
+
+@shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def send_broadcast_email(self, club_id: str, subject: str, body: str, recipient_filter: dict):
     """Send bulk email to a filtered subset of club members."""
     import uuid

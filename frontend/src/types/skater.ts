@@ -50,3 +50,24 @@ export interface PaginatedResponse<T> {
   next: string | null
   previous: string | null
 }
+
+export interface MembershipCardClub {
+  name: string
+  primary_color: string
+  accent_color: string
+  logo: string | null
+}
+
+export interface MembershipCardMembershipType {
+  name: string
+}
+
+export interface MembershipCardData {
+  id: string
+  first_name: string
+  last_name: string
+  usfs_number: string
+  membership_type: MembershipCardMembershipType | null
+  membership_expiry: string | null
+  club: MembershipCardClub
+}

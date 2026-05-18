@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.members.models import MembershipType, Skater, SkaterLevel
+from apps.clubs.models import Club
 
 
 class SkaterLevelSerializer(serializers.ModelSerializer):
@@ -109,3 +110,51 @@ class SkaterDetailSerializer(serializers.ModelSerializer):
 
     def get_managed_by_email(self, obj):
         return obj.managed_by.email if obj.managed_by else None
+
+
+class MembershipCardClubSerializer(serializers.ModelSerializer):
+    logo = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Club
+        fields = ['name', 'primary_color', 'accent_color', 'logo']
+
+    def get_logo(self, obj: Club) -> str | None:
+        if not obj.logo:
+            return None
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.logo.url)
+        return obj.logo.url
+
+
+class MembershipCardMembershipTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MembershipType
+        fields = ['name']
+
+
+class MembershipCardSerializer(serializers.ModelSerializer):
+    membership_type = MembershipCardMembershipTypeSerializer(read_only=True)
+    club = MembershipCardClubSerializer(read_only=True)
+
+    class Meta:
+        model = Skater
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'usfs_number',
+            'membership_type',
+            'membership_expiry',
+            'club',
+        ]
+        read_only_fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'usfs_number',
+            'membership_type',
+            'membership_expiry',
+            'club',
+        ]
