@@ -7,6 +7,9 @@ __pycache__/
 venv/
 env/
 
+# Claude Code
+.claude/
+
 # Playwright
 .playwright-mcp/
 
