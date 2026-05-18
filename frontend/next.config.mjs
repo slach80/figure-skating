@@ -1,5 +1,10 @@
 import withSerwist from '@serwist/next'
 
+const withSerwistConfig = withSerwist({
+  swSrc: 'src/app/sw.ts',
+  swDest: 'public/sw.js',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
@@ -8,7 +13,7 @@ const nextConfig = {
   },
 }
 
-export default withSerwist({
-  swSrc: 'src/app/sw.ts',
-  swDest: 'public/sw.js',
-})(nextConfig)
+export default {
+  ...withSerwistConfig(nextConfig),
+  output: 'standalone',
+}
