@@ -29,6 +29,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+!.env.staging.example
 
 # Screenshots / research artifacts
 *.png

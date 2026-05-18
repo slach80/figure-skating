@@ -234,10 +234,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # CORS
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://100.100.169.34:3000",
-]
+CORS_ALLOWED_ORIGINS = config(
+    "CORS_ALLOWED_ORIGINS",
+    default="http://localhost:3000,http://100.100.169.34:3000",
+    cast=Csv(),
+)
 
 # i18n
 LANGUAGE_CODE = "en-us"

@@ -1,108 +1,196 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import './public.css'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // Scroll progress + nav scroll state
+    let ticking = false
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+          if (progressRef.current) progressRef.current.style.width = progress + '%'
+          setScrolled(scrollTop > 80)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Custom cursor
+    if (!prefersReducedMotion && window.innerWidth > 768) {
+      const dot = dotRef.current
+      const ring = ringRef.current
+      if (!dot || !ring) return
+
+      let mouseX = 0, mouseY = 0
+      let ringX = 0, ringY = 0
+      let rafId: number
+
+      const onMouseMove = (e: MouseEvent) => {
+        mouseX = e.clientX
+        mouseY = e.clientY
+        dot.style.left = mouseX - 4 + 'px'
+        dot.style.top = mouseY - 4 + 'px'
+      }
+      document.addEventListener('mousemove', onMouseMove)
+
+      const animateRing = () => {
+        ringX += (mouseX - ringX) * 0.15
+        ringY += (mouseY - ringY) * 0.15
+        ring.style.left = ringX - 20 + 'px'
+        ring.style.top = ringY - 20 + 'px'
+        rafId = requestAnimationFrame(animateRing)
+      }
+      animateRing()
+
+      const addHover = (el: Element) => {
+        el.addEventListener('mouseenter', () => ring.classList.add('hovering'))
+        el.addEventListener('mouseleave', () => ring.classList.remove('hovering'))
+      }
+      document.querySelectorAll('a, button, .tilt-card').forEach(addHover)
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll)
+        document.removeEventListener('mousemove', onMouseMove)
+        cancelAnimationFrame(rafId)
+      }
+    } else {
+      if (dotRef.current) dotRef.current.style.display = 'none'
+      if (ringRef.current) ringRef.current.style.display = 'none'
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  // Magnetic nav links
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion || window.innerWidth < 768) return
+
+    const links = document.querySelectorAll('.nav-link')
+    const cleanups: (() => void)[] = []
+
+    links.forEach((link) => {
+      const el = link as HTMLElement
+      const onMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect()
+        const x = e.clientX - rect.left - rect.width / 2
+        const y = e.clientY - rect.top - rect.height / 2
+        el.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`
+      }
+      const onLeave = () => {
+        el.style.transform = 'translate(0, 0)'
+        el.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+        setTimeout(() => { el.style.transition = '' }, 400)
+      }
+      el.addEventListener('mousemove', onMove as EventListener)
+      el.addEventListener('mouseleave', onLeave)
+      cleanups.push(() => {
+        el.removeEventListener('mousemove', onMove as EventListener)
+        el.removeEventListener('mouseleave', onLeave)
+      })
+    })
+
+    return () => cleanups.forEach((fn) => fn())
+  }, [])
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Top bar */}
-      <div className="bg-primary text-white py-2 text-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <span className="text-white/70">KC MOMENTUM Synchronized Skating Team</span>
-          <Link href="/login" className="hover:text-accent transition-colors hidden md:block">Sign In</Link>
+    <div className="public-page">
+      {/* Scroll progress */}
+      <div className="scroll-progress" ref={progressRef} />
+
+      {/* Custom cursor */}
+      <div className="cursor-dot" ref={dotRef} />
+      <div className="cursor-ring" ref={ringRef} />
+
+      {/* Navigation */}
+      <nav className={`nav-container${scrolled ? ' scrolled' : ''}`} ref={navRef}>
+        <div style={{ maxWidth: '80rem', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Link href="/home" className="nav-logo">
+            Line Creek FSC
+          </Link>
+
+          {/* Desktop nav */}
+          <div id="navLinks" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }} className="nav-links hidden md:flex">
+            <Link href="/about" className="nav-link">About</Link>
+            <Link href="/home#programs" className="nav-link">Programs</Link>
+            <Link href="/coaches" className="nav-link">Coaches</Link>
+            <Link href="/contact" className="nav-link">Contact</Link>
+            <Link href="/login" className="nav-cta">Member Portal</Link>
+          </div>
+
+          {/* Mobile burger */}
+          <button
+            className="mobile-menu-btn md:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? (
+              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Nav */}
-      <header className="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            <Link href="/home" className="text-2xl font-bold text-white flex items-center gap-2">
-              ⛸️ Line Creek FSC
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-white/80 hover:text-accent font-medium transition-colors">About</Link>
-              <Link href="/home#programs" className="text-white/80 hover:text-accent font-medium transition-colors">Programs</Link>
-              <Link href="/coaches" className="text-white/80 hover:text-accent font-medium transition-colors">Coaches</Link>
-              <Link href="/contact" className="text-white/80 hover:text-accent font-medium transition-colors">Contact</Link>
-              <Link href="/login" className="bg-accent text-white px-6 py-2.5 rounded-full font-semibold hover:bg-purple-500 transition-all transform hover:scale-105 shadow-lg">
-                Member Portal
-              </Link>
-            </nav>
-
-            {/* Mobile burger */}
-            <button
-              className="md:hidden text-white/80 hover:text-white"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+      {/* Mobile menu overlay */}
+      {mobileOpen && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(10,10,15,0.98)',
+          backdropFilter: 'blur(20px)', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', gap: '2rem',
+          zIndex: 100, WebkitBackdropFilter: 'blur(20px)'
+        }}>
+          {[
+            { href: '/about', label: 'About' },
+            { href: '/home#programs', label: 'Programs' },
+            { href: '/coaches', label: 'Coaches' },
+            { href: '/contact', label: 'Contact' },
+          ].map(({ href, label }) => (
+            <Link
+              key={label}
+              href={href}
+              onClick={() => setMobileOpen(false)}
+              style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.8)', textDecoration: 'none', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}
             >
-              {mobileOpen ? (
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-          </div>
+              {label}
+            </Link>
+          ))}
+          <Link
+            href="/login"
+            onClick={() => setMobileOpen(false)}
+            className="nav-cta"
+            style={{ marginTop: '1rem' }}
+          >
+            Member Portal
+          </Link>
         </div>
+      )}
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden bg-[#412069] border-t border-[#7B4DB8]">
-            <div className="px-4 pt-2 pb-4 space-y-1">
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-white/80 hover:bg-[#7B4DB8] rounded transition-colors">About</Link>
-              <Link href="/home" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-white/80 hover:bg-[#7B4DB8] rounded transition-colors">Programs</Link>
-              <Link href="/coaches" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-white/80 hover:bg-[#7B4DB8] rounded transition-colors">Coaches</Link>
-              <Link href="/contact" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-white/80 hover:bg-[#7B4DB8] rounded transition-colors">Contact</Link>
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="block px-3 py-2 bg-accent text-white hover:bg-purple-500 rounded transition-colors font-semibold">Member Portal</Link>
-            </div>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-1">{children}</main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-bold mb-3">Line Creek FSC</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                ISI &amp; US Figure Skating affiliated club in Kansas City, MO. A safe and supportive environment for skaters of all ages and levels.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="/about" className="hover:text-accent transition-colors">About</Link></li>
-                <li><Link href="/home" className="hover:text-accent transition-colors">Programs</Link></li>
-                <li><Link href="/coaches" className="hover:text-accent transition-colors">Coaches</Link></li>
-                <li><Link href="/contact" className="hover:text-accent transition-colors">Contact</Link></li>
-                <li><Link href="/login" className="hover:text-accent transition-colors">Member Login</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3">Location</h3>
-              <p className="text-gray-400 text-sm">
-                5940 NW Waukomis Dr<br />
-                Kansas City, MO 64151
-              </p>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} Line Creek Figure Skating Club. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <main>{children}</main>
     </div>
   )
 }
