@@ -168,6 +168,19 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
         serializer = SkaterDetailSerializer(skater, context={"request": request})
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"], url_path="my-skaters", permission_classes=[IsAuthenticated])
+    def my_skaters(self, request):
+        """Return all skaters the current user manages (own profile + managed minors)."""
+        from django.db.models import Q
+        club = self._get_club()
+        skaters = (
+            Skater.all_objects.filter(club=club, deleted_at__isnull=True)
+            .filter(Q(user=request.user) | Q(managed_by=request.user))
+            .select_related("membership_type", "managed_by", "family_group")
+        )
+        serializer = SkaterDetailSerializer(skaters, many=True, context={"request": request})
+        return Response(serializer.data)
+
     @action(detail=True, methods=["post"], url_path="renew", permission_classes=[IsAuthenticated])
     def renew(self, request, pk=None):
         """Renew an existing skater's membership — creates a new Stripe Checkout session."""

@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '@/lib/api'
-import type { Coach, LessonType, AvailabilitySlot, BookingList, BookingDetail, LessonPackage, PurchasedPackage, TestSession, TestRegistration } from '@/types/scheduling'
+import type { Coach, LessonType, AvailabilitySlot, BookingList, BookingDetail, LessonPackage, PurchasedPackage, TestSession, TestRegistration, AvailableSlot, MyPurchasedPackage, BookingCreatePayload } from '@/types/scheduling'
 import type { PaginatedResponse } from '@/types/skater'
 
 // ── Coaches ──────────────────────────────────────────────────────────────────
@@ -89,7 +89,7 @@ export function useCancelSlot() {
 
 // ── Bookings ──────────────────────────────────────────────────────────────────
 
-export function useBookings(params: { coach?: string; date?: string; status?: string } = {}) {
+export function useBookings(params: { coach?: string; date?: string; status?: string; ordering?: string } = {}) {
   return useQuery({
     queryKey: ['bookings', params],
     queryFn: async () => {
@@ -279,5 +279,49 @@ export function useRecordTestResult() {
       return res.data
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['test-registrations'] }),
+  })
+}
+
+// ── Available Slots (member-facing) ──────────────────────────────────────────
+
+export function useAvailableSlots(params: { start?: string; end?: string }) {
+  return useQuery({
+    queryKey: ['available-slots', params],
+    queryFn: async () => {
+      const res = await api.get<AvailableSlot[]>('/api/v1/scheduling/slots/available/', { params })
+      return res.data
+    },
+    staleTime: 60 * 1000,
+    enabled: !!(params.start && params.end),
+  })
+}
+
+// ── My Purchased Packages ─────────────────────────────────────────────────────
+
+export function useMyPackages() {
+  return useQuery({
+    queryKey: ['my-packages'],
+    queryFn: async () => {
+      const res = await api.get<MyPurchasedPackage[]>('/api/v1/scheduling/purchased-packages/my/')
+      return res.data
+    },
+    staleTime: 2 * 60 * 1000,
+  })
+}
+
+// ── Member booking creation ───────────────────────────────────────────────────
+
+export function useBookLesson() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (data: BookingCreatePayload) => {
+      const res = await api.post<BookingDetail>('/api/v1/scheduling/bookings/', data)
+      return res.data
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['bookings'] })
+      qc.invalidateQueries({ queryKey: ['available-slots'] })
+      qc.invalidateQueries({ queryKey: ['my-packages'] })
+    },
   })
 }

@@ -1,0 +1,86 @@
+<h2 style="margin: 0 0 8px 0; font-size: 22px; font-weight: 700; color: #111827;">Entry Submitted!</h2>
+<p style="margin: 0 0 24px 0; font-size: 15px; color: #6b7280; line-height: 1.5;">
+  <strong style="color: #374151;">{{ skater_name }}</strong>'s competition entry has been submitted. Here's a summary of what was entered.
+</p>
+
+<!-- Competition info boxes -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 16px;">
+  <tr>
+    <td style="padding-bottom: 10px;">
+      <div class="highlight-box" style="background-color: #f5f3ff; border-left: 4px solid #7c3aed; border-radius: 6px; padding: 14px 16px;">
+        <p style="margin: 0 0 2px 0; font-size: 11px; font-weight: 600; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em;">Competition</p>
+        <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">{{ competition_name }}</p>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding-bottom: 10px;">
+      <div class="highlight-box" style="background-color: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 14px 16px;">
+        <p style="margin: 0 0 2px 0; font-size: 11px; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em;">Date</p>
+        <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">
+          {{ competition_start_date }}{% if competition_end_date and competition_end_date != competition_start_date %} &ndash; {{ competition_end_date }}{% endif %}
+        </p>
+      </div>
+    </td>
+  </tr>
+  {% if competition_location %}
+  <tr>
+    <td style="padding-bottom: 10px;">
+      <div class="highlight-box" style="background-color: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 6px; padding: 14px 16px;">
+        <p style="margin: 0 0 2px 0; font-size: 11px; font-weight: 600; color: #16a34a; text-transform: uppercase; letter-spacing: 0.05em;">Location</p>
+        <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">{{ competition_location }}</p>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
+</table>
+
+<!-- Entered categories table -->
+<p style="margin: 20px 0 8px 0; font-size: 13px; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em;">Entered Categories</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 0;">
+  <thead>
+    <tr style="background-color: #f3f4f6;">
+      <th style="text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 600; color: #6b7280; border-bottom: 1px solid #e5e7eb; text-transform: uppercase; letter-spacing: 0.04em;">Category</th>
+      <th style="text-align: right; padding: 10px 12px; font-size: 12px; font-weight: 600; color: #6b7280; border-bottom: 1px solid #e5e7eb; text-transform: uppercase; letter-spacing: 0.04em;">Fee</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cat in categories %}
+    <tr style="border-bottom: 1px solid #f3f4f6;">
+      <td style="padding: 10px 12px; font-size: 14px; color: #374151;">{{ cat.name }}</td>
+      <td style="padding: 10px 12px; font-size: 14px; color: #374151; text-align: right;">${{ cat.fee }}</td>
+    </tr>
+    {% endfor %}
+    {% if is_late %}
+    <tr style="border-bottom: 1px solid #f3f4f6;">
+      <td style="padding: 10px 12px; font-size: 14px; color: #dc2626; font-style: italic;">Late entry fee</td>
+      <td style="padding: 10px 12px; font-size: 14px; color: #dc2626; text-align: right;">${{ late_fee }}</td>
+    </tr>
+    {% endif %}
+  </tbody>
+  <tfoot>
+    <tr style="background-color: #f9fafb;">
+      <td style="padding: 12px; font-size: 15px; font-weight: 700; color: #111827; border-top: 2px solid #e5e7eb;">Total</td>
+      <td style="padding: 12px; font-size: 15px; font-weight: 700; color: #111827; text-align: right; border-top: 2px solid #e5e7eb;">${{ total_fee }}</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- Status badge -->
+<div style="margin: 20px 0 28px 0; text-align: center;">
+  {% if entry_status == 'confirmed' %}
+    <span style="display: inline-block; background-color: #dcfce7; color: #15803d; font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 999px; letter-spacing: 0.03em;">CONFIRMED</span>
+  {% elif entry_status == 'accepted' %}
+    <span style="display: inline-block; background-color: #dbeafe; color: #1d4ed8; font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 999px; letter-spacing: 0.03em;">ACCEPTED</span>
+  {% else %}
+    <span style="display: inline-block; background-color: #fef9c3; color: #a16207; font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 999px; letter-spacing: 0.03em;">SUBMITTED &mdash; PENDING REVIEW</span>
+  {% endif %}
+</div>
+
+<!-- CTA button -->
+<div style="text-align: center; margin-bottom: 8px;">
+  <a href="{{ frontend_url }}/member/competitions" class="cta-button"
+     style="display: inline-block; background-color: {{ club_primary_color|default:'#5B2C91' }}; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.01em;">
+    View My Entries
+  </a>
+</div>

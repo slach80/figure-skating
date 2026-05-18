@@ -138,6 +138,18 @@ export function useCompetitionEntries(params: { competition?: string; skater?: s
   })
 }
 
+/** Entries for all skaters managed by the current user (parent or self). */
+export function useMyEntries() {
+  return useQuery({
+    queryKey: ['competition-entries-my'],
+    queryFn: async () => {
+      const res = await api.get<CompetitionEntry[]>('/api/v1/competitions/entries/my/')
+      return res.data
+    },
+    staleTime: 2 * 60 * 1000,
+  })
+}
+
 export function useCreateEntry() {
   const qc = useQueryClient()
   return useMutation({

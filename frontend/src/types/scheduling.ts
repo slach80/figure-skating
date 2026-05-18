@@ -134,6 +134,38 @@ export interface BookingDetail extends BookingList {
   can_reschedule: boolean
 }
 
+// ── Member-facing types ───────────────────────────────────────────────────────
+
+export interface AvailableSlot {
+  id: string
+  coach_name: string
+  lesson_type_name: string
+  lesson_type_duration_minutes: number
+  lesson_type_color: string
+  start_datetime: string   // ISO: "2026-05-19T09:00:00"
+  end_datetime: string
+  price: string
+  spots_remaining: number
+  is_recurring: boolean
+}
+
+export interface MyPurchasedPackage {
+  id: string
+  package_name: string
+  lesson_type_name: string
+  sessions_remaining: number
+  expiry_date: string | null
+  skater_name: string
+  skater: string  // UUID
+}
+
+export interface BookingCreatePayload {
+  slot: string        // UUID
+  skater_id: string   // UUID
+  payment_method: 'package' | 'drop_in'
+  package_id?: string // UUID, required when payment_method='package'
+}
+
 export const TEST_TYPE_LABELS: Record<string, string> = {
   moves: 'Moves in the Field',
   freestyle: 'Freestyle',

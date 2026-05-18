@@ -1,18 +1,28 @@
 'use client'
 
 import { useState } from 'react'
-import { Trophy, Calendar, MapPin, Clock, CheckCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
-import { useMemberProfile } from '@/hooks/useMemberProfile'
+import { useRouter } from 'next/navigation'
 import {
-  useCompetitions,
-  useEventCategories,
-  useCompetitionEntries,
-  useCreateEntry,
-  useScratchEntry,
-} from '@/hooks/useCompetitions'
-import type { Competition, EventCategory, CompetitionEntry } from '@/types/competition'
+  Trophy,
+  Calendar,
+  MapPin,
+  Clock,
+  AlertCircle,
+  ChevronRight,
+  CheckCircle,
+} from 'lucide-react'
+import { useCompetitions, useMyEntries } from '@/hooks/useCompetitions'
+import type { Competition, CompetitionEntry } from '@/types/competition'
 
-// ── Status helpers ────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function formatDate(d: string) {
+  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function formatDateShort(d: string) {
+  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
 
 const ENTRY_STATUS_STYLES: Record<string, string> = {
   draft: 'bg-slate-100 text-slate-500',
@@ -31,199 +41,188 @@ function EntryStatusBadge({ status }: { status: CompetitionEntry['status'] }) {
   )
 }
 
-// ── Competition card ──────────────────────────────────────────────────────────
+// ── Competition card (open tab) ───────────────────────────────────────────────
 
-function CompetitionCard({
-  comp,
-  skaterId,
-}: {
-  comp: Competition
-  skaterId: string
-}) {
-  const [expanded, setExpanded] = useState(false)
-  const [enteringCatId, setEnteringCatId] = useState<string | null>(null)
-  const [scratchingId, setScratchingId] = useState<string | null>(null)
+function OpenCompetitionCard({ comp }: { comp: Competition }) {
+  const router = useRouter()
 
-  const { data: categories = [] } = useEventCategories(comp.id)
-  const { data: myEntries = [] } = useCompetitionEntries({ competition: comp.id, skater: skaterId })
-  const createEntry = useCreateEntry()
-  const scratchEntry = useScratchEntry()
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 transition-colors">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            <h3 className="font-bold text-slate-900">{comp.name}</h3>
+            {comp.is_late ? (
+              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">
+                <Clock size={10} />
+                LATE
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                <CheckCircle size={10} />
+                Open
+              </span>
+            )}
+          </div>
 
-  const enteredCatIds = new Set(myEntries.filter(e => e.status !== 'scratched').map(e => e.category))
+          <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-slate-500 mt-1">
+            <span className="flex items-center gap-1">
+              <Calendar size={11} />
+              {formatDateShort(comp.start_date)}
+              {' – '}
+              {formatDate(comp.end_date)}
+            </span>
+            {(comp.city || comp.state) && (
+              <span className="flex items-center gap-1">
+                <MapPin size={11} />
+                {[comp.city, comp.state].filter(Boolean).join(', ')}
+              </span>
+            )}
+            {comp.entry_deadline && (
+              <span className="flex items-center gap-1">
+                <AlertCircle size={11} />
+                Deadline: {formatDate(comp.entry_deadline)}
+              </span>
+            )}
+          </div>
 
-  async function handleEnter(cat: EventCategory) {
-    await createEntry.mutateAsync({
-      competition: comp.id,
-      category: cat.id,
-      skater: skaterId,
-    })
-    setEnteringCatId(null)
+          {comp.category_count > 0 && (
+            <p className="text-xs text-slate-400 mt-1.5">
+              {comp.category_count} {comp.category_count === 1 ? 'category' : 'categories'}
+              {comp.entry_count > 0 && ` · ${comp.entry_count} entries`}
+            </p>
+          )}
+
+          {comp.is_late && comp.late_fee && parseFloat(comp.late_fee) > 0 && (
+            <p className="text-xs text-amber-600 mt-1">
+              Late fee: +${parseFloat(comp.late_fee).toFixed(2)} per entry
+            </p>
+          )}
+        </div>
+
+        <button
+          onClick={() => router.push(`/member/competitions/${comp.id}/enter`)}
+          className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:opacity-90 active:scale-95 transition-all"
+        >
+          Enter
+          <ChevronRight size={14} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Competition card (closed/past tab) ───────────────────────────────────────
+
+function ClosedCompetitionCard({ comp }: { comp: Competition }) {
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 p-4 opacity-70">
+      <div className="flex items-center gap-2 flex-wrap mb-1">
+        <h3 className="font-bold text-slate-800">{comp.name}</h3>
+        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+          <AlertCircle size={10} />
+          Entry Closed
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-x-4 text-xs text-slate-500">
+        <span className="flex items-center gap-1">
+          <Calendar size={11} />
+          {formatDate(comp.start_date)}
+        </span>
+        {(comp.city || comp.state) && (
+          <span className="flex items-center gap-1">
+            <MapPin size={11} />
+            {[comp.city, comp.state].filter(Boolean).join(', ')}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── My Entries grouped by competition ────────────────────────────────────────
+
+function MyEntriesSection({ entries }: { entries: CompetitionEntry[] }) {
+  if (entries.length === 0) return null
+
+  // Group by competition
+  const grouped = new Map<string, { name: string; entries: CompetitionEntry[] }>()
+  for (const e of entries) {
+    const existing = grouped.get(e.competition)
+    if (existing) {
+      existing.entries.push(e)
+    } else {
+      grouped.set(e.competition, { name: e.competition_name, entries: [e] })
+    }
   }
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-      {/* Header */}
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              <h2 className="font-bold text-slate-900">{comp.name}</h2>
-              {comp.is_late ? (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 flex items-center gap-1">
-                  <Clock size={10} /> Late Entry
-                </span>
-              ) : (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1">
-                  <CheckCircle size={10} /> Open
-                </span>
-              )}
+    <section>
+      <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
+        My Entries
+      </h2>
+      <div className="space-y-3">
+        {Array.from(grouped.entries()).map(([compId, group]) => (
+          <div key={compId} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100">
+              <p className="text-sm font-semibold text-slate-700">{group.name}</p>
             </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-slate-500">
-              <span className="flex items-center gap-1">
-                <Calendar size={11} />
-                {new Date(comp.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                {' – '}
-                {new Date(comp.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </span>
-              {comp.venue && (
-                <span className="flex items-center gap-1">
-                  <MapPin size={11} />
-                  {[comp.city, comp.state].filter(Boolean).join(', ')}
-                </span>
-              )}
-              {comp.entry_deadline && (
-                <span className="flex items-center gap-1">
-                  <AlertCircle size={11} />
-                  Deadline: {new Date(comp.entry_deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                </span>
-              )}
-            </div>
-          </div>
-          <button
-            onClick={() => setExpanded(v => !v)}
-            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 flex-shrink-0"
-          >
-            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
-        </div>
-
-        {/* My entries summary */}
-        {myEntries.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-slate-100">
-            <p className="text-xs font-medium text-slate-500 mb-2">Your entries</p>
-            <div className="space-y-1.5">
-              {myEntries.map(entry => (
-                <div key={entry.id} className="flex items-center justify-between">
-                  <span className="text-sm text-slate-700 truncate">{entry.category_name}</span>
-                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                    <EntryStatusBadge status={entry.status} />
-                    {entry.status !== 'scratched' && (
-                      <>
-                        {scratchingId === entry.id ? (
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => {
-                                scratchEntry.mutate(entry.id)
-                                setScratchingId(null)
-                              }}
-                              className="text-xs px-2 py-0.5 bg-red-600 text-white rounded hover:bg-red-700"
-                            >
-                              Confirm scratch
-                            </button>
-                            <button
-                              onClick={() => setScratchingId(null)}
-                              className="text-xs text-slate-500"
-                            >
-                              Keep
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => setScratchingId(entry.id)}
-                            className="text-xs text-red-400 hover:text-red-600"
-                          >
-                            Scratch
-                          </button>
-                        )}
-                      </>
+            <div className="divide-y divide-slate-50">
+              {group.entries.map(entry => (
+                <div
+                  key={entry.id}
+                  className={`flex items-center justify-between px-4 py-2.5 ${entry.status === 'scratched' ? 'opacity-50' : ''}`}
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-slate-800 truncate">{entry.category_name}</p>
+                    {entry.skater_name && (
+                      <p className="text-xs text-slate-400">{entry.skater_name}</p>
                     )}
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                    <span className="text-xs text-slate-500">${parseFloat(entry.total_fee).toFixed(2)}</span>
+                    <EntryStatusBadge status={entry.status} />
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        )}
+        ))}
       </div>
+    </section>
+  )
+}
 
-      {/* Expanded: categories list */}
-      {expanded && (
-        <div className="border-t border-slate-100">
-          <div className="px-4 py-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-              Categories ({categories.length})
-            </p>
-            {categories.length === 0 ? (
-              <p className="text-sm text-slate-400">No categories added yet.</p>
-            ) : (
-              <div className="space-y-2">
-                {categories.map(cat => {
-                  const isEntered = enteredCatIds.has(cat.id)
-                  const isFull = cat.max_entries != null && cat.entry_count >= cat.max_entries
+// ── Tabs ─────────────────────────────────────────────────────────────────────
 
-                  return (
-                    <div key={cat.id} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-800 truncate">{cat.name}</p>
-                        <p className="text-xs text-slate-500">
-                          {cat.discipline} · {cat.segment.replace('_', ' ')} · {cat.level}
-                        </p>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          Fee: ${(parseFloat(comp.base_entry_fee) + parseFloat(cat.additional_fee)).toFixed(2)}
-                          {cat.max_entries != null && (
-                            <> · {cat.entry_count}/{cat.max_entries} entered</>
-                          )}
-                        </p>
-                      </div>
-                      <div className="ml-3 flex-shrink-0">
-                        {isEntered ? (
-                          <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
-                            <CheckCircle size={12} /> Entered
-                          </span>
-                        ) : isFull ? (
-                          <span className="text-xs text-slate-400">Full</span>
-                        ) : enteringCatId === cat.id ? (
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleEnter(cat)}
-                              disabled={createEntry.isPending}
-                              className="text-xs px-3 py-1 bg-primary text-white rounded-lg hover:opacity-90 disabled:opacity-50"
-                            >
-                              {createEntry.isPending ? 'Entering…' : 'Confirm'}
-                            </button>
-                            <button
-                              onClick={() => setEnteringCatId(null)}
-                              className="text-xs text-slate-400 hover:text-slate-600"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => setEnteringCatId(cat.id)}
-                            className="text-xs px-3 py-1 border border-primary text-primary rounded-lg hover:bg-primary/5"
-                          >
-                            Enter
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+type Tab = 'open' | 'past'
+
+function Tabs({
+  active,
+  onChange,
+  openCount,
+  pastCount,
+}: {
+  active: Tab
+  onChange: (t: Tab) => void
+  openCount: number
+  pastCount: number
+}) {
+  return (
+    <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+      {(['open', 'past'] as const).map(tab => (
+        <button
+          key={tab}
+          onClick={() => onChange(tab)}
+          className={`flex-1 text-sm font-medium py-1.5 px-3 rounded-md transition-colors ${
+            active === tab
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          {tab === 'open' ? `Open (${openCount})` : `Upcoming / Past (${pastCount})`}
+        </button>
+      ))}
     </div>
   )
 }
@@ -231,23 +230,30 @@ function CompetitionCard({
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function MemberCompetitionsPage() {
-  const { data: skater } = useMemberProfile()
-  const { data: openComps = [], isLoading } = useCompetitions({ is_published: true })
-  const { data: myEntries = [] } = useCompetitionEntries(
-    skater?.id ? { skater: skater.id } : { skater: '' }
-  )
+  const [activeTab, setActiveTab] = useState<Tab>('open')
 
-  const openCompetitions = openComps.filter(c => c.is_entry_open)
-  const closedCompetitions = openComps.filter(c => !c.is_entry_open)
+  const { data: allComps = [], isLoading } = useCompetitions({ is_published: true })
+  const { data: myEntries = [] } = useMyEntries()
+
+  const now = new Date()
+  const openCompetitions = allComps.filter(c => c.is_entry_open)
+  const closedCompetitions = allComps.filter(c => !c.is_entry_open)
+
+  // Only show "past" tab for competitions that are actually in the past or have closed entry
+  const pastCompetitions = closedCompetitions.filter(
+    c => new Date(c.end_date) < now || !c.is_entry_open
+  )
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold text-slate-900">Competitions</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Enter upcoming competitions</p>
+        <p className="text-slate-500 text-sm mt-0.5">
+          Enter upcoming competitions and track your entries
+        </p>
       </div>
 
-      {isLoading && (
+      {isLoading ? (
         <div className="space-y-3">
           {[1, 2].map(i => (
             <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
@@ -256,85 +262,54 @@ export default function MemberCompetitionsPage() {
             </div>
           ))}
         </div>
-      )}
+      ) : (
+        <>
+          <Tabs
+            active={activeTab}
+            onChange={setActiveTab}
+            openCount={openCompetitions.length}
+            pastCount={pastCompetitions.length}
+          />
 
-      {!isLoading && !skater && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-          <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
-          <p className="text-slate-500">Loading profile…</p>
-        </div>
-      )}
-
-      {!isLoading && skater && openCompetitions.length === 0 && closedCompetitions.length === 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
-          <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
-          <p className="font-medium text-slate-700">No open competitions</p>
-          <p className="text-sm text-slate-400 mt-1">Check back later for upcoming events.</p>
-        </div>
-      )}
-
-      {skater && openCompetitions.length > 0 && (
-        <section>
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Open for Entry</h2>
-          <div className="space-y-4">
-            {openCompetitions.map(comp => (
-              <CompetitionCard key={comp.id} comp={comp} skaterId={skater.id} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {skater && closedCompetitions.length > 0 && (
-        <section>
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Upcoming (Closed)</h2>
-          <div className="space-y-3">
-            {closedCompetitions.map(comp => (
-              <div key={comp.id} className="bg-white rounded-xl border border-slate-200 p-4 opacity-75">
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h2 className="font-bold text-slate-800">{comp.name}</h2>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 flex items-center gap-1">
-                    <AlertCircle size={10} /> Entry Closed
-                  </span>
+          {activeTab === 'open' && (
+            <>
+              {openCompetitions.length === 0 ? (
+                <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
+                  <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
+                  <p className="font-medium text-slate-700">No open competitions</p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Check back later for upcoming events.
+                  </p>
                 </div>
-                <div className="flex flex-wrap gap-x-3 text-xs text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={11} />
-                    {new Date(comp.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </span>
-                  {(comp.city || comp.state) && (
-                    <span className="flex items-center gap-1">
-                      <MapPin size={11} />
-                      {[comp.city, comp.state].filter(Boolean).join(', ')}
-                    </span>
-                  )}
+              ) : (
+                <div className="space-y-3">
+                  {openCompetitions.map(comp => (
+                    <OpenCompetitionCard key={comp.id} comp={comp} />
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+              )}
+            </>
+          )}
 
-      {/* My entry history across all comps */}
-      {myEntries.length > 0 && (
-        <section>
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">All My Entries</h2>
-          <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
-            {myEntries.map(entry => (
-              <div key={entry.id} className={`flex items-center justify-between px-4 py-3 ${entry.status === 'scratched' ? 'opacity-50' : ''}`}>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-800 truncate">{entry.competition_name}</p>
-                  <p className="text-xs text-slate-500 truncate">{entry.category_name}</p>
+          {activeTab === 'past' && (
+            <>
+              {pastCompetitions.length === 0 ? (
+                <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
+                  <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
+                  <p className="text-slate-500">No past competitions yet.</p>
                 </div>
-                <div className="ml-3 flex items-center gap-2 flex-shrink-0">
-                  {entry.placement != null && (
-                    <span className="text-xs font-bold text-slate-700">#{entry.placement}</span>
-                  )}
-                  <EntryStatusBadge status={entry.status} />
+              ) : (
+                <div className="space-y-3">
+                  {pastCompetitions.map(comp => (
+                    <ClosedCompetitionCard key={comp.id} comp={comp} />
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              )}
+            </>
+          )}
+
+          <MyEntriesSection entries={myEntries} />
+        </>
       )}
     </div>
   )

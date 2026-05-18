@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils import timezone
 from .models import Coach, LessonType, AvailabilitySlot, Booking, CoachEvaluation, LessonPackage, PurchasedPackage, TestSession, TestRegistration
 
 
@@ -189,3 +190,77 @@ class TestRegistrationSerializer(serializers.ModelSerializer):
         model = TestRegistration
         fields = '__all__'
         read_only_fields = ['id', 'club', 'created_at', 'updated_at', 'amount_paid', 'payment_status']
+
+
+class AvailableSlotSerializer(serializers.ModelSerializer):
+    """Lightweight serializer for the public available-slots endpoint."""
+    coach_name = serializers.SerializerMethodField()
+    lesson_type_name = serializers.CharField(source='lesson_type.name', read_only=True)
+    lesson_type_duration_minutes = serializers.IntegerField(source='lesson_type.duration_minutes', read_only=True)
+    lesson_type_color = serializers.CharField(source='lesson_type.color', read_only=True)
+    start_datetime = serializers.SerializerMethodField()
+    end_datetime = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    spots_remaining = serializers.SerializerMethodField()
+    is_recurring = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AvailabilitySlot
+        fields = [
+            'id', 'coach_name', 'lesson_type_name', 'lesson_type_duration_minutes',
+            'lesson_type_color', 'start_datetime', 'end_datetime',
+            'price', 'spots_remaining', 'is_recurring',
+        ]
+
+    def get_coach_name(self, obj):
+        return obj.coach.user.get_full_name()
+
+    def get_start_datetime(self, obj):
+        from datetime import datetime
+        dt = datetime.combine(obj.date, obj.start_time)
+        return dt.isoformat()
+
+    def get_end_datetime(self, obj):
+        from datetime import datetime
+        dt = datetime.combine(obj.date, obj.end_time)
+        return dt.isoformat()
+
+    def get_price(self, obj):
+        return str(obj.effective_price)
+
+    def get_spots_remaining(self, obj):
+        return obj.spots_remaining
+
+    def get_is_recurring(self, obj):
+        return obj.recurrence != AvailabilitySlot.RECURRENCE_NONE
+
+
+class BookingCreateSerializer(serializers.Serializer):
+    """Validates the input for member-facing booking creation."""
+    slot = serializers.UUIDField()
+    skater_id = serializers.UUIDField()
+    payment_method = serializers.ChoiceField(choices=['package', 'drop_in'], default='drop_in')
+    package_id = serializers.UUIDField(required=False, allow_null=True)
+
+    def validate(self, data):
+        from apps.members.models import Skater
+        try:
+            data['skater'] = Skater.objects.get(id=data['skater_id'])
+        except Skater.DoesNotExist:
+            raise serializers.ValidationError({'skater_id': 'Skater not found.'})
+        if data.get('payment_method') == 'package' and not data.get('package_id'):
+            raise serializers.ValidationError({'package_id': 'Required when payment_method is package.'})
+        return data
+
+
+class MyPurchasedPackageSerializer(serializers.ModelSerializer):
+    """Compact serializer for the /packages/my/ endpoint."""
+    package_name = serializers.CharField(source='package.name', read_only=True)
+    lesson_type_name = serializers.CharField(source='package.lesson_type.name', read_only=True)
+    sessions_remaining = serializers.IntegerField(source='lessons_remaining', read_only=True)
+    expiry_date = serializers.DateField(source='expires_at', read_only=True)
+    skater_name = serializers.CharField(source='skater.full_name', read_only=True)
+
+    class Meta:
+        model = PurchasedPackage
+        fields = ['id', 'package_name', 'lesson_type_name', 'sessions_remaining', 'expiry_date', 'skater_name', 'skater']

@@ -20,6 +20,18 @@ export function useSkaters(page: number = 1, search: string = '') {
   })
 }
 
+/** All skaters the current user manages (own profile + minors they are guardian for). */
+export function useMySkaters() {
+  return useQuery({
+    queryKey: ['my-skaters'],
+    queryFn: async () => {
+      const response = await api.get<SkaterDetail[]>('/api/v1/members/my-skaters/')
+      return response.data
+    },
+    staleTime: STALE_TIME,
+  })
+}
+
 export function useSkater(id: string) {
   return useQuery({
     queryKey: ['skater', id],

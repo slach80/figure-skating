@@ -6,19 +6,22 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.common.mixins import ClubScopedViewMixin
-from apps.common.permissions import IsClubAdmin
-from django.db import models as django_models
+from apps.common.permissions import IsClubAdmin, IsClubMember
+from django.db import models as django_models, transaction
 from .models import Coach, LessonType, AvailabilitySlot, Booking, CoachEvaluation, LessonPackage, PurchasedPackage, TestSession, TestRegistration
 from .serializers import (
     CoachListSerializer,
     CoachDetailSerializer,
     LessonTypeSerializer,
     AvailabilitySlotSerializer,
+    AvailableSlotSerializer,
     BookingListSerializer,
     BookingDetailSerializer,
+    BookingCreateSerializer,
     CoachEvaluationSerializer,
     LessonPackageSerializer,
     PurchasedPackageSerializer,
+    MyPurchasedPackageSerializer,
     TestSessionSerializer,
     TestRegistrationSerializer,
 )
@@ -117,6 +120,40 @@ class AvailabilitySlotViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
             if instances:
                 AvailabilitySlot.objects.bulk_create(instances)
 
+    @action(detail=False, methods=["get"], url_path="available", permission_classes=[IsClubMember])
+    def available(self, request):
+        """
+        Return slots bookable by the requesting user for their club.
+        Query params: start=YYYY-MM-DD, end=YYYY-MM-DD
+        """
+        now = timezone.now()
+        qs = self.get_queryset().exclude(
+            status=AvailabilitySlot.STATUS_FULLY_BOOKED
+        ).exclude(
+            status=AvailabilitySlot.STATUS_CANCELLED
+        ).filter(date__gte=now.date()).select_related("coach__user", "lesson_type")
+
+        start_param = request.query_params.get("start")
+        end_param = request.query_params.get("end")
+        if start_param:
+            qs = qs.filter(date__gte=start_param)
+        if end_param:
+            qs = qs.filter(date__lte=end_param)
+
+        # Further filter: if start is today, exclude slots whose start_time has passed
+        if start_param:
+            import datetime
+            try:
+                start_date = datetime.date.fromisoformat(start_param)
+                if start_date == now.date():
+                    local_time = now.time()
+                    qs = qs.exclude(date=now.date(), start_time__lte=local_time)
+            except ValueError:
+                pass
+
+        serializer = AvailableSlotSerializer(qs, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=["post"], url_path="cancel", permission_classes=[IsClubAdmin])
     def cancel(self, request, pk=None):
         slot = self.get_object()
@@ -136,15 +173,17 @@ class BookingViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
     )
 
     def get_permissions(self):
-        if self.action in ("confirm", "complete", "today"):
+        if self.action in ("confirm", "complete", "today", "create", "cancel"):
             return [IsAuthenticated()]
-        if self.action in ("create", "update", "partial_update", "destroy"):
+        if self.action in ("update", "partial_update", "destroy"):
             return [IsClubAdmin()]
         return [IsAuthenticated()]
 
     def get_serializer_class(self):
         if self.action == "list":
             return BookingListSerializer
+        if self.action == "create":
+            return BookingCreateSerializer
         return BookingDetailSerializer
 
     def get_queryset(self):
@@ -167,32 +206,88 @@ class BookingViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
         if booking_status:
             qs = qs.filter(status=booking_status)
 
+        ordering = params.get("ordering")
+        if ordering:
+            qs = qs.order_by(ordering)
+
         return qs
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
+        serializer = BookingCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         club = self._get_club()
         if club is None:
             from rest_framework.exceptions import PermissionDenied
             raise PermissionDenied("Club context required.")
 
-        from .models import Coach as CoachModel, LessonType as LessonTypeModel
-        coach_id = serializer.validated_data.pop("coach_id")
-        lesson_type_id = serializer.validated_data.pop("lesson_type_id")
+        slot_id = serializer.validated_data["slot"]
+        payment_method = serializer.validated_data.get("payment_method", "drop_in")
+        package_id = serializer.validated_data.get("package_id")
+        skater = serializer.validated_data["skater"]  # resolved in serializer.validate()
+
+        with transaction.atomic():
+            # Lock the slot to prevent double-booking
+            try:
+                slot = AvailabilitySlot.objects.select_for_update().select_related(
+                    "coach__user", "lesson_type"
+                ).get(id=slot_id, club=club)
+            except AvailabilitySlot.DoesNotExist:
+                raise ValidationError({"slot": "Slot not found for this club."})
+
+            if slot.status == AvailabilitySlot.STATUS_FULLY_BOOKED:
+                raise ValidationError({"slot": "This slot is fully booked."})
+            if slot.status == AvailabilitySlot.STATUS_CANCELLED:
+                raise ValidationError({"slot": "This slot has been cancelled."})
+            if slot.spots_remaining <= 0:
+                raise ValidationError({"slot": "No spots remaining for this slot."})
+
+            # Resolve package if paying by package credit
+            purchased_package = None
+            if payment_method == "package":
+                if not package_id:
+                    raise ValidationError({"package_id": "package_id is required when payment_method is 'package'."})
+                try:
+                    purchased_package = PurchasedPackage.objects.select_for_update().get(
+                        id=package_id, club=club
+                    )
+                except PurchasedPackage.DoesNotExist:
+                    raise ValidationError({"package_id": "Package not found for this club."})
+                if not purchased_package.is_active:
+                    raise ValidationError({"package_id": "This package has no remaining lessons or is expired."})
+
+            amount_paid = 0 if payment_method == "package" else slot.effective_price
+
+            booking = Booking.objects.create(
+                club=club,
+                skater=skater,
+                coach=slot.coach,
+                availability_slot=slot,
+                lesson_type=slot.lesson_type,
+                scheduled_date=slot.date,
+                scheduled_time=slot.start_time,
+                duration_minutes=slot.lesson_type.duration_minutes,
+                status=Booking.STATUS_CONFIRMED,
+                payment_status=Booking.PAYMENT_PAID if payment_method == "drop_in" else Booking.PAYMENT_PENDING,
+                amount_paid=amount_paid,
+            )
+
+            # Deduct package session
+            if purchased_package is not None:
+                purchased_package.use_lesson()
+
+            # Update slot booking count
+            slot.current_bookings += 1
+            slot.update_status()
 
         try:
-            coach = CoachModel.objects.get(id=coach_id, club=club)
-        except CoachModel.DoesNotExist:
-            raise ValidationError({"coach_id": "Coach not found for this club."})
+            from apps.notifications.tasks import send_booking_confirmation
+            send_booking_confirmation.delay(str(booking.id))
+        except Exception:
+            pass
 
-        try:
-            lesson_type = LessonTypeModel.objects.get(id=lesson_type_id, club=club)
-        except LessonTypeModel.DoesNotExist:
-            raise ValidationError({"lesson_type_id": "LessonType not found for this club."})
-
-        booking = serializer.save(club=club, coach=coach, lesson_type=lesson_type)
-
-        from apps.notifications.tasks import send_booking_confirmation
-        send_booking_confirmation.delay(str(booking.id))
+        response_serializer = BookingDetailSerializer(booking)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["post"], url_path="confirm")
     def confirm(self, request, pk=None):
@@ -306,6 +401,37 @@ class PurchasedPackageViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
             lessons_total=package.lesson_count,
             amount_paid=package.price,
         )
+
+    @action(detail=False, methods=["get"], url_path="my", permission_classes=[IsClubMember])
+    def my(self, request):
+        """
+        Return active purchased packages for the requesting user's skater profiles.
+        Active = paid, sessions_remaining > 0, not expired.
+        """
+        from django.utils import timezone as tz
+        today = tz.now().date()
+
+        # Get skater IDs managed by or belonging to this user
+        from apps.members.models import Skater
+        skater_ids = list(
+            Skater.objects.filter(
+                club=self._get_club()
+            ).filter(
+                django_models.Q(user=request.user) | django_models.Q(managed_by=request.user)
+            ).values_list("id", flat=True)
+        )
+
+        qs = PurchasedPackage.objects.filter(
+            club=self._get_club(),
+            skater_id__in=skater_ids,
+            payment_status="paid",
+            lessons_used__lt=django_models.F("lessons_total"),
+        ).filter(
+            django_models.Q(expires_at__isnull=True) | django_models.Q(expires_at__gte=today)
+        ).select_related("skater", "package__lesson_type")
+
+        serializer = MyPurchasedPackageSerializer(qs, many=True)
+        return Response(serializer.data)
 
 
 class TestSessionViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):

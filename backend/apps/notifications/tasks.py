@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=300)
 def send_renewal_reminders(self):
-    """Send membership renewal reminders at 30, 14, and 7 days before expiry."""
+    """Send HTML membership renewal reminders at 30, 14, and 7 days before expiry."""
     from apps.members.models import Skater
     from apps.notifications.services import send_renewal_reminder_email
 
@@ -51,13 +51,13 @@ def expire_lapsed_memberships(self):
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def send_booking_confirmation(self, booking_id: str):
-    """Send lesson booking confirmation email."""
+    """Send HTML lesson booking confirmation email."""
     from apps.scheduling.models import Booking
     from apps.notifications.services import send_booking_confirmation_email
 
     try:
         booking = Booking.objects.select_related(
-            "skater", "coach__user", "lesson_type", "club"
+            "skater__managed_by", "skater__user", "coach__user", "lesson_type", "club"
         ).get(id=booking_id)
         send_booking_confirmation_email(booking)
     except Booking.DoesNotExist:
@@ -85,7 +85,7 @@ def send_payment_confirmation(self, payment_id: str):
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=300)
 def send_lesson_reminders(self):
-    """Send lesson reminders for all confirmed bookings scheduled tomorrow."""
+    """Send HTML lesson reminders for all confirmed bookings scheduled tomorrow."""
     from apps.scheduling.models import Booking
     from apps.notifications.services import send_lesson_reminder_email
 
@@ -102,6 +102,28 @@ def send_lesson_reminders(self):
             logger.warning("Failed to send lesson reminder for booking %s: %s", booking.id, exc)
 
     logger.info("Lesson reminder task complete — %d bookings processed for %s", bookings.count(), tomorrow)
+
+
+@shared_task(bind=True, max_retries=3, default_retry_delay=60)
+def send_competition_entry_confirmation(self, entry_id: str):
+    """Send HTML competition entry confirmation email."""
+    from apps.competitions.models import CompetitionEntry
+    from apps.notifications.services import send_competition_entry_confirmation_email
+
+    try:
+        entry = CompetitionEntry.objects.select_related(
+            "skater__managed_by",
+            "skater__user",
+            "competition",
+            "category",
+            "club",
+        ).get(id=entry_id)
+        send_competition_entry_confirmation_email(entry)
+    except CompetitionEntry.DoesNotExist:
+        logger.warning("CompetitionEntry %s not found for confirmation email", entry_id)
+    except Exception as exc:
+        logger.warning("Failed to send competition entry confirmation for %s: %s", entry_id, exc)
+        raise self.retry(exc=exc)
 
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=300)
