@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
               <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto" />
               <h2 className="text-xl font-semibold text-white">Check your email</h2>
               <p className="text-slate-300 text-sm">
-                If <strong>{email}</strong> is registered, you'll receive a reset link shortly.
+                If <strong>{email}</strong> is registered, you&apos;ll receive a reset link shortly.
               </p>
               <Link href="/login" className="block text-sm text-primary-light hover:underline mt-4">
                 Back to sign in
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <h2 className="text-xl font-semibold text-white">Reset password</h2>
-                <p className="text-slate-400 text-sm mt-1">Enter your email and we'll send a reset link.</p>
+                <p className="text-slate-400 text-sm mt-1">Enter your email and we&apos;ll send a reset link.</p>
               </div>
 
               {error && (

@@ -625,12 +625,12 @@ export default function RegisterPage() {
                     <Shield className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                     <div>
                       <p className="font-semibold text-blue-900 text-sm">Parental Consent Required (COPPA)</p>
-                      <p className="text-blue-700 text-xs mt-1">This skater is under 13. Under COPPA and US Figure Skating policy, a parent or legal guardian must consent to collection and use of this skater's personal information.</p>
+                      <p className="text-blue-700 text-xs mt-1">This skater is under 13. Under COPPA and US Figure Skating policy, a parent or legal guardian must consent to collection and use of this skater&apos;s personal information.</p>
                     </div>
                   </div>
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" className="mt-0.5 w-4 h-4 accent-primary" checked={form.coppa_consent} onChange={e => setField('coppa_consent', e.target.checked)} />
-                    <span className="text-sm text-blue-900">I am the parent or legal guardian and consent to registration and use of this minor's personal information for USFS registration and club membership.</span>
+                    <span className="text-sm text-blue-900">I am the parent or legal guardian and consent to registration and use of this minor&apos;s personal information for USFS registration and club membership.</span>
                   </label>
                   {errors.coppa_consent && <p className="text-red-500 text-xs">{errors.coppa_consent}</p>}
                 </div>
