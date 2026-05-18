@@ -135,8 +135,11 @@ class TestSendBookingConfirmationEmail:
 
     def test_subject_contains_date(self, booking_far_future):
         from apps.notifications.services import send_booking_confirmation_email
+        from datetime import datetime
         send_booking_confirmation_email(booking_far_future)
-        assert str(booking_far_future.scheduled_date) in mail.outbox[0].subject
+        # Subject uses formatted date e.g. "May 23, 2026", not ISO format
+        formatted = booking_far_future.scheduled_date.strftime("%-d, %Y")
+        assert formatted in mail.outbox[0].subject
 
     def test_no_email_when_no_managed_by(self, db, club, skater, coach, lesson_type):
         """Booking for a skater with no managed_by should silently skip."""
