@@ -146,6 +146,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             <Link href="/home#programs" className="nav-link">Programs</Link>
             <Link href="/coaches" className="nav-link">Coaches</Link>
             <Link href="/contact" className="nav-link">Contact</Link>
+            {!portal.href.startsWith('/member') && !portal.href.startsWith('/dashboard') && !portal.href.startsWith('/coach') && (
+              <Link href="/register" className="nav-link">Join</Link>
+            )}
             <Link href={portal.href} className="nav-cta">{portal.label}</Link>
           </div>
 
@@ -191,6 +194,15 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               {label}
             </Link>
           ))}
+          {!portal.href.startsWith('/member') && !portal.href.startsWith('/dashboard') && !portal.href.startsWith('/coach') && (
+            <Link
+              href="/register"
+              onClick={() => setMobileOpen(false)}
+              style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.8)', textDecoration: 'none', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}
+            >
+              Join
+            </Link>
+          )}
           <Link
             href={portal.href}
             onClick={() => setMobileOpen(false)}

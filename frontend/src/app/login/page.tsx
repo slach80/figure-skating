@@ -84,9 +84,12 @@ function LoginForm() {
         {loading ? 'Signing in…' : 'Sign in'}
       </button>
 
-      <div className="text-center">
-        <Link href="/forgot-password" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+      <div className="flex items-center justify-between text-sm">
+        <Link href="/forgot-password" className="text-slate-400 hover:text-slate-300 transition-colors">
           Forgot password?
+        </Link>
+        <Link href="/register" className="text-primary hover:text-accent font-medium transition-colors">
+          Create account →
         </Link>
       </div>
     </form>

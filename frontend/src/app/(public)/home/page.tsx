@@ -278,12 +278,12 @@ export default function HomePage() {
             {config?.tagline || 'A safe and supportive environment for skaters of all ages and levels to reach their goals at the Line Creek Community Center in Kansas City, MO.'}
           </p>
           <div className="hero-cta-group">
-            <Link href="#programs" className="hero-btn-primary">
-              Explore Programs
+            <Link href="/register" className="hero-btn-primary">
+              Join the Club
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2}><path d="M5 12l5-5-5-5" /></svg>
             </Link>
-            <Link href="#contact" className="hero-btn-secondary">
-              Contact Us
+            <Link href="#programs" className="hero-btn-secondary">
+              Explore Programs
             </Link>
           </div>
         </div>
