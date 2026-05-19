@@ -18,6 +18,9 @@ from apps.accounts.models import FamilyGroup
 from apps.accounts.models import User
 from apps.members.models import MembershipType, Skater
 from apps.payments.models import Payment
+from apps.payments.discount_models import DiscountCode, DiscountCodeUse
+
+FAMILY_ADDITIONAL_DISCOUNT = Decimal("50")  # 50% off skaters 2+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -56,9 +59,14 @@ def _resolve_club(request):
 
 
 class MembershipTypeSerializer(serializers.ModelSerializer):
+    family_additional_discount_pct = serializers.SerializerMethodField()
+
+    def get_family_additional_discount_pct(self, obj):
+        return str(FAMILY_ADDITIONAL_DISCOUNT)
+
     class Meta:
         model = MembershipType
-        fields = ["id", "name", "usfs_category", "price_in_club", "price_out_of_club", "is_family_plan"]
+        fields = ["id", "name", "usfs_category", "price_in_club", "price_out_of_club", "is_family_plan", "family_additional_discount_pct"]
 
 
 class MembershipTypeListView(ListAPIView):
@@ -254,6 +262,7 @@ class FamilyRegistrationSerializer(serializers.Serializer):
         min_length=1,
         max_length=10,
     )
+    discount_code = serializers.CharField(required=False, allow_blank=True, default="")
 
     def validate_skaters(self, value):
         club = self.context["club"]
@@ -264,6 +273,63 @@ class FamilyRegistrationSerializer(serializers.Serializer):
                 raise ValidationError({f"skaters[{i}]": s.errors})
             validated.append(s.validated_data)
         return validated
+
+    def validate_discount_code(self, value):
+        if not value:
+            return None
+        club = self.context["club"]
+        payer = self.context["request"].user
+        code = value.strip().upper()
+        try:
+            dc = DiscountCode.objects.get(club=club, code=code)
+        except DiscountCode.DoesNotExist:
+            raise ValidationError("Invalid discount code.")
+        valid, msg = dc.is_valid_for_payer(payer)
+        if not valid:
+            raise ValidationError(msg)
+        return dc
+
+
+class ValidateDiscountCodeView(APIView):
+    """Validate a discount code and return the computed discount for a given subtotal."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        club = _resolve_club(request)
+        code_str = request.data.get("code", "").strip().upper()
+        subtotal = request.data.get("subtotal")
+
+        if not code_str:
+            return Response({"valid": False, "error": "Code is required."}, status=400)
+        try:
+            subtotal = Decimal(str(subtotal))
+        except Exception:
+            return Response({"valid": False, "error": "Invalid subtotal."}, status=400)
+
+        try:
+            dc = DiscountCode.objects.get(club=club, code=code_str)
+        except DiscountCode.DoesNotExist:
+            return Response({"valid": False, "error": "Invalid discount code."})
+
+        valid, msg = dc.is_valid_for_payer(request.user)
+        if not valid:
+            return Response({"valid": False, "error": msg})
+
+        if dc.min_purchase_amount and subtotal < dc.min_purchase_amount:
+            return Response({
+                "valid": False,
+                "error": f"Minimum purchase of ${dc.min_purchase_amount} required.",
+            })
+
+        discount = dc.compute_discount(subtotal)
+        return Response({
+            "valid": True,
+            "discount_type": dc.discount_type,
+            "value": str(dc.value),
+            "discount_amount": str(discount),
+            "final_amount": str(subtotal - discount),
+            "description": dc.description,
+        })
 
 
 class FamilyRegistrationView(CreateAPIView):
@@ -280,10 +346,31 @@ class FamilyRegistrationView(CreateAPIView):
         )
         serializer.is_valid(raise_exception=True)
         skaters_data = serializer.validated_data["skaters"]
+        discount_code: DiscountCode | None = serializer.validated_data.get("discount_code")
 
-        total_amount = sum(
-            Decimal(str(sd["membership_type"].price_in_club)) for sd in skaters_data
-        )
+        # ── Pricing: 50% off skaters 2+ (family discount) ───────────────────
+        line_prices = []
+        for i, sd in enumerate(skaters_data):
+            base = Decimal(str(sd["membership_type"].price_in_club))
+            if i == 0:
+                line_prices.append((base, Decimal("0")))  # (charged, family_discount)
+            else:
+                family_disc = (base * FAMILY_ADDITIONAL_DISCOUNT / Decimal("100")).quantize(Decimal("0.01"))
+                line_prices.append((base - family_disc, family_disc))
+
+        subtotal = sum(p[0] for p in line_prices)
+        total_family_discount = sum(p[1] for p in line_prices)
+
+        # ── Promo code discount applied on top of family pricing ─────────────
+        promo_discount = Decimal("0")
+        if discount_code:
+            if discount_code.min_purchase_amount and subtotal < discount_code.min_purchase_amount:
+                raise ValidationError({
+                    "discount_code": f"Minimum purchase of ${discount_code.min_purchase_amount} required."
+                })
+            promo_discount = discount_code.compute_discount(subtotal)
+
+        final_amount = subtotal - promo_discount
 
         try:
             with transaction.atomic():
@@ -330,10 +417,25 @@ class FamilyRegistrationView(CreateAPIView):
                     payer=request.user,
                     payment_type="membership",
                     status="pending",
-                    amount=total_amount,
+                    amount=final_amount,
+                    subtotal_amount=subtotal,
+                    discount_amount=promo_discount,
+                    family_discount_amount=total_family_discount,
                     currency="usd",
                     description=description_parts[:500],
                 )
+
+                # Record promo code use (pending until payment confirmed)
+                if discount_code:
+                    DiscountCodeUse.objects.create(
+                        code=discount_code,
+                        payer=request.user,
+                        payment=payment,
+                        original_amount=subtotal,
+                        discount_amount=promo_discount,
+                        final_amount=final_amount,
+                        status=DiscountCodeUse.STATUS_PENDING,
+                    )
 
                 if settings.STRIPE_TEST_MODE:
                     fake_session_id = f"fake_{skater_ids_str}_family"
@@ -341,17 +443,31 @@ class FamilyRegistrationView(CreateAPIView):
                     payment.save(update_fields=["stripe_checkout_session_id"])
                     checkout_url = f"{settings.FRONTEND_URL}/fake-checkout?payment_id={payment.id}"
                 else:
-                    line_items = [
-                        {
+                    # Build line items: each skater at their discounted price
+                    line_items = []
+                    for (charged, fam_disc), s, mt in zip(line_prices, skaters, membership_types):
+                        name = f"{mt.name} — {s.full_name}"
+                        if fam_disc > 0:
+                            name += f" (50% family discount)"
+                        line_items.append({
                             "price_data": {
                                 "currency": "usd",
-                                "product_data": {"name": f"{mt.name} — {s.full_name}"},
-                                "unit_amount": int(Decimal(str(mt.price_in_club)) * 100),
+                                "product_data": {"name": name},
+                                "unit_amount": int(charged * 100),
                             },
                             "quantity": 1,
-                        }
-                        for s, mt in zip(skaters, membership_types)
-                    ]
+                        })
+                    # Promo discount as a negative line item
+                    if promo_discount > 0:
+                        line_items.append({
+                            "price_data": {
+                                "currency": "usd",
+                                "product_data": {"name": f"Promo code: {discount_code.code}"},
+                                "unit_amount": -int(promo_discount * 100),
+                            },
+                            "quantity": 1,
+                        })
+
                     session = stripe.checkout.Session.create(
                         payment_method_types=["card"],
                         mode="payment",
@@ -361,6 +477,7 @@ class FamilyRegistrationView(CreateAPIView):
                             "family_group_id": str(family_group.id),
                             "payment_id": str(payment.id),
                             "club_id": str(club.id),
+                            "discount_code": discount_code.code if discount_code else "",
                         },
                         success_url=f"{settings.FRONTEND_URL}/register/success?session_id={{CHECKOUT_SESSION_ID}}",
                         cancel_url=f"{settings.FRONTEND_URL}/register/cancel",
@@ -377,7 +494,10 @@ class FamilyRegistrationView(CreateAPIView):
             "skater_ids": [str(s.id) for s in skaters],
             "checkout_url": checkout_url,
             "payment_id": str(payment.id),
-            "total_amount": str(total_amount),
+            "subtotal_amount": str(subtotal),
+            "family_discount_amount": str(total_family_discount),
+            "promo_discount_amount": str(promo_discount),
+            "total_amount": str(final_amount),
         }, status=201)
 
 

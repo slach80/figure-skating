@@ -5,6 +5,7 @@ export interface MembershipType {
   price_in_club: string
   price_out_of_club: string
   is_family_plan: boolean
+  family_additional_discount_pct: string
 }
 
 export interface RegistrationFormData {

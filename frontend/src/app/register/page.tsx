@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useMembershipTypes, useRegisterSkater, useRegisterFamily } from '@/hooks/useRegistration'
+import { useMembershipTypes, useRegisterSkater, useRegisterFamily, useValidateDiscount, type DiscountValidationResult } from '@/hooks/useRegistration'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorAlert } from '@/components/ui/ErrorAlert'
 import {
   CheckCircle2, ChevronRight, ChevronLeft, User, MapPin,
-  CreditCard, Shield, ClipboardCheck, Plus, Trash2, Users, Loader2
+  CreditCard, Shield, ClipboardCheck, Plus, Trash2, Users, Loader2, Tag, X
 } from 'lucide-react'
 import api from '@/lib/api'
 import type { RegistrationFormData } from '@/types/registration'
@@ -299,10 +299,13 @@ export default function RegisterPage() {
   const [familyErrors, setFamilyErrors]      = useState<FieldErrors>({})
   const [familyGlobalError, setFamilyGlobalError] = useState('')
   const [familyAddrStatus, setFamilyAddrStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
+  const [discountCode, setDiscountCode]     = useState('')
+  const [discountResult, setDiscountResult] = useState<DiscountValidationResult | null>(null)
 
   const { data: membershipTypes, isLoading: typesLoading, error: typesError } = useMembershipTypes()
   const singleMutation = useRegisterSkater()
   const familyMutation = useRegisterFamily()
+  const discountMutation = useValidateDiscount()
 
   // ── single helpers ──
   function setField(field: keyof RegistrationFormData, value: string | boolean) {
@@ -347,18 +350,53 @@ export default function RegisterPage() {
   }
 
   function addSkater() {
-    // Copy address from first skater for convenience
     const base = skaters[0]
     setSkaters(prev => [...prev, {
       ...EMPTY_FORM,
+      // Pre-fill address + emergency contact from skater 1
       address_line1: base.address_line1,
       address_line2: base.address_line2,
       city: base.city,
       state: base.state,
       zip_code: base.zip_code,
+      emergency_contact_name: base.emergency_contact_name,
+      emergency_contact_phone: base.emergency_contact_phone,
+      emergency_contact_relation: base.emergency_contact_relation,
     }])
     setActiveSkaterIdx(skaters.length)
     setFamilyStep(1)
+  }
+
+  function copyAddressFromSkater1(idx: number) {
+    const base = skaters[0]
+    setSkaters(prev => prev.map((s, i) => i === idx ? { ...s,
+      address_line1: base.address_line1,
+      address_line2: base.address_line2,
+      city: base.city,
+      state: base.state,
+      zip_code: base.zip_code,
+    } : s))
+  }
+
+  function copyEmergencyFromSkater1(idx: number) {
+    const base = skaters[0]
+    setSkaters(prev => prev.map((s, i) => i === idx ? { ...s,
+      emergency_contact_name: base.emergency_contact_name,
+      emergency_contact_phone: base.emergency_contact_phone,
+      emergency_contact_relation: base.emergency_contact_relation,
+    } : s))
+  }
+
+  // Compute per-skater line prices (50% off skaters 2+)
+  function computeLinePrices() {
+    return skaters.map((s, i) => {
+      const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
+      if (!mt) return { base: 0, charged: 0, familyDiscount: 0 }
+      const base = parseFloat(mt.price_in_club)
+      if (i === 0) return { base, charged: base, familyDiscount: 0 }
+      const fam = parseFloat((base * 0.5).toFixed(2))
+      return { base, charged: base - fam, familyDiscount: fam }
+    })
   }
 
   function removeSkater(idx: number) {
@@ -406,9 +444,20 @@ export default function RegisterPage() {
       }
     }
     try {
-      const result = await familyMutation.mutateAsync(skaters)
+      const result = await familyMutation.mutateAsync({
+        skaters,
+        discountCode: discountResult?.valid ? discountCode : undefined,
+      })
       window.location.href = result.checkout_url
     } catch { /* shown via familyMutation.error */ }
+  }
+
+  async function applyDiscountCode() {
+    if (!discountCode.trim()) return
+    const lines = computeLinePrices()
+    const subtotal = lines.reduce((s, l) => s + l.charged, 0)
+    const result = await discountMutation.mutateAsync({ code: discountCode.trim().toUpperCase(), subtotal })
+    setDiscountResult(result)
   }
 
   // ── mode selection ──
@@ -556,6 +605,15 @@ export default function RegisterPage() {
                 {familyStep === 2 && (
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Home Address</h2>
+                    {activeSkaterIdx > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => copyAddressFromSkater1(activeSkaterIdx)}
+                        className="mb-4 flex items-center gap-1.5 text-sm text-primary hover:underline"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Same address as {skaters[0].first_name || 'Skater 1'}
+                      </button>
+                    )}
                     <AddressForm form={currentForm} errors={familyErrors} onChange={(f, v) => { setFamilyField(activeSkaterIdx, f, v); setFamilyAddrStatus('idle') }} addrStatus={familyAddrStatus} />
                   </>
                 )}
@@ -563,26 +621,45 @@ export default function RegisterPage() {
                 {familyStep === 3 && (
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Membership Type</h2>
+                    {activeSkaterIdx > 0 && (
+                      <div className="mb-4 flex items-center gap-2 rounded-lg bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 px-3 py-2 text-sm text-purple-800 dark:text-purple-300">
+                        <Tag className="w-3.5 h-3.5 shrink-0" />
+                        50% family discount applies to this skater
+                      </div>
+                    )}
                     {typesLoading && <LoadingSpinner />}
                     {typesError && <ErrorAlert message="Failed to load membership types." />}
                     {membershipTypes && (
                       <div className="space-y-3">
-                        {membershipTypes.map(type => (
-                          <button
-                            key={type.id}
-                            type="button"
-                            onClick={() => setFamilyField(activeSkaterIdx, 'membership_type_id', type.id)}
-                            className={`w-full text-left rounded-lg border-2 p-4 transition-colors ${currentForm.membership_type_id === type.id ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-slate-300'}`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
-                                {type.usfs_category && <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>}
+                        {membershipTypes.map(type => {
+                          const base = parseFloat(type.price_in_club)
+                          const discounted = activeSkaterIdx > 0 ? base * 0.5 : base
+                          return (
+                            <button
+                              key={type.id}
+                              type="button"
+                              onClick={() => setFamilyField(activeSkaterIdx, 'membership_type_id', type.id)}
+                              className={`w-full text-left rounded-lg border-2 p-4 transition-colors ${currentForm.membership_type_id === type.id ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-slate-300'}`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
+                                  {type.usfs_category && <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>}
+                                </div>
+                                <div className="text-right ml-4 shrink-0">
+                                  {activeSkaterIdx > 0 ? (
+                                    <>
+                                      <p className="text-xl font-bold text-primary">${discounted.toFixed(0)}</p>
+                                      <p className="text-xs text-slate-400 line-through">${base.toFixed(0)}</p>
+                                    </>
+                                  ) : (
+                                    <p className="text-xl font-bold text-primary">${base.toFixed(0)}</p>
+                                  )}
+                                </div>
                               </div>
-                              <p className="text-xl font-bold text-primary">${parseFloat(type.price_in_club).toFixed(0)}</p>
-                            </div>
-                          </button>
-                        ))}
+                            </button>
+                          )
+                        })}
                         {familyErrors.membership_type_id && <p className="text-red-500 text-xs">{familyErrors.membership_type_id}</p>}
                       </div>
                     )}
@@ -593,6 +670,15 @@ export default function RegisterPage() {
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Emergency Contact</h2>
                     <div className="space-y-4">
+                      {activeSkaterIdx > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => copyEmergencyFromSkater1(activeSkaterIdx)}
+                          className="flex items-center gap-1.5 text-sm text-primary hover:underline"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Same as {skaters[0].first_name || 'Skater 1'}'s emergency contact
+                        </button>
+                      )}
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <Field label="Contact name">
                           <input className={inputCls} value={currentForm.emergency_contact_name} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_name', e.target.value)} />
@@ -629,37 +715,97 @@ export default function RegisterPage() {
                   </>
                 )}
 
-                {familyStep === 5 && (
-                  <>
-                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Review &amp; Pay</h2>
-                    <div className="space-y-3">
-                      {skaters.map((s, i) => {
-                        const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
-                        return (
-                          <div key={i} className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 rounded-lg px-4 py-3">
-                            <div>
-                              <p className="font-medium text-slate-900 dark:text-slate-100 text-sm">{s.first_name} {s.last_name}</p>
-                              <p className="text-xs text-slate-500">{mt?.name ?? '—'}{isMinor(s.date_of_birth) ? ' · minor' : ''}</p>
+                {familyStep === 5 && (() => {
+                  const lines = computeLinePrices()
+                  const subtotal = lines.reduce((s, l) => s + l.charged, 0)
+                  const totalFamilyDiscount = lines.reduce((s, l) => s + l.familyDiscount, 0)
+                  const promoDiscount = discountResult?.valid ? parseFloat(discountResult.discount_amount!) : 0
+                  const finalTotal = subtotal - promoDiscount
+                  return (
+                    <>
+                      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Review &amp; Pay</h2>
+                      <div className="space-y-2">
+                        {skaters.map((s, i) => {
+                          const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
+                          const line = lines[i]
+                          return (
+                            <div key={i} className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 rounded-lg px-4 py-3">
+                              <div>
+                                <p className="font-medium text-slate-900 dark:text-slate-100 text-sm">{s.first_name} {s.last_name}</p>
+                                <p className="text-xs text-slate-500">
+                                  {mt?.name ?? '—'}{isMinor(s.date_of_birth) ? ' · minor' : ''}
+                                  {i > 0 && line.familyDiscount > 0 && <span className="text-purple-600 ml-1">· 50% family discount</span>}
+                                </p>
+                              </div>
+                              <div className="text-right ml-4 shrink-0">
+                                <p className="font-bold text-primary text-sm">${line.charged.toFixed(2)}</p>
+                                {i > 0 && line.familyDiscount > 0 && (
+                                  <p className="text-xs text-slate-400 line-through">${line.base.toFixed(2)}</p>
+                                )}
+                              </div>
                             </div>
-                            <p className="font-bold text-primary">${mt ? parseFloat(mt.price_in_club).toFixed(2) : '—'}</p>
+                          )
+                        })}
+
+                        {totalFamilyDiscount > 0 && (
+                          <div className="flex items-center justify-between px-4 py-2 text-sm text-purple-700 dark:text-purple-400">
+                            <span>Family discount</span>
+                            <span>−${totalFamilyDiscount.toFixed(2)}</span>
                           </div>
-                        )
-                      })}
-                      <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700">
-                        <p className="font-semibold text-slate-900 dark:text-slate-100">Total</p>
-                        <p className="text-2xl font-bold text-primary">
-                          ${skaters.reduce((sum, s) => {
-                            const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
-                            return sum + (mt ? parseFloat(mt.price_in_club) : 0)
-                          }, 0).toFixed(2)}
-                        </p>
+                        )}
+
+                        {/* Discount code input */}
+                        <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
+                          {discountResult?.valid ? (
+                            <div className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 px-3 py-2 text-sm">
+                              <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                                <Tag className="w-3.5 h-3.5" />
+                                <span className="font-medium">{discountCode.toUpperCase()}</span>
+                                {discountResult.description && <span className="text-xs opacity-75">— {discountResult.description}</span>}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-green-700 dark:text-green-400">−${promoDiscount.toFixed(2)}</span>
+                                <button onClick={() => { setDiscountResult(null); setDiscountCode('') }} className="text-green-400 hover:text-green-600">
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="space-y-1">
+                              <div className="flex gap-2">
+                                <input
+                                  className={inputCls + ' uppercase'}
+                                  placeholder="Promo code"
+                                  value={discountCode}
+                                  onChange={e => { setDiscountCode(e.target.value); setDiscountResult(null) }}
+                                  onKeyDown={e => e.key === 'Enter' && applyDiscountCode()}
+                                />
+                                <button
+                                  onClick={applyDiscountCode}
+                                  disabled={!discountCode.trim() || discountMutation.isPending}
+                                  className="shrink-0 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-sm font-medium hover:bg-slate-200 disabled:opacity-50 transition-colors"
+                                >
+                                  {discountMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply'}
+                                </button>
+                              </div>
+                              {discountResult?.valid === false && (
+                                <p className="text-red-500 text-xs">{discountResult.error}</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700">
+                          <p className="font-semibold text-slate-900 dark:text-slate-100">Total</p>
+                          <p className="text-2xl font-bold text-primary">${finalTotal.toFixed(2)}</p>
+                        </div>
                       </div>
-                    </div>
-                    {familyGlobalError && <ErrorAlert message={familyGlobalError} />}
-                    {familyMutation.error && <ErrorAlert message="Registration failed. Please check your details and try again." />}
-                    <p className="text-xs text-slate-500 text-center mt-4">You will be redirected to Stripe to complete payment securely.</p>
-                  </>
-                )}
+                      {familyGlobalError && <ErrorAlert message={familyGlobalError} />}
+                      {familyMutation.error && <ErrorAlert message="Registration failed. Please check your details and try again." />}
+                      <p className="text-xs text-slate-500 text-center mt-4">You will be redirected to Stripe to complete payment securely.</p>
+                    </>
+                  )
+                })()}
 
                 <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
                   {familyStep > 1 ? (
@@ -679,10 +825,12 @@ export default function RegisterPage() {
                       className="flex items-center gap-2 px-6 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold transition-colors disabled:opacity-60"
                     >
                       <CreditCard className="w-4 h-4" />
-                      {familyMutation.isPending ? 'Processing…' : `Pay $${skaters.reduce((sum, s) => {
-                        const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
-                        return sum + (mt ? parseFloat(mt.price_in_club) : 0)
-                      }, 0).toFixed(2)}`}
+                      {familyMutation.isPending ? 'Processing…' : (() => {
+                        const lines = computeLinePrices()
+                        const subtotal = lines.reduce((s, l) => s + l.charged, 0)
+                        const promoDiscount = discountResult?.valid ? parseFloat(discountResult.discount_amount!) : 0
+                        return `Pay $${(subtotal - promoDiscount).toFixed(2)}`
+                      })()}
                     </button>
                   )}
                 </div>
