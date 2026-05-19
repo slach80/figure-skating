@@ -3,9 +3,10 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, CalendarDays, CreditCard, Users, Trophy, FileText, Globe } from 'lucide-react'
+import { Home, CalendarDays, CreditCard, Users, Trophy, FileText } from 'lucide-react'
 import { InstallPrompt } from '@/components/pwa/InstallPrompt'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { useMemberProfile } from '@/hooks/useMemberProfile'
 
 const NAV = [
   { href: '/member', label: 'Home', icon: Home },
@@ -18,29 +19,29 @@ const NAV = [
 
 export default function MemberLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
+  const { data: skater } = useMemberProfile()
+
+  const skaterName = skater
+    ? (skater.preferred_name || skater.first_name) + ' ' + skater.last_name
+    : null
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-0">
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          {/* Logo — links to home page */}
+          <Link href="/home" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <span className="text-2xl">⛸</span>
             <div>
               <p className="font-serif font-bold text-slate-900 dark:text-white leading-tight">Line Creek FSC</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Member Portal</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {skaterName ?? 'Member Portal'}
+              </p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop top nav */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link
-              href="/home"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-            >
-              <Globe size={16} strokeWidth={1.75} />
-              Club Site
-            </Link>
-            <span className="text-slate-200 dark:text-slate-600 mx-1">|</span>
             {NAV.map(item => {
               const isActive = item.href === '/member'
                 ? pathname === '/member'
@@ -53,7 +54,7 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-primary/10 text-primary'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:bg-slate-700'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
                   <Icon size={16} strokeWidth={isActive ? 2.5 : 1.75} />
