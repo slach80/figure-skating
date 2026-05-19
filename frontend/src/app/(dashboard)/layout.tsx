@@ -4,6 +4,7 @@ import { BarChart3, Users, Calendar, CreditCard, Mail, Settings, Trophy } from '
 import Link from 'next/link'
 import { LogoutButton } from '@/components/ui/LogoutButton'
 import { NavLink } from '@/components/ui/NavLink'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export default function DashboardLayout({
   children,
@@ -21,9 +22,9 @@ export default function DashboardLayout({
   ]
 
   return (
-    <div className="flex h-screen bg-slate-light">
+    <div className="flex h-screen bg-slate-100 dark:bg-slate-950">
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-dark text-white border-r border-slate-700 flex flex-col">
+      <aside className="w-64 bg-slate-800 dark:bg-slate-900 text-white border-r border-slate-700 flex flex-col">
         {/* Logo */}
         <div className="p-6 border-b border-slate-700">
           <Link href="/home" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
@@ -48,10 +49,11 @@ export default function DashboardLayout({
       {/* Main content */}
       <main className="flex-1 overflow-auto">
         {/* Top bar */}
-        <header className="bg-white border-b border-slate-200 px-8 py-4 sticky top-0 z-10">
+        <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-8 py-4 sticky top-0 z-10">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-dark">Club Management</h2>
-            <div className="flex items-center gap-4">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Club Management</h2>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white font-serif font-bold">
                 LC
               </div>
@@ -60,7 +62,7 @@ export default function DashboardLayout({
         </header>
 
         {/* Page content */}
-        <div className="p-8">{children}</div>
+        <div className="p-8 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-73px)]">{children}</div>
       </main>
     </div>
   )

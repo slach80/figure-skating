@@ -6,6 +6,7 @@ import { Building2, Users, Shield, LogOut, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { getTokenRole, logout } from '@/lib/auth'
 import { NavLink } from '@/components/ui/NavLink'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 const NAV = [
   { href: '/super-admin', label: 'Dashboard', icon: Shield, exact: true },
@@ -29,7 +30,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
   }
 
   return (
-    <div className="flex h-screen bg-slate-950">
+    <div className="flex h-screen bg-slate-950 dark:bg-slate-950">
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 text-white border-r border-slate-700 flex flex-col">
         <div className="p-6 border-b border-slate-700">
@@ -81,9 +82,12 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
             <h2 className="text-sm font-semibold text-slate-300 tracking-wide uppercase">
               Line Creek FSC — Platform Admin
             </h2>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-600/20 border border-violet-500/30">
-              <div className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
-              <span className="text-xs font-medium text-violet-300">Super Admin</span>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-600/20 border border-violet-500/30">
+                <div className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
+                <span className="text-xs font-medium text-violet-300">Super Admin</span>
+              </div>
             </div>
           </div>
         </header>

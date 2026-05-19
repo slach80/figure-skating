@@ -21,6 +21,11 @@ body {
   line-height: 1.6;
 }
 
+.dark body {
+  background-color: #020617;
+  color: #f1f5f9;
+}
+
 /* Typography utilities */
 h1 {
   @apply font-serif text-4xl font-bold text-slate-dark;
