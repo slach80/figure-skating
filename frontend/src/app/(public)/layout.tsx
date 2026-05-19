@@ -2,12 +2,24 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
+import { getTokenRole } from '@/lib/auth'
 import './public.css'
+
+function portalLink(): { href: string; label: string } {
+  const role = typeof window !== 'undefined' ? getTokenRole() : null
+  if (role === 'super_admin' || role === 'admin') return { href: '/dashboard', label: 'Admin Portal' }
+  if (role === 'coach') return { href: '/dashboard', label: 'Coach Portal' }
+  if (role === 'member') return { href: '/member', label: 'Member Portal' }
+  return { href: '/login', label: 'Member Portal' }
+}
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [portal, setPortal] = useState({ href: '/login', label: 'Member Portal' })
   const navRef = useRef<HTMLElement>(null)
+
+  useEffect(() => { setPortal(portalLink()) }, [])
   const progressRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
@@ -134,7 +146,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             <Link href="/home#programs" className="nav-link">Programs</Link>
             <Link href="/coaches" className="nav-link">Coaches</Link>
             <Link href="/contact" className="nav-link">Contact</Link>
-            <Link href="/login" className="nav-cta">Member Portal</Link>
+            <Link href={portal.href} className="nav-cta">{portal.label}</Link>
           </div>
 
           {/* Mobile burger */}
@@ -180,12 +192,12 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             </Link>
           ))}
           <Link
-            href="/login"
+            href={portal.href}
             onClick={() => setMobileOpen(false)}
             className="nav-cta"
             style={{ marginTop: '1rem' }}
           >
-            Member Portal
+            {portal.label}
           </Link>
         </div>
       )}
