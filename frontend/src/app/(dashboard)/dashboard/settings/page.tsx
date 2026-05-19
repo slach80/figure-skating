@@ -20,7 +20,6 @@ import {
   useDeleteAnnouncement,
 } from '@/hooks/useWebsite'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
-import { ErrorAlert } from '@/components/ui/ErrorAlert'
 import type { Announcement } from '@/types/website'
 
 const US_STATES = [
