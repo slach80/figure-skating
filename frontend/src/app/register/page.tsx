@@ -8,6 +8,7 @@ import {
   CheckCircle2, ChevronRight, ChevronLeft, User, MapPin,
   CreditCard, Shield, ClipboardCheck, Plus, Trash2, Users, Loader2
 } from 'lucide-react'
+import api from '@/lib/api'
 import type { RegistrationFormData } from '@/types/registration'
 import { EMPTY_FORM, US_STATES } from '@/types/registration'
 
@@ -65,36 +66,15 @@ function Field({ label, required, error, children }: {
 
 const inputCls = "w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white dark:bg-slate-800"
 
-// US Census Geocoder — free, no API key
+// Proxied through backend to avoid CORS restrictions on the Census Geocoder
 async function validateUSAddress(
   line1: string, city: string, state: string, zip: string
 ): Promise<{ valid: boolean; normalized?: { line1: string; city: string; state: string; zip: string } }> {
   try {
-    const params = new URLSearchParams({
-      street: line1,
-      city,
-      state,
-      zip,
-      benchmark: 'Public_AR_Current',
-      format: 'json',
-    })
-    const res = await fetch(`https://geocoding.geo.census.gov/geocoder/locations/address?${params}`)
-    if (!res.ok) return { valid: false }
-    const data = await res.json()
-    const matches = data?.result?.addressMatches
-    if (!matches || matches.length === 0) return { valid: false }
-    const m = matches[0]
-    return {
-      valid: true,
-      normalized: {
-        line1: m.matchedAddress.split(',')[0].trim(),
-        city: m.addressComponents.city,
-        state: m.addressComponents.state,
-        zip: m.addressComponents.zip,
-      },
-    }
+    const res = await api.post('/api/v1/members/validate-address/', { street: line1, city, state, zip })
+    return res.data
   } catch {
-    // Network error — don't block the user, just skip validation
+    // Network error — don't block the user
     return { valid: true }
   }
 }

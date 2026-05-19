@@ -6,9 +6,13 @@ from django.conf import settings
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied, ValidationError
+import urllib.parse
+import urllib.request
+
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.accounts.models import FamilyGroup
 from apps.accounts.models import User
@@ -364,3 +368,49 @@ class FamilyRegistrationView(CreateAPIView):
             "payment_id": str(payment.id),
             "total_amount": str(total_amount),
         }, status=201)
+
+
+class ValidateAddressView(APIView):
+    """Proxy the US Census Geocoder to avoid CORS issues from the browser."""
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        import json as _json
+        street = request.data.get("street", "").strip()
+        city   = request.data.get("city", "").strip()
+        state  = request.data.get("state", "").strip()
+        zip_   = request.data.get("zip", "").strip()
+
+        if not street or not city or not state:
+            return Response({"valid": False, "error": "Missing required fields"}, status=400)
+
+        params = urllib.parse.urlencode({
+            "street": street,
+            "city": city,
+            "state": state,
+            "zip": zip_,
+            "benchmark": "Public_AR_Current",
+            "format": "json",
+        })
+        url = f"https://geocoding.geo.census.gov/geocoder/locations/address?{params}"
+
+        try:
+            with urllib.request.urlopen(url, timeout=8) as resp:
+                data = _json.loads(resp.read())
+        except Exception:
+            # Network failure — pass through so registration is never blocked
+            return Response({"valid": True, "skipped": True})
+
+        matches = data.get("result", {}).get("addressMatches", [])
+        if not matches:
+            return Response({"valid": False})
+
+        m = matches[0]
+        parts = m.get("matchedAddress", "").split(",")
+        normalized = {
+            "line1": parts[0].strip() if parts else street,
+            "city":  m.get("addressComponents", {}).get("city", city),
+            "state": m.get("addressComponents", {}).get("state", state),
+            "zip":   m.get("addressComponents", {}).get("zip", zip_),
+        }
+        return Response({"valid": True, "normalized": normalized})
