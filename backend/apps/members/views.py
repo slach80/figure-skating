@@ -174,16 +174,6 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
         )
         return Response(SkaterLevelSerializer(level_obj).data)
 
-    @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
-    def me(self, request):
-        """Return the authenticated user's own Skater profile."""
-        try:
-            skater = request.user.skater_profile
-        except Skater.DoesNotExist:
-            return Response({"detail": "No skater profile linked to this account."}, status=404)
-        serializer = SkaterDetailSerializer(skater, context={"request": request})
-        return Response(serializer.data)
-
     @action(detail=False, methods=["get"], url_path="my-skaters", permission_classes=[IsAuthenticated])
     def my_skaters(self, request):
         """Return all skaters the current user manages (own profile + managed minors)."""
