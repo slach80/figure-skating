@@ -34,7 +34,7 @@ const STATUS_COLORS: Record<string, string> = {
   available: 'bg-emerald-100 border-emerald-400 text-emerald-800',
   partially_booked: 'bg-blue-100 border-blue-400 text-blue-800',
   fully_booked: 'bg-slate-100 border-slate-400 text-slate-500',
-  cancelled: 'bg-red-100 border-red-300 text-red-600 line-through opacity-60',
+  cancelled: 'bg-red-100 border-red-300 text-red-600 dark:text-red-400 line-through opacity-60',
 }
 
 function SlotPill({ slot }: { slot: AvailabilitySlot }) {
@@ -102,31 +102,31 @@ export default function SchedulePage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Schedule</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Schedule</h1>
           <p className="text-slate-500 text-sm mt-0.5">Manage availability slots and bookings</p>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/dashboard/schedule/lesson-types"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             <Settings size={15} /> Lesson Types
           </Link>
           <Link
             href="/dashboard/schedule/test-sessions"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             <ClipboardList size={15} /> Test Sessions
           </Link>
           <Link
             href="/dashboard/schedule/packages"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             <Package size={15} /> Packages
           </Link>
           <Link
             href="/dashboard/schedule/bookings"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             <List size={15} /> All Bookings
           </Link>
@@ -140,25 +140,25 @@ export default function SchedulePage() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-3 bg-white border border-slate-200 rounded-lg px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5">
         <div className="flex items-center gap-1">
-          <button onClick={prevWeek} className="p-1 rounded hover:bg-slate-100">
+          <button onClick={prevWeek} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800">
             <ChevronLeft size={16} />
           </button>
-          <button onClick={goToday} className="px-2 py-0.5 text-xs rounded border border-slate-300 hover:bg-slate-50">
+          <button onClick={goToday} className="px-2 py-0.5 text-xs rounded border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900">
             Today
           </button>
-          <button onClick={nextWeek} className="p-1 rounded hover:bg-slate-100">
+          <button onClick={nextWeek} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800">
             <ChevronRight size={16} />
           </button>
-          <span className="ml-2 font-medium text-slate-700">{monthLabel}</span>
+          <span className="ml-2 font-medium text-slate-700 dark:text-slate-300">{monthLabel}</span>
         </div>
 
         <div className="ml-auto flex items-center gap-2">
           <select
             value={coachFilter}
             onChange={e => setCoachFilter(e.target.value)}
-            className="text-sm border border-slate-300 rounded px-2 py-1 text-slate-700"
+            className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-slate-700 dark:text-slate-300"
           >
             <option value="">All coaches</option>
             {coaches.map(c => (
@@ -166,7 +166,7 @@ export default function SchedulePage() {
             ))}
           </select>
 
-          <div className="flex border border-slate-300 rounded overflow-hidden">
+          <div className="flex border border-slate-300 dark:border-slate-600 rounded overflow-hidden">
             <button
               onClick={() => setView('week')}
               className={`px-2.5 py-1 text-xs flex items-center gap-1 ${view === 'week' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-50'}`}
@@ -185,21 +185,21 @@ export default function SchedulePage() {
 
       {/* Calendar / List */}
       {isLoading ? (
-        <div className="bg-white border border-slate-200 rounded-lg p-12 text-center text-slate-500">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-12 text-center text-slate-500">
           Loading schedule…
         </div>
       ) : view === 'week' ? (
-        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
           {/* Day headers */}
-          <div className="grid border-b border-slate-200" style={{ gridTemplateColumns: '52px repeat(7, 1fr)' }}>
-            <div className="border-r border-slate-200" />
+          <div className="grid border-b border-slate-200 dark:border-slate-700" style={{ gridTemplateColumns: '52px repeat(7, 1fr)' }}>
+            <div className="border-r border-slate-200 dark:border-slate-700" />
             {days.map((d, i) => {
               const ds = toDateStr(d)
               const isToday = ds === today
               return (
                 <div
                   key={i}
-                  className={`py-2 text-center text-xs font-medium border-r border-slate-200 last:border-0 ${isToday ? 'bg-primary/5 text-primary' : 'text-slate-600'}`}
+                  className={`py-2 text-center text-xs font-medium border-r border-slate-200 dark:border-slate-700 last:border-0 ${isToday ? 'bg-primary/5 text-primary' : 'text-slate-600'}`}
                 >
                   <div>{DAYS[i]}</div>
                   <div className={`text-lg font-bold ${isToday ? 'text-primary' : 'text-slate-800'}`}>
@@ -216,7 +216,7 @@ export default function SchedulePage() {
               {/* Hour labels */}
               <div>
                 {HOURS.map(h => (
-                  <div key={h} className="border-b border-slate-100 text-right pr-2 text-xs text-slate-400" style={{ height: 56 }}>
+                  <div key={h} className="border-b border-slate-100 dark:border-slate-700 text-right pr-2 text-xs text-slate-400" style={{ height: 56 }}>
                     <span className="relative -top-2">{h === 12 ? '12 PM' : h > 12 ? `${h - 12} PM` : `${h} AM`}</span>
                   </div>
                 ))}
@@ -230,11 +230,11 @@ export default function SchedulePage() {
                 return (
                   <div
                     key={i}
-                    className={`relative border-l border-slate-200 ${isToday ? 'bg-primary/5' : ''}`}
+                    className={`relative border-l border-slate-200 dark:border-slate-700 ${isToday ? 'bg-primary/5' : ''}`}
                     style={{ height: HOURS.length * 56 }}
                   >
                     {HOURS.map(h => (
-                      <div key={h} className="border-b border-slate-100" style={{ height: 56 }} />
+                      <div key={h} className="border-b border-slate-100 dark:border-slate-700" style={{ height: 56 }} />
                     ))}
                     {daySlots.map(slot => (
                       <SlotPill key={slot.id} slot={slot} />
@@ -247,7 +247,7 @@ export default function SchedulePage() {
         </div>
       ) : (
         // List view
-        <div className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-100">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg divide-y divide-slate-100 dark:divide-slate-700">
           {slots.length === 0 ? (
             <p className="p-8 text-center text-slate-500">No slots this week.</p>
           ) : (
@@ -255,14 +255,14 @@ export default function SchedulePage() {
               .slice()
               .sort((a, b) => `${a.date}T${a.start_time}` < `${b.date}T${b.start_time}` ? -1 : 1)
               .map(slot => (
-                <div key={slot.id} className="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+                <div key={slot.id} className="flex items-center justify-between px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-3 h-3 rounded-full flex-shrink-0"
                       style={{ background: slot.lesson_type.color || '#6366f1' }}
                     />
                     <div>
-                      <p className="text-sm font-medium text-slate-800">{slot.lesson_type.name}</p>
+                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{slot.lesson_type.name}</p>
                       <p className="text-xs text-slate-500">
                         {new Date(slot.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                         {' · '}{slot.start_time.slice(0, 5)}–{slot.end_time.slice(0, 5)}

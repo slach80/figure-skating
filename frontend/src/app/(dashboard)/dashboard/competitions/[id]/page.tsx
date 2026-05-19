@@ -124,24 +124,24 @@ function CategoryForm({
   const isPending = create.isPending || update.isPending
 
   return (
-    <form onSubmit={handleSubmit} className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
+    <form onSubmit={handleSubmit} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div className="col-span-2">
-          <label className="block text-xs font-medium text-slate-600 mb-1">Category Name *</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Category Name *</label>
           <input
             required
             value={form.name}
             onChange={e => set('name', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
             placeholder="Pre-Juvenile Ladies Free Skate"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Discipline</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Discipline</label>
           <select
             value={form.discipline}
             onChange={e => set('discipline', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
           >
             <option value="singles">Singles</option>
             <option value="pairs">Pairs</option>
@@ -150,11 +150,11 @@ function CategoryForm({
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Segment</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Segment</label>
           <select
             value={form.segment}
             onChange={e => set('segment', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
           >
             <option value="free_skate">Free Skate</option>
             <option value="short_program">Short Program</option>
@@ -165,37 +165,37 @@ function CategoryForm({
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Level *</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Level *</label>
           <input
             required
             value={form.level}
             onChange={e => set('level', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
             placeholder="Pre-Juvenile"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Additional Fee ($)</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Additional Fee ($)</label>
           <input
             type="number" min="0" step="0.01"
             value={form.additional_fee}
             onChange={e => set('additional_fee', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Max Entries</label>
+          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Max Entries</label>
           <input
             type="number" min="1"
             value={form.max_entries}
             onChange={e => set('max_entries', e.target.value)}
-            className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm"
             placeholder="No limit"
           />
         </div>
       </div>
       <div className="flex gap-2 justify-end">
-        <button type="button" onClick={onDone} className="px-3 py-1.5 text-xs text-slate-600 border border-slate-300 rounded hover:bg-white">
+        <button type="button" onClick={onDone} className="px-3 py-1.5 text-xs text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded hover:bg-white dark:hover:bg-slate-800">
           Cancel
         </button>
         <button type="submit" disabled={isPending} className="px-3 py-1.5 text-xs bg-primary text-white rounded hover:opacity-90 disabled:opacity-50">
@@ -218,7 +218,7 @@ function DrawInput({ entry }: { entry: CompetitionEntry }) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-slate-400 hover:text-slate-700 tabular-nums"
+        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:dark:text-slate-300 tabular-nums"
       >
         {entry.draw_number != null ? `#${entry.draw_number}` : '—'}
         {entry.skating_order != null ? ` / ${entry.skating_order}` : ''}
@@ -232,14 +232,14 @@ function DrawInput({ entry }: { entry: CompetitionEntry }) {
         type="number"
         value={draw}
         onChange={e => setDraw(e.target.value)}
-        className="w-12 border border-slate-300 rounded px-1 py-0.5 text-xs text-center"
+        className="w-12 border border-slate-300 dark:border-slate-600 rounded px-1 py-0.5 text-xs text-center"
         placeholder="Draw"
       />
       <input
         type="number"
         value={order}
         onChange={e => setOrder(e.target.value)}
-        className="w-12 border border-slate-300 rounded px-1 py-0.5 text-xs text-center"
+        className="w-12 border border-slate-300 dark:border-slate-600 rounded px-1 py-0.5 text-xs text-center"
         placeholder="Order"
       />
       <button
@@ -255,7 +255,7 @@ function DrawInput({ entry }: { entry: CompetitionEntry }) {
       >
         <Check size={13} />
       </button>
-      <button onClick={() => setEditing(false)} className="p-0.5 text-slate-400 hover:text-slate-600">
+      <button onClick={() => setEditing(false)} className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
         <X size={13} />
       </button>
     </span>
@@ -272,7 +272,7 @@ function ResultInput({ entry }: { entry: CompetitionEntry }) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-slate-400 hover:text-slate-700 tabular-nums"
+        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:dark:text-slate-300 tabular-nums"
       >
         {entry.placement != null ? `${entry.placement}${ordinalSuffix(entry.placement)}` : '—'}
         {entry.score != null ? ` (${entry.score})` : ''}
@@ -286,14 +286,14 @@ function ResultInput({ entry }: { entry: CompetitionEntry }) {
         type="number"
         value={placement}
         onChange={e => setPlacement(e.target.value)}
-        className="w-12 border border-slate-300 rounded px-1 py-0.5 text-xs text-center"
+        className="w-12 border border-slate-300 dark:border-slate-600 rounded px-1 py-0.5 text-xs text-center"
         placeholder="Place"
       />
       <input
         type="text"
         value={score}
         onChange={e => setScore(e.target.value)}
-        className="w-16 border border-slate-300 rounded px-1 py-0.5 text-xs text-center"
+        className="w-16 border border-slate-300 dark:border-slate-600 rounded px-1 py-0.5 text-xs text-center"
         placeholder="Score"
       />
       <button
@@ -310,7 +310,7 @@ function ResultInput({ entry }: { entry: CompetitionEntry }) {
       >
         <Check size={13} />
       </button>
-      <button onClick={() => setEditing(false)} className="p-0.5 text-slate-400 hover:text-slate-600">
+      <button onClick={() => setEditing(false)} className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
         <X size={13} />
       </button>
     </span>
@@ -357,30 +357,30 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
       <div className="flex items-start gap-4">
         <button
           onClick={() => router.push('/dashboard/competitions')}
-          className="mt-1 p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
+          className="mt-1 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500"
         >
           <ArrowLeft size={18} />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-bold text-slate-900 truncate">{comp.name}</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 truncate">{comp.name}</h1>
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               comp.comp_type === 'home' ? 'bg-primary/10 text-primary' : 'bg-sky-100 text-sky-700'
             }`}>
               {comp.comp_type === 'home' ? 'Home' : 'Away'}
             </span>
             {!comp.is_published && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 flex items-center gap-1">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center gap-1">
                 <Clock size={11} /> Draft
               </span>
             )}
             {comp.is_published && comp.is_entry_open && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircle size={11} /> Open
               </span>
             )}
             {comp.is_published && !comp.is_entry_open && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 flex items-center gap-1">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:text-red-400 flex items-center gap-1">
                 <AlertCircle size={11} /> Closed
               </span>
             )}
@@ -423,9 +423,9 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {/* Categories section */}
-      <section className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h2 className="font-semibold text-slate-800">Event Categories</h2>
+      <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-700">
+          <h2 className="font-semibold text-slate-800 dark:text-slate-200">Event Categories</h2>
           <button
             onClick={() => { setShowCatForm(v => !v); setEditingCatId(null) }}
             className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
@@ -435,7 +435,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
         </div>
 
         {showCatForm && !editingCatId && (
-          <div className="p-4 border-b border-slate-100">
+          <div className="p-4 border-b border-slate-100 dark:border-slate-700">
             <CategoryForm
               competitionId={id}
               onDone={() => setShowCatForm(false)}
@@ -449,7 +449,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
           <p className="p-6 text-sm text-slate-400 text-center">No categories yet. Add one above.</p>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
+            <thead className="bg-slate-50 dark:bg-slate-900 text-xs text-slate-500 uppercase tracking-wide">
               <tr>
                 <th className="text-left px-5 py-2.5">Category</th>
                 <th className="text-left px-3 py-2.5">Discipline</th>
@@ -460,16 +460,16 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                 <th className="px-3 py-2.5" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
               {categories.map(cat => (
                 <>
-                  <tr key={cat.id} className="hover:bg-slate-50">
-                    <td className="px-5 py-3 font-medium text-slate-800">{cat.name}</td>
-                    <td className="px-3 py-3 text-slate-600 capitalize">{cat.discipline}</td>
-                    <td className="px-3 py-3 text-slate-600">{cat.level}</td>
+                  <tr key={cat.id} className="hover:bg-slate-50 dark:hover:bg-slate-900">
+                    <td className="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">{cat.name}</td>
+                    <td className="px-3 py-3 text-slate-600 dark:text-slate-400 capitalize">{cat.discipline}</td>
+                    <td className="px-3 py-3 text-slate-600 dark:text-slate-400">{cat.level}</td>
                     <td className="px-3 py-3 text-slate-500 text-xs">{cat.segment.replace('_', ' ')}</td>
-                    <td className="px-3 py-3 text-right text-slate-600">${cat.additional_fee}</td>
-                    <td className="px-3 py-3 text-right text-slate-600">
+                    <td className="px-3 py-3 text-right text-slate-600 dark:text-slate-400">${cat.additional_fee}</td>
+                    <td className="px-3 py-3 text-right text-slate-600 dark:text-slate-400">
                       {cat.entry_count}
                       {cat.max_entries != null && <span className="text-slate-400">/{cat.max_entries}</span>}
                     </td>
@@ -477,7 +477,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                       <div className="flex items-center gap-1 justify-end">
                         <button
                           onClick={() => { setEditingCatId(cat.id); setShowCatForm(false) }}
-                          className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+                          className="p-1 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                         >
                           <Pencil size={13} />
                         </button>
@@ -487,7 +487,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                               deleteCategory.mutate({ id: cat.id, competitionId: id })
                             }
                           }}
-                          className="p-1 rounded hover:bg-red-50 text-slate-400 hover:text-red-600"
+                          className="p-1 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -521,16 +521,16 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
       </section>
 
       {/* Entries section */}
-      <section className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-700">
           <div>
-            <h2 className="font-semibold text-slate-800">Entries</h2>
+            <h2 className="font-semibold text-slate-800 dark:text-slate-200">Entries</h2>
             <p className="text-xs text-slate-400 mt-0.5">{comp.entry_count} confirmed · {entries.length} total</p>
           </div>
           {entries.length > 0 && (
             <button
               onClick={() => exportCsv(entries)}
-              className="flex items-center gap-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg px-3 py-1.5 hover:bg-slate-50"
+              className="flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-900"
             >
               <Download size={14} /> Export CSV
             </button>
@@ -544,7 +544,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
+              <thead className="bg-slate-50 dark:bg-slate-900 text-xs text-slate-500 uppercase tracking-wide">
                 <tr>
                   <th className="text-left px-5 py-2.5">Skater</th>
                   <th className="text-left px-3 py-2.5">USFS#</th>
@@ -558,12 +558,12 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                   <th className="px-3 py-2.5">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                 {entries.map(entry => (
-                  <tr key={entry.id} className={`hover:bg-slate-50 ${entry.status === 'scratched' ? 'opacity-50' : ''}`}>
-                    <td className="px-5 py-3 font-medium text-slate-800">{entry.skater_name}</td>
+                  <tr key={entry.id} className={`hover:bg-slate-50 dark:hover:bg-slate-900 ${entry.status === 'scratched' ? 'opacity-50' : ''}`}>
+                    <td className="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">{entry.skater_name}</td>
                     <td className="px-3 py-3 text-slate-500 tabular-nums">{entry.skater_usfs || '—'}</td>
-                    <td className="px-3 py-3 text-slate-600 max-w-[180px] truncate" title={entry.category_name}>
+                    <td className="px-3 py-3 text-slate-600 dark:text-slate-400 max-w-[180px] truncate" title={entry.category_name}>
                       {entry.category_name}
                     </td>
                     <td className="px-3 py-3 text-slate-500">{entry.coach_name ?? '—'}</td>
@@ -571,7 +571,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                       <EntryStatusBadge status={entry.status} />
                       {entry.is_late && <span className="ml-1 text-xs text-amber-600">late</span>}
                     </td>
-                    <td className="px-3 py-3 text-right text-slate-600 tabular-nums">${entry.total_fee}</td>
+                    <td className="px-3 py-3 text-right text-slate-600 dark:text-slate-400 tabular-nums">${entry.total_fee}</td>
                     <td className="px-3 py-3 text-slate-500 text-xs max-w-[120px] truncate">
                       {entry.music_title || '—'}
                     </td>
@@ -587,7 +587,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                           <button
                             onClick={() => acceptEntry.mutate(entry.id)}
                             title="Accept"
-                            className="p-1 rounded hover:bg-emerald-50 text-slate-400 hover:text-emerald-600"
+                            className="p-1 rounded hover:bg-emerald-50 dark:hover:dark:bg-emerald-950/40 text-slate-400 hover:text-emerald-600"
                           >
                             <Check size={14} />
                           </button>
@@ -600,7 +600,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                               }
                             }}
                             title="Scratch"
-                            className="p-1 rounded hover:bg-red-50 text-slate-400 hover:text-red-600"
+                            className="p-1 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
                           >
                             <X size={14} />
                           </button>

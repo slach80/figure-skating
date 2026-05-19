@@ -27,27 +27,27 @@ const EMPTY_FORM = {
 function StatusBadge({ comp }: { comp: Competition }) {
   if (!comp.is_published) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
         <Clock size={11} /> Draft
       </span>
     )
   }
   if (!comp.is_entry_open) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600">
+      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:text-red-400">
         <XCircle size={11} /> Closed
       </span>
     )
   }
   if (comp.is_late) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+      <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:text-amber-400">
         <Clock size={11} /> Late Entry
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-400">
       <CheckCircle size={11} /> Open
     </span>
   )
@@ -82,7 +82,7 @@ export default function CompetitionsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Competitions</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Competitions</h1>
           <p className="text-slate-500 text-sm mt-0.5">Manage competition events and entries</p>
         </div>
         <button
@@ -97,28 +97,28 @@ export default function CompetitionsPage() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-slate-200 rounded-xl p-6 space-y-4"
+          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 space-y-4"
         >
-          <h2 className="font-semibold text-slate-800">New Competition</h2>
+          <h2 className="font-semibold text-slate-800 dark:text-slate-200">New Competition</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-slate-600 mb-1">Name *</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Name *</label>
               <input
                 required
                 value={form.name}
                 onChange={e => set('name', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
                 placeholder="Spring Showcase 2026"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Type</label>
               <select
                 value={form.comp_type}
                 onChange={e => set('comp_type', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               >
                 <option value="home">Home Competition</option>
                 <option value="away">Away Competition</option>
@@ -126,118 +126,118 @@ export default function CompetitionsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Sanction #</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Sanction #</label>
               <input
                 value={form.sanction_number}
                 onChange={e => set('sanction_number', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
                 placeholder="USFS-2026-XXXX"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Start Date *</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Start Date *</label>
               <input
                 required
                 type="date"
                 value={form.start_date}
                 onChange={e => set('start_date', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">End Date *</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">End Date *</label>
               <input
                 required
                 type="date"
                 value={form.end_date}
                 onChange={e => set('end_date', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-slate-600 mb-1">Venue</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Venue</label>
               <input
                 value={form.venue}
                 onChange={e => set('venue', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
                 placeholder="Ice Rink Name"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">City</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">City</label>
               <input
                 value={form.city}
                 onChange={e => set('city', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">State</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">State</label>
               <input
                 value={form.state}
                 onChange={e => set('state', e.target.value)}
                 maxLength={2}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm uppercase"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm uppercase"
                 placeholder="MO"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Base Entry Fee ($)</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Base Entry Fee ($)</label>
               <input
                 type="number"
                 min="0"
                 step="0.01"
                 value={form.base_entry_fee}
                 onChange={e => set('base_entry_fee', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Late Fee ($)</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Late Fee ($)</label>
               <input
                 type="number"
                 min="0"
                 step="0.01"
                 value={form.late_fee}
                 onChange={e => set('late_fee', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Entry Deadline</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Entry Deadline</label>
               <input
                 type="datetime-local"
                 value={form.entry_deadline}
                 onChange={e => set('entry_deadline', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Late Entry Deadline</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Late Entry Deadline</label>
               <input
                 type="datetime-local"
                 value={form.late_entry_deadline}
                 onChange={e => set('late_entry_deadline', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Music Upload Deadline</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Music Upload Deadline</label>
               <input
                 type="datetime-local"
                 value={form.music_upload_deadline}
                 onChange={e => set('music_upload_deadline', e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm"
               />
             </div>
 
@@ -249,16 +249,16 @@ export default function CompetitionsPage() {
                 onChange={e => set('is_published', e.target.checked)}
                 className="rounded"
               />
-              <label htmlFor="is_published" className="text-sm text-slate-700">Publish immediately</label>
+              <label htmlFor="is_published" className="text-sm text-slate-700 dark:text-slate-300">Publish immediately</label>
             </div>
 
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Notes</label>
               <textarea
                 value={form.notes}
                 onChange={e => set('notes', e.target.value)}
                 rows={3}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm resize-none"
+                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm resize-none"
               />
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function CompetitionsPage() {
             <button
               type="button"
               onClick={() => { setShowForm(false); setForm(EMPTY_FORM) }}
-              className="px-4 py-2 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50"
+              className="px-4 py-2 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
             >
               Cancel
             </button>
@@ -281,7 +281,7 @@ export default function CompetitionsPage() {
           </div>
 
           {createComp.isError && (
-            <p className="text-sm text-red-600">Failed to create competition. Please try again.</p>
+            <p className="text-sm text-red-600 dark:text-red-400">Failed to create competition. Please try again.</p>
           )}
         </form>
       )}
@@ -290,7 +290,7 @@ export default function CompetitionsPage() {
       {isLoading ? (
         <div className="text-center py-12 text-slate-500">Loading competitions…</div>
       ) : competitions.length === 0 ? (
-        <div className="text-center py-16 bg-white border border-slate-200 rounded-xl">
+        <div className="text-center py-16 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl">
           <Trophy size={40} className="mx-auto text-slate-300 mb-3" />
           <p className="text-slate-500 font-medium">No competitions yet</p>
           <p className="text-slate-400 text-sm mt-1">Create your first competition to get started</p>
@@ -301,12 +301,12 @@ export default function CompetitionsPage() {
             <Link
               key={comp.id}
               href={`/dashboard/competitions/${comp.id}`}
-              className="block bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow"
+              className="block bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="font-semibold text-slate-900 truncate">{comp.name}</h2>
+                    <h2 className="font-semibold text-slate-900 dark:text-slate-100 truncate">{comp.name}</h2>
                     <StatusBadge comp={comp} />
                     <span className={`text-xs px-2 py-0.5 rounded-full ${
                       comp.comp_type === 'home'
@@ -354,7 +354,7 @@ export default function CompetitionsPage() {
                 </div>
 
                 <div className="text-right flex-shrink-0">
-                  <p className="text-lg font-bold text-slate-800">${comp.base_entry_fee}</p>
+                  <p className="text-lg font-bold text-slate-800 dark:text-slate-200">${comp.base_entry_fee}</p>
                   <p className="text-xs text-slate-400">base fee</p>
                 </div>
               </div>

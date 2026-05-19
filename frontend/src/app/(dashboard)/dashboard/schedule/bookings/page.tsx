@@ -28,13 +28,13 @@ function BookingRow({ booking }: { booking: BookingList }) {
   const [cancelling, setCancelling] = useState(false)
 
   return (
-    <tr className="border-t border-slate-100 hover:bg-slate-50">
+    <tr className="border-t border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900">
       <td className="px-4 py-3">
-        <p className="text-sm font-medium text-slate-800">{booking.skater_name}</p>
+        <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{booking.skater_name}</p>
         <p className="text-xs text-slate-500">{booking.lesson_type_name}</p>
       </td>
-      <td className="px-4 py-3 text-sm text-slate-700">{booking.coach_name}</td>
-      <td className="px-4 py-3 text-sm text-slate-700">
+      <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{booking.coach_name}</td>
+      <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">
         {new Date(booking.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         <span className="ml-1 text-slate-500">{booking.scheduled_time.slice(0, 5)}</span>
       </td>
@@ -48,7 +48,7 @@ function BookingRow({ booking }: { booking: BookingList }) {
           {booking.payment_status}
         </span>
       </td>
-      <td className="px-4 py-3 text-sm text-slate-700">${booking.amount_paid}</td>
+      <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">${booking.amount_paid}</td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-1">
           {booking.status === 'pending' && (
@@ -72,7 +72,7 @@ function BookingRow({ booking }: { booking: BookingList }) {
           {(booking.status === 'pending' || booking.status === 'confirmed') && !cancelling && (
             <button
               onClick={() => setCancelling(true)}
-              className="text-xs px-2 py-1 border border-red-300 text-red-600 rounded hover:bg-red-50"
+              className="text-xs px-2 py-1 border border-red-300 text-red-600 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-950/40"
             >
               Cancel
             </button>
@@ -110,21 +110,21 @@ export default function BookingsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700">
+        <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">All Bookings</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">All Bookings</h1>
           <p className="text-slate-500 text-sm mt-0.5">{bookings.length} bookings</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-2 bg-white border border-slate-200 rounded-lg px-4 py-3">
+      <div className="flex flex-wrap gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3">
         <select
           value={coachFilter}
           onChange={e => setCoachFilter(e.target.value)}
-          className="text-sm border border-slate-300 rounded px-2 py-1.5 text-slate-700"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-slate-700 dark:text-slate-300"
         >
           <option value="">All coaches</option>
           {coaches.map(c => (
@@ -134,7 +134,7 @@ export default function BookingsPage() {
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="text-sm border border-slate-300 rounded px-2 py-1.5 text-slate-700"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-slate-700 dark:text-slate-300"
         >
           <option value="">All statuses</option>
           <option value="pending">Pending</option>
@@ -147,12 +147,12 @@ export default function BookingsPage() {
           type="date"
           value={dateFilter}
           onChange={e => setDateFilter(e.target.value)}
-          className="text-sm border border-slate-300 rounded px-2 py-1.5 text-slate-700"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-slate-700 dark:text-slate-300"
         />
         {(coachFilter || statusFilter || dateFilter) && (
           <button
             onClick={() => { setCoachFilter(''); setStatusFilter(''); setDateFilter('') }}
-            className="text-xs text-slate-500 hover:text-slate-700 underline"
+            className="text-xs text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 underline"
           >
             Clear
           </button>
@@ -160,7 +160,7 @@ export default function BookingsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
         {isLoading ? (
           <p className="p-8 text-center text-slate-500">Loading…</p>
         ) : bookings.length === 0 ? (
@@ -168,10 +168,10 @@ export default function BookingsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   {['Skater', 'Coach', 'Date & Time', 'Status', 'Payment', 'Amount', 'Actions'].map(h => (
-                    <th key={h} className="px-4 py-2.5 text-xs font-semibold text-slate-600 uppercase tracking-wide">{h}</th>
+                    <th key={h} className="px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">{h}</th>
                   ))}
                 </tr>
               </thead>

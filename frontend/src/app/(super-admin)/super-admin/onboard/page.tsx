@@ -69,8 +69,8 @@ function flattenErrors(data: Record<string, string[] | string>): string {
 // ── Shared UI primitives ──────────────────────────────────────────────────────
 
 const inputCls =
-  'w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400/40 transition-shadow'
-const labelCls = 'block text-xs font-semibold text-slate-600 mb-1'
+  'w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400/40 transition-shadow'
+const labelCls = 'block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -97,7 +97,7 @@ function ColorField({
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-10 h-9 rounded border border-slate-200 p-0.5 cursor-pointer flex-shrink-0"
+          className="w-10 h-9 rounded border border-slate-200 dark:border-slate-700 p-0.5 cursor-pointer flex-shrink-0"
         />
         <input
           className={inputCls}
@@ -211,12 +211,12 @@ function Step1ClubDetails({
         </div>
         <div className="mt-3 flex items-center gap-3">
           <div
-            className="w-8 h-8 rounded-full border border-slate-200"
+            className="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700"
             style={{ background: primaryColor }}
             title="Primary"
           />
           <div
-            className="w-8 h-8 rounded-full border border-slate-200"
+            className="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700"
             style={{ background: accentColor }}
             title="Accent"
           />
@@ -317,7 +317,7 @@ function Step3AdminAccount({
             <button
               type="button"
               onClick={onShowPasswordToggle}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:dark:text-slate-400 transition-colors"
               tabIndex={-1}
             >
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -357,27 +357,27 @@ function SuccessScreen({
         <CheckCircle2 size={56} className="text-green-500" strokeWidth={1.5} />
       </div>
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Club Created!</h2>
-        <p className="text-slate-600">{result.message}</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Club Created!</h2>
+        <p className="text-slate-600 dark:text-slate-400">{result.message}</p>
       </div>
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 text-left space-y-2 text-sm">
+      <div className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-5 text-left space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-slate-500">Club slug</span>
-          <span className="font-mono font-semibold text-slate-800">{result.club_slug}</span>
+          <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">{result.club_slug}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-slate-500">Club ID</span>
-          <span className="font-mono text-xs text-slate-600">{result.club_id}</span>
+          <span className="font-mono text-xs text-slate-600 dark:text-slate-400">{result.club_id}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-slate-500">Admin email</span>
-          <span className="font-semibold text-slate-800">{result.admin_email}</span>
+          <span className="font-semibold text-slate-800 dark:text-slate-200">{result.admin_email}</span>
         </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <a
           href={`/login?next=/dashboard&hint=${encodeURIComponent(result.admin_email)}`}
-          className="px-5 py-2.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+          className="px-5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:dark:bg-slate-800 transition-colors"
         >
           Log in as club admin
         </a>
@@ -513,7 +513,7 @@ export default function OnboardPage() {
     <div className="max-w-2xl">
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Onboard a New Club</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Onboard a New Club</h1>
         <p className="text-slate-500 mt-1 text-sm">
           Creates the club record and its primary admin account in a single transaction.
         </p>
@@ -559,16 +559,16 @@ export default function OnboardPage() {
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-        <div className="px-6 py-5 border-b border-slate-100">
-          <h2 className="font-semibold text-slate-900">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-700">
+          <h2 className="font-semibold text-slate-900 dark:text-slate-100">
             Step {step + 1}: {STEPS[step]}
           </h2>
         </div>
 
         <div className="px-6 py-6">
           {error && (
-            <div className="mb-5 flex items-start gap-2.5 rounded-lg bg-red-50 border border-red-200 p-4 text-red-700 text-sm whitespace-pre-wrap">
+            <div className="mb-5 flex items-start gap-2.5 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 p-4 text-red-700 dark:text-red-400 text-sm whitespace-pre-wrap">
               <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
               {error}
             </div>
@@ -613,12 +613,12 @@ export default function OnboardPage() {
         </div>
 
         {/* Navigation */}
-        <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
           <button
             type="button"
             onClick={() => setStep((s) => (s > 0 ? ((s - 1) as StepIndex) : s))}
             disabled={step === 0}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:dark:bg-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <ChevronLeft size={15} />
             Back

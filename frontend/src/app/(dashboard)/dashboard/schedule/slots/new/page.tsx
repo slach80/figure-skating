@@ -85,28 +85,28 @@ export default function NewSlotPage() {
   return (
     <div className="max-w-xl space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700">
+        <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Add Availability Slot</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Add Availability Slot</h1>
           <p className="text-slate-500 text-sm mt-0.5">Create one or a recurring series of coach slots</p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-lg p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6 space-y-5">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-lg px-4 py-3">
             {error}
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Coach <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Coach <span className="text-red-500">*</span></label>
           <select
             value={form.coach}
             onChange={e => set('coach', e.target.value)}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
             required
           >
             <option value="">Select a coach…</option>
@@ -117,11 +117,11 @@ export default function NewSlotPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Lesson Type <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Lesson Type <span className="text-red-500">*</span></label>
           <select
             value={form.lesson_type}
             onChange={e => onLessonTypeChange(e.target.value)}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
             required
           >
             <option value="">Select a lesson type…</option>
@@ -137,41 +137,41 @@ export default function NewSlotPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Date <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Date <span className="text-red-500">*</span></label>
           <input
             type="date"
             value={form.date}
             onChange={e => set('date', e.target.value)}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
             required
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Start time <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Start time <span className="text-red-500">*</span></label>
             <input
               type="time"
               value={form.start_time}
               onChange={e => onStartTimeChange(e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">End time <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">End time <span className="text-red-500">*</span></label>
             <input
               type="time"
               value={form.end_time}
               onChange={e => set('end_time', e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
               required
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Recurrence</label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Recurrence</label>
           <div className="flex gap-2">
             {[
               { value: 'none', label: 'None' },
@@ -187,7 +187,7 @@ export default function NewSlotPage() {
                   onChange={e => set('recurrence', e.target.value)}
                   className="accent-primary"
                 />
-                <span className="text-sm text-slate-700">{opt.label}</span>
+                <span className="text-sm text-slate-700 dark:text-slate-300">{opt.label}</span>
               </label>
             ))}
           </div>
@@ -195,24 +195,24 @@ export default function NewSlotPage() {
 
         {form.recurrence !== 'none' && (
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Recurrence end date</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Recurrence end date</label>
             <input
               type="date"
               value={form.recurrence_end_date}
               onChange={e => set('recurrence_end_date', e.target.value)}
               min={form.date}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
             />
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Notes</label>
           <textarea
             value={form.notes}
             onChange={e => set('notes', e.target.value)}
             rows={2}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 resize-none"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200 resize-none"
             placeholder="Optional notes for this slot…"
           />
         </div>
@@ -227,7 +227,7 @@ export default function NewSlotPage() {
           </button>
           <Link
             href="/dashboard/schedule"
-            className="px-5 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50"
+            className="px-5 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             Cancel
           </Link>

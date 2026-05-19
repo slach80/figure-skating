@@ -41,12 +41,12 @@ export default function MemberFamilyPage() {
   if (isLoading) {
     return (
       <div className="space-y-5">
-        <h1 className="text-xl font-bold text-slate-900">Family Members</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Family Members</h1>
         <div className="space-y-3">
           {[1,2].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
-              <div className="h-4 bg-slate-200 rounded w-1/2 mb-2" />
-              <div className="h-3 bg-slate-100 rounded w-1/3" />
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 animate-pulse">
+              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2" />
+              <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/3" />
             </div>
           ))}
         </div>
@@ -56,16 +56,16 @@ export default function MemberFamilyPage() {
 
   return (
     <div className="space-y-5">
-      <h1 className="text-xl font-bold text-slate-900">Family Members</h1>
+      <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Family Members</h1>
 
       {/* Current user's card */}
       {skater && (
         <div>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Your account</p>
-          <div className="bg-white rounded-xl border-2 border-primary/20 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-xl border-2 border-primary/20 p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-slate-900">{skater.first_name} {skater.last_name}</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">{skater.first_name} {skater.last_name}</p>
                 {skater.usfs_number && (
                   <p className="text-xs text-slate-500 font-mono mt-0.5">USFS# {skater.usfs_number}</p>
                 )}
@@ -85,16 +85,16 @@ export default function MemberFamilyPage() {
 
       {/* No family group */}
       {!skater?.family_group && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
           <Users className="mx-auto text-slate-300 mb-3" size={36} />
-          <p className="font-medium text-slate-700">No family group linked</p>
+          <p className="font-medium text-slate-700 dark:text-slate-300">No family group linked</p>
           <p className="text-sm text-slate-400 mt-1">Contact your club administrator to link family members.</p>
         </div>
       )}
 
       {/* Family members */}
       {skater?.family_group && others.length === 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
           <p className="text-slate-500 text-sm">No other family members linked yet.</p>
           <p className="text-xs text-slate-400 mt-1">Ask your club administrator to add additional skaters to your family group.</p>
         </div>
@@ -103,17 +103,17 @@ export default function MemberFamilyPage() {
       {others.length > 0 && (
         <div>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Family members ({others.length})</p>
-          <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
             {others.map(member => (
               <div key={member.id} className="flex items-center justify-between px-4 py-4">
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900">{member.first_name} {member.last_name}</p>
+                  <p className="font-medium text-slate-900 dark:text-slate-100">{member.first_name} {member.last_name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {member.usfs_number && (
                       <span className="text-xs text-slate-400 font-mono">USFS# {member.usfs_number}</span>
                     )}
                     {member.is_minor && (
-                      <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">Minor</span>
+                      <span className="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-600 px-1.5 py-0.5 rounded">Minor</span>
                     )}
                   </div>
                 </div>
@@ -137,8 +137,8 @@ export default function MemberFamilyPage() {
       )}
 
       {/* Help text */}
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 text-xs text-slate-500">
-        <p className="font-medium text-slate-600 mb-1">Managing family memberships</p>
+      <div className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-4 text-xs text-slate-500">
+        <p className="font-medium text-slate-600 dark:text-slate-400 mb-1">Managing family memberships</p>
         <p>Family membership renewals are handled by the account holder. Contact your club administrator to add or remove family members.</p>
       </div>
     </div>

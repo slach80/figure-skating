@@ -31,17 +31,17 @@ function SkaterWaiverSection({ skater }: { skater: SkaterList }) {
     <div>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold text-slate-700">
+          <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
             {skater.first_name} {skater.last_name}
           </p>
           {skater.is_minor && (
-            <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-medium">
+            <span className="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-600 px-1.5 py-0.5 rounded font-medium">
               Minor
             </span>
           )}
         </div>
         {!isLoading && unsignedCount > 0 && (
-          <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">
+          <span className="text-xs bg-amber-100 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded-full font-medium">
             {unsignedCount} unsigned
           </span>
         )}
@@ -50,18 +50,18 @@ function SkaterWaiverSection({ skater }: { skater: SkaterList }) {
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
-              <div className="h-4 bg-slate-200 rounded w-2/3 mb-2" />
-              <div className="h-3 bg-slate-100 rounded w-1/3" />
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 animate-pulse">
+              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3 mb-2" />
+              <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/3" />
             </div>
           ))}
         </div>
       ) : statuses.length === 0 ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-5 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 text-center">
           <p className="text-sm text-slate-500">No waivers required at this time.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700 overflow-hidden">
           {statuses.map(status => (
             <div key={status.template_id} className="flex items-center gap-3 px-4 py-3.5">
               {status.signed ? (
@@ -71,7 +71,7 @@ function SkaterWaiverSection({ skater }: { skater: SkaterList }) {
               )}
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{status.title}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{status.title}</p>
                 {status.signed && status.signed_at ? (
                   <p className="text-xs text-slate-400 mt-0.5">
                     Signed{' '}
@@ -87,7 +87,7 @@ function SkaterWaiverSection({ skater }: { skater: SkaterList }) {
               </div>
 
               {status.signed ? (
-                <span className="shrink-0 text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+                <span className="shrink-0 text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-medium">
                   Signed
                 </span>
               ) : (
@@ -160,13 +160,13 @@ export default function WaiversPage() {
       <div className="space-y-5">
         <div className="flex items-center gap-2">
           <FileText size={20} className="text-slate-400" />
-          <h1 className="text-xl font-bold text-slate-900">Waivers</h1>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Waivers</h1>
         </div>
         <div className="space-y-3">
           {[1, 2].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
-              <div className="h-4 bg-slate-200 rounded w-1/2 mb-2" />
-              <div className="h-3 bg-slate-100 rounded w-3/4" />
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 animate-pulse">
+              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2" />
+              <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-3/4" />
             </div>
           ))}
         </div>
@@ -177,8 +177,8 @@ export default function WaiversPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <FileText size={20} className="text-slate-600" />
-        <h1 className="text-xl font-bold text-slate-900">Waivers</h1>
+        <FileText size={20} className="text-slate-600 dark:text-slate-400" />
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Waivers</h1>
       </div>
 
       <p className="text-sm text-slate-500 -mt-2">
@@ -186,9 +186,9 @@ export default function WaiversPage() {
       </p>
 
       {skatersToShow.length === 0 ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
           <FileText className="mx-auto text-slate-300 mb-3" size={36} />
-          <p className="font-medium text-slate-700">No skater profiles found</p>
+          <p className="font-medium text-slate-700 dark:text-slate-300">No skater profiles found</p>
           <p className="text-sm text-slate-400 mt-1">
             Contact your club administrator to link your skater profile.
           </p>

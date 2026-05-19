@@ -213,14 +213,14 @@ export default function MemberCardDetailPage() {
       {/* Back link */}
       <Link
         href="/member/card"
-        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
       >
         <ChevronLeft size={16} />
         All cards
       </Link>
 
       <div>
-        <h1 className="text-xl font-bold text-slate-900">Membership Card</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Membership Card</h1>
         <p className="text-slate-500 text-sm mt-0.5">
           {card.first_name} {card.last_name}
         </p>
@@ -230,33 +230,33 @@ export default function MemberCardDetailPage() {
       <PhysicalCard card={card} />
 
       {/* Details below the card */}
-      <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100 text-sm">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700 text-sm">
         <div className="px-5 py-3.5 flex justify-between">
           <span className="text-slate-500">Club</span>
-          <span className="font-medium text-slate-900">{card.club.name}</span>
+          <span className="font-medium text-slate-900 dark:text-slate-100">{card.club.name}</span>
         </div>
         {card.usfs_number && (
           <div className="px-5 py-3.5 flex justify-between">
             <span className="text-slate-500">USFS Number</span>
-            <span className="font-mono font-medium text-slate-900">{card.usfs_number}</span>
+            <span className="font-mono font-medium text-slate-900 dark:text-slate-100">{card.usfs_number}</span>
           </div>
         )}
         {card.membership_type && (
           <div className="px-5 py-3.5 flex justify-between">
             <span className="text-slate-500">Membership Type</span>
-            <span className="font-medium text-slate-900">{card.membership_type.name}</span>
+            <span className="font-medium text-slate-900 dark:text-slate-100">{card.membership_type.name}</span>
           </div>
         )}
         <div className="px-5 py-3.5 flex justify-between">
           <span className="text-slate-500">Valid Through</span>
-          <span className="font-medium text-slate-900">
+          <span className="font-medium text-slate-900 dark:text-slate-100">
             {expiryLabel(card.membership_expiry)}
           </span>
         </div>
       </div>
 
       {/* Download hint */}
-      <div className="flex items-center gap-3 rounded-xl bg-slate-50 border border-slate-200 px-5 py-4 text-sm text-slate-500">
+      <div className="flex items-center gap-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-5 py-4 text-sm text-slate-500">
         <Download size={16} className="shrink-0 text-slate-400" />
         <span>
           Add this page to your Home Screen for quick offline access to your membership card.

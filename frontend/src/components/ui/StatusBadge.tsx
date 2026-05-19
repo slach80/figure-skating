@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 
 const STATUS_CONFIG = {
-  active:    { bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-200',  dot: 'bg-green-500' },
-  pending:   { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', dot: 'bg-yellow-500' },
-  expired:   { bg: 'bg-red-50',    text: 'text-red-700',    border: 'border-red-200',    dot: 'bg-red-500' },
-  suspended: { bg: 'bg-gray-100',  text: 'text-gray-700',   border: 'border-gray-300',   dot: 'bg-gray-500' },
+  active:    { bg: 'bg-green-50 dark:bg-green-950/40',   text: 'text-green-700 dark:text-green-400',   border: 'border-green-200 dark:border-green-800',   dot: 'bg-green-500' },
+  pending:   { bg: 'bg-yellow-50 dark:bg-yellow-950/40', text: 'text-yellow-700 dark:text-yellow-400', border: 'border-yellow-200 dark:border-yellow-800', dot: 'bg-yellow-500' },
+  expired:   { bg: 'bg-red-50 dark:bg-red-950/40',       text: 'text-red-700 dark:text-red-400',       border: 'border-red-200 dark:border-red-800',       dot: 'bg-red-500' },
+  suspended: { bg: 'bg-slate-100 dark:bg-slate-800',     text: 'text-slate-600 dark:text-slate-400',   border: 'border-slate-300 dark:border-slate-600',   dot: 'bg-slate-400' },
 } as const
 
 type StatusKey = keyof typeof STATUS_CONFIG

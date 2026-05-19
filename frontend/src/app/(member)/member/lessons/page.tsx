@@ -149,11 +149,11 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 px-4 pb-4 sm:pb-0">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h2 className="font-semibold text-slate-900">Book Lesson</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-700">
+          <h2 className="font-semibold text-slate-900 dark:text-slate-100">Book Lesson</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
             <X size={20} />
           </button>
         </div>
@@ -177,7 +177,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
         <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4">
           {/* Skater selector */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               <User size={13} className="inline mr-1" />
               Skater
             </label>
@@ -187,7 +187,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
               <select
                 value={skaterId}
                 onChange={e => setSkaterId(e.target.value)}
-                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
               >
                 {skaters.map(s => (
                   <option key={s.id} value={s.id}>
@@ -200,7 +200,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
 
           {/* Payment method */}
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-1.5">Payment method</p>
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Payment method</p>
             <div className="space-y-2">
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input
@@ -211,7 +211,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
                   onChange={() => setPaymentMethod('drop_in')}
                   className="mt-0.5 accent-violet-600"
                 />
-                <span className="text-sm text-slate-800">
+                <span className="text-sm text-slate-800 dark:text-slate-200">
                   Drop-in
                   <span className="ml-1.5 font-semibold text-violet-700">${Number(slot.price).toFixed(2)}</span>
                 </span>
@@ -227,7 +227,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
                   disabled={!hasPackages}
                   className="mt-0.5 accent-violet-600"
                 />
-                <span className="text-sm text-slate-800">
+                <span className="text-sm text-slate-800 dark:text-slate-200">
                   Use package credit
                   {!hasPackages && (
                     <span className="ml-1.5 text-xs text-slate-400 font-normal">(no active packages)</span>
@@ -240,11 +240,11 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
           {/* Package selector */}
           {paymentMethod === 'package' && hasPackages && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Select package</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Select package</label>
               <select
                 value={packageId}
                 onChange={e => setPackageId(e.target.value)}
-                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
               >
                 {activePackages.map(p => (
                   <option key={p.id} value={p.id}>
@@ -258,7 +258,7 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
 
           {/* Error */}
           {errorMsg && (
-            <div className="flex items-start gap-2 text-sm text-red-700 bg-red-50 rounded-lg px-3 py-2">
+            <div className="flex items-start gap-2 text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/40 rounded-lg px-3 py-2">
               <AlertCircle size={15} className="mt-0.5 shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -334,7 +334,7 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
     <div className="overflow-x-auto">
       <div className="min-w-[520px]">
         {/* Day headers */}
-        <div className="flex pl-10 border-b border-slate-200">
+        <div className="flex pl-10 border-b border-slate-200 dark:border-slate-700">
           {weekDates.map((d, i) => {
             const ds = toISODate(d)
             const isToday = ds === todayStr
@@ -371,14 +371,14 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
           {weekDates.map((_, dayIndex) => (
             <div
               key={dayIndex}
-              className="flex-1 relative border-l border-slate-100"
+              className="flex-1 relative border-l border-slate-100 dark:border-slate-700"
               style={{ height: gridHeightPx }}
             >
               {/* Hour lines */}
               {timeLabels.map((_, i) => (
                 <div
                   key={i}
-                  className="absolute left-0 right-0 border-t border-slate-100"
+                  className="absolute left-0 right-0 border-t border-slate-100 dark:border-slate-700"
                   style={{ top: i * 60 * SLOT_HEIGHT_PER_MIN }}
                 />
               ))}
@@ -430,17 +430,17 @@ function UpcomingBookingsSidebar() {
 
   return (
     <aside className="w-full md:w-72 shrink-0">
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-        <div className="px-4 py-3 border-b border-slate-100">
-          <h2 className="text-sm font-semibold text-slate-700">Upcoming Lessons</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Upcoming Lessons</h2>
         </div>
 
         {isLoading && (
           <div className="p-4 space-y-3">
             {[1, 2].map(i => (
               <div key={i} className="animate-pulse">
-                <div className="h-3 bg-slate-100 rounded w-3/4 mb-1.5" />
-                <div className="h-2.5 bg-slate-100 rounded w-1/2" />
+                <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-3/4 mb-1.5" />
+                <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded w-1/2" />
               </div>
             ))}
           </div>
@@ -459,7 +459,7 @@ function UpcomingBookingsSidebar() {
             <div key={b.id} className="px-4 py-3 border-b border-slate-50 last:border-0">
               <div className="flex items-start justify-between gap-1">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-800 truncate">{b.lesson_type_name}</p>
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{b.lesson_type_name}</p>
                   <p className="text-xs text-slate-500 truncate">with {b.coach_name}</p>
                   <p className="text-xs text-slate-400 mt-0.5">
                     {new Date(b.scheduled_date + 'T00:00:00').toLocaleDateString('en-US', {
@@ -478,7 +478,7 @@ function UpcomingBookingsSidebar() {
                   {!isCancelling ? (
                     <button
                       onClick={() => setCancellingId(b.id)}
-                      className="text-xs text-red-500 hover:text-red-700"
+                      className="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400"
                     >
                       Cancel
                     </button>
@@ -563,35 +563,35 @@ export default function MemberLessonsPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-slate-900">Book a Lesson</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Book a Lesson</h1>
       </div>
 
       {/* Two-column layout on md+ */}
       <div className="flex flex-col md:flex-row gap-4 items-start">
         {/* Calendar panel */}
-        <div className="flex-1 min-w-0 bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           {/* Week navigation */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700">
             <div className="flex items-center gap-1">
               <button
                 onClick={prevWeek}
-                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                 aria-label="Previous week"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 onClick={nextWeek}
-                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                 aria-label="Next week"
               >
                 <ChevronRight size={18} />
               </button>
-              <span className="ml-1 text-sm font-semibold text-slate-700">{weekLabel}</span>
+              <span className="ml-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{weekLabel}</span>
             </div>
             <button
               onClick={goToToday}
-              className="text-xs px-2.5 py-1 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50"
+              className="text-xs px-2.5 py-1 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900"
             >
               Today
             </button>
@@ -615,7 +615,7 @@ export default function MemberLessonsPage() {
           {!slotsLoading && !slotsError && slots.length === 0 && (
             <div className="px-4 py-16 text-center">
               <Calendar className="mx-auto text-slate-300 mb-3" size={36} />
-              <p className="font-medium text-slate-600">No available slots this week</p>
+              <p className="font-medium text-slate-600 dark:text-slate-400">No available slots this week</p>
               <p className="text-sm text-slate-400 mt-1">Try another week or check back later.</p>
             </div>
           )}

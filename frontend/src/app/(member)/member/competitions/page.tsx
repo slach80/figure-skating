@@ -47,18 +47,18 @@ function OpenCompetitionCard({ comp }: { comp: Competition }) {
   const router = useRouter()
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 transition-colors">
+    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 p-4 hover:border-slate-300 dark:hover:dark:border-slate-600 transition-colors">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3 className="font-bold text-slate-900">{comp.name}</h3>
+            <h3 className="font-bold text-slate-900 dark:text-slate-100">{comp.name}</h3>
             {comp.is_late ? (
-              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">
+              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:text-amber-400 font-medium">
                 <Clock size={10} />
                 LATE
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-400 font-medium">
                 <CheckCircle size={10} />
                 Open
               </span>
@@ -116,10 +116,10 @@ function OpenCompetitionCard({ comp }: { comp: Competition }) {
 
 function ClosedCompetitionCard({ comp }: { comp: Competition }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-4 opacity-70">
+    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 opacity-70">
       <div className="flex items-center gap-2 flex-wrap mb-1">
-        <h3 className="font-bold text-slate-800">{comp.name}</h3>
-        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+        <h3 className="font-bold text-slate-800 dark:text-slate-200">{comp.name}</h3>
+        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
           <AlertCircle size={10} />
           Entry Closed
         </span>
@@ -163,9 +163,9 @@ function MyEntriesSection({ entries }: { entries: CompetitionEntry[] }) {
       </h2>
       <div className="space-y-3">
         {Array.from(grouped.entries()).map(([compId, group]) => (
-          <div key={compId} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-            <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100">
-              <p className="text-sm font-semibold text-slate-700">{group.name}</p>
+          <div key={compId} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{group.name}</p>
             </div>
             <div className="divide-y divide-slate-50">
               {group.entries.map(entry => (
@@ -174,7 +174,7 @@ function MyEntriesSection({ entries }: { entries: CompetitionEntry[] }) {
                   className={`flex items-center justify-between px-4 py-2.5 ${entry.status === 'scratched' ? 'opacity-50' : ''}`}
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-slate-800 truncate">{entry.category_name}</p>
+                    <p className="text-sm text-slate-800 dark:text-slate-200 truncate">{entry.category_name}</p>
                     {entry.skater_name && (
                       <p className="text-xs text-slate-400">{entry.skater_name}</p>
                     )}
@@ -209,14 +209,14 @@ function Tabs({
   pastCount: number
 }) {
   return (
-    <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+    <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
       {(['open', 'past'] as const).map(tab => (
         <button
           key={tab}
           onClick={() => onChange(tab)}
           className={`flex-1 text-sm font-medium py-1.5 px-3 rounded-md transition-colors ${
             active === tab
-              ? 'bg-white text-slate-900 shadow-sm'
+              ? 'bg-white text-slate-900 dark:text-slate-100 shadow-sm'
               : 'text-slate-500 hover:text-slate-700'
           }`}
         >
@@ -247,7 +247,7 @@ export default function MemberCompetitionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-bold text-slate-900">Competitions</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Competitions</h1>
         <p className="text-slate-500 text-sm mt-0.5">
           Enter upcoming competitions and track your entries
         </p>
@@ -256,9 +256,9 @@ export default function MemberCompetitionsPage() {
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
-              <div className="h-5 bg-slate-200 rounded w-2/3 mb-2" />
-              <div className="h-3 bg-slate-100 rounded w-1/3" />
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 animate-pulse">
+              <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-2/3 mb-2" />
+              <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/3" />
             </div>
           ))}
         </div>
@@ -274,9 +274,9 @@ export default function MemberCompetitionsPage() {
           {activeTab === 'open' && (
             <>
               {openCompetitions.length === 0 ? (
-                <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
+                <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-10 text-center">
                   <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
-                  <p className="font-medium text-slate-700">No open competitions</p>
+                  <p className="font-medium text-slate-700 dark:text-slate-300">No open competitions</p>
                   <p className="text-sm text-slate-400 mt-1">
                     Check back later for upcoming events.
                   </p>
@@ -294,7 +294,7 @@ export default function MemberCompetitionsPage() {
           {activeTab === 'past' && (
             <>
               {pastCompetitions.length === 0 ? (
-                <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
+                <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-10 text-center">
                   <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
                   <p className="text-slate-500">No past competitions yet.</p>
                 </div>

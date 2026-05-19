@@ -40,14 +40,14 @@ export default function MemberRenewPage() {
     <div className="space-y-6">
       <Link
         href="/member"
-        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
       >
         <ChevronLeft size={16} />
         Back to my profile
       </Link>
 
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Renew Membership</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Renew Membership</h1>
         <p className="text-slate-500 text-sm mt-1">Choose a membership type to continue</p>
       </div>
 
@@ -58,18 +58,18 @@ export default function MemberRenewPage() {
             onClick={() => setSelectedTypeId(type.id)}
             className={`w-full text-left rounded-xl border p-5 transition-all ${
               selectedTypeId === type.id
-                ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                : 'border-slate-200 bg-white hover:border-slate-300'
+                ? 'border-primary bg-primary/5 dark:bg-primary/10 dark:bg-primary/20 ring-2 ring-primary/20'
+                : 'border-slate-200 bg-white dark:bg-slate-800 hover:border-slate-300'
             }`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-slate-900">{type.name}</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
                 {type.usfs_category && (
                   <p className="text-xs text-slate-400 mt-0.5">USFS Category: {type.usfs_category}</p>
                 )}
               </div>
-              <p className="text-xl font-bold text-slate-900">
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 ${parseFloat(type.price_in_club).toFixed(2)}
               </p>
             </div>
@@ -84,10 +84,10 @@ export default function MemberRenewPage() {
       {apiError && <ErrorAlert message={apiError} />}
 
       {selectedType && (
-        <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-4">
+        <div className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-5 space-y-4">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-600">{selectedType.name}</span>
-            <span className="font-bold text-slate-900">${parseFloat(selectedType.price_in_club).toFixed(2)}</span>
+            <span className="text-slate-600 dark:text-slate-400">{selectedType.name}</span>
+            <span className="font-bold text-slate-900 dark:text-slate-100">${parseFloat(selectedType.price_in_club).toFixed(2)}</span>
           </div>
           <p className="text-xs text-slate-400">
             Secure payment via Stripe. Membership activates automatically after payment.

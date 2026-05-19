@@ -86,7 +86,7 @@ function Step1SelectSkater({ skaters, selectedSkater, onSelect, onNext }: Step1P
     return (
       <div className="text-center py-12">
         <User className="mx-auto text-slate-300 mb-3" size={36} />
-        <p className="font-medium text-slate-700">No skater profiles found</p>
+        <p className="font-medium text-slate-700 dark:text-slate-300">No skater profiles found</p>
         <p className="text-sm text-slate-400 mt-1">
           Please contact club staff to set up your skater profile.
         </p>
@@ -96,7 +96,7 @@ function Step1SelectSkater({ skaters, selectedSkater, onSelect, onNext }: Step1P
 
   return (
     <div>
-      <h2 className="text-base font-semibold text-slate-800 mb-4">Who is entering?</h2>
+      <h2 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-4">Who is entering?</h2>
       <div className="space-y-2">
         {skaters.map(skater => {
           const selected = selectedSkater?.id === skater.id
@@ -107,7 +107,7 @@ function Step1SelectSkater({ skaters, selectedSkater, onSelect, onNext }: Step1P
               className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                 selected
                   ? 'border-primary bg-primary/5'
-                  : 'border-slate-200 hover:border-slate-300 bg-white'
+                  : 'border-slate-200 hover:border-slate-300 dark:hover:dark:border-slate-600 bg-white'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -120,7 +120,7 @@ function Step1SelectSkater({ skaters, selectedSkater, onSelect, onNext }: Step1P
                   {skater.last_name[0]}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">
+                  <p className="font-semibold text-slate-900 dark:text-slate-100">
                     {skater.first_name} {skater.last_name}
                   </p>
                   <p className="text-xs text-slate-500">
@@ -221,13 +221,13 @@ function Step2SelectCategories({
     return (
       <div className="text-center py-12">
         <Trophy className="mx-auto text-slate-300 mb-3" size={36} />
-        <p className="font-medium text-slate-700">No categories available</p>
+        <p className="font-medium text-slate-700 dark:text-slate-300">No categories available</p>
         <p className="text-sm text-slate-400 mt-1">
           Categories have not been added to this competition yet.
         </p>
         <button
           onClick={onBack}
-          className="mt-4 flex items-center gap-2 mx-auto text-sm text-slate-500 hover:text-slate-700"
+          className="mt-4 flex items-center gap-2 mx-auto text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
         >
           <ArrowLeft size={14} /> Go back
         </button>
@@ -237,7 +237,7 @@ function Step2SelectCategories({
 
   return (
     <div>
-      <h2 className="text-base font-semibold text-slate-800 mb-1">Select categories to enter</h2>
+      <h2 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-1">Select categories to enter</h2>
       <p className="text-sm text-slate-500 mb-4">
         Base entry fee: ${baseEntryFee.toFixed(2)} per event
         {isLate && lateFee > 0 && (
@@ -246,7 +246,7 @@ function Step2SelectCategories({
       </p>
 
       {isLate && (
-        <div className="flex items-start gap-2 p-3 mb-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-700">
+        <div className="flex items-start gap-2 p-3 mb-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-700 dark:text-amber-400">
           <Clock size={16} className="flex-shrink-0 mt-0.5" />
           <span>
             The standard entry deadline has passed. A late fee of $
@@ -275,10 +275,10 @@ function Step2SelectCategories({
                     key={cat.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
                       disabled
-                        ? 'bg-slate-50 border-slate-100 cursor-not-allowed opacity-60'
+                        ? 'bg-slate-50 border-slate-100 dark:border-slate-700 cursor-not-allowed opacity-60'
                         : checked
                         ? 'bg-primary/5 border-primary'
-                        : 'bg-white border-slate-200 hover:border-slate-300'
+                        : 'bg-white border-slate-200 dark:border-slate-700 hover:border-slate-300'
                     }`}
                   >
                     <input
@@ -290,14 +290,14 @@ function Step2SelectCategories({
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-medium text-slate-800">{cat.name}</span>
+                        <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{cat.name}</span>
                         {alreadyEntered && (
-                          <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                          <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-400 font-medium">
                             Already entered
                           </span>
                         )}
                         {isFull && (
-                          <span className="text-xs px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                          <span className="text-xs px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
                             Full
                           </span>
                         )}
@@ -306,7 +306,7 @@ function Step2SelectCategories({
                         {SEGMENT_LABELS[cat.segment] ?? cat.segment} · {cat.level}
                       </p>
                     </div>
-                    <span className="text-sm font-semibold text-slate-700 flex-shrink-0">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex-shrink-0">
                       ${catFee.toFixed(2)}
                     </span>
                   </label>
@@ -319,11 +319,11 @@ function Step2SelectCategories({
 
       {/* Running total */}
       {selectedIds.size > 0 && (
-        <div className="mt-4 p-3 bg-slate-50 rounded-lg flex items-center justify-between">
-          <span className="text-sm text-slate-600">
+        <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg flex items-center justify-between">
+          <span className="text-sm text-slate-600 dark:text-slate-400">
             {selectedIds.size} {selectedIds.size === 1 ? 'event' : 'events'} selected
           </span>
-          <span className="text-base font-bold text-slate-900">
+          <span className="text-base font-bold text-slate-900 dark:text-slate-100">
             Total: ${runningTotal.toFixed(2)}
           </span>
         </div>
@@ -332,7 +332,7 @@ function Step2SelectCategories({
       <div className="mt-6 flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
         >
           <ArrowLeft size={14} /> Back
         </button>
@@ -392,7 +392,7 @@ function Step3ReviewSubmit({
               <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <CheckCircle size={28} className="text-emerald-600" />
               </div>
-              <h2 className="text-lg font-bold text-slate-900">Entries Submitted!</h2>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Entries Submitted!</h2>
               <p className="text-sm text-slate-500 mt-1">
                 Your entries have been submitted for {competition.name}.
               </p>
@@ -402,7 +402,7 @@ function Step3ReviewSubmit({
               <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <AlertTriangle size={28} className="text-amber-600" />
               </div>
-              <h2 className="text-lg font-bold text-slate-900">Partially Submitted</h2>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Partially Submitted</h2>
               <p className="text-sm text-slate-500 mt-1">
                 {succeeded.length} of {results.length} entries were submitted successfully.
               </p>
@@ -419,10 +419,10 @@ function Step3ReviewSubmit({
               {succeeded.map(r => (
                 <div
                   key={r.categoryId}
-                  className="flex items-center gap-2 p-2.5 bg-emerald-50 rounded-lg"
+                  className="flex items-center gap-2 p-2.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg"
                 >
                   <CheckCircle size={14} className="text-emerald-500 flex-shrink-0" />
-                  <span className="text-sm text-slate-700">{r.categoryName}</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">{r.categoryName}</span>
                 </div>
               ))}
             </div>
@@ -438,11 +438,11 @@ function Step3ReviewSubmit({
               {failed.map(r => (
                 <div
                   key={r.categoryId}
-                  className="flex items-start gap-2 p-2.5 bg-red-50 rounded-lg"
+                  className="flex items-start gap-2 p-2.5 bg-red-50 dark:bg-red-950/40 rounded-lg"
                 >
                   <AlertTriangle size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm text-slate-700">{r.categoryName}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{r.categoryName}</p>
                     {r.error && <p className="text-xs text-red-500 mt-0.5">{r.error}</p>}
                   </div>
                 </div>
@@ -463,10 +463,10 @@ function Step3ReviewSubmit({
 
   return (
     <div>
-      <h2 className="text-base font-semibold text-slate-800 mb-4">Review your entries</h2>
+      <h2 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-4">Review your entries</h2>
 
       {isLate && (
-        <div className="flex items-start gap-2 p-3 mb-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-700">
+        <div className="flex items-start gap-2 p-3 mb-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-700 dark:text-amber-400">
           <Clock size={16} className="flex-shrink-0 mt-0.5" />
           <span>
             Late entries include a ${lateFee.toFixed(2)} late fee per event.
@@ -475,9 +475,9 @@ function Step3ReviewSubmit({
       )}
 
       {/* Skater */}
-      <div className="bg-slate-50 rounded-lg p-3 mb-4">
+      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-4">
         <p className="text-xs text-slate-500 mb-0.5">Skater</p>
-        <p className="font-semibold text-slate-900">
+        <p className="font-semibold text-slate-900 dark:text-slate-100">
           {skater.first_name} {skater.last_name}
         </p>
         {skater.usfs_number && (
@@ -486,9 +486,9 @@ function Step3ReviewSubmit({
       </div>
 
       {/* Entries table */}
-      <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
+      <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden mb-4">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
+          <thead className="bg-slate-50 dark:bg-slate-900 text-xs text-slate-500 uppercase tracking-wide">
             <tr>
               <th className="text-left px-3 py-2">Category</th>
               <th className="text-right px-3 py-2">Base</th>
@@ -496,13 +496,13 @@ function Step3ReviewSubmit({
               <th className="text-right px-3 py-2">Fee</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
             {selectedCategories.map(cat => {
               const catFee = baseEntryFee + parseFloat(cat.additional_fee)
               const total = catFee + (isLate ? lateFee : 0)
               return (
                 <tr key={cat.id}>
-                  <td className="px-3 py-2 text-slate-700">{cat.name}</td>
+                  <td className="px-3 py-2 text-slate-700 dark:text-slate-300">{cat.name}</td>
                   <td className="px-3 py-2 text-right text-slate-500">
                     ${catFee.toFixed(2)}
                   </td>
@@ -511,22 +511,22 @@ function Step3ReviewSubmit({
                       +${lateFee.toFixed(2)}
                     </td>
                   )}
-                  <td className="px-3 py-2 text-right font-semibold text-slate-900">
+                  <td className="px-3 py-2 text-right font-semibold text-slate-900 dark:text-slate-100">
                     ${total.toFixed(2)}
                   </td>
                 </tr>
               )
             })}
           </tbody>
-          <tfoot className="bg-slate-50">
+          <tfoot className="bg-slate-50 dark:bg-slate-900">
             <tr>
               <td
                 colSpan={isLate ? 3 : 2}
-                className="px-3 py-2 text-sm font-bold text-slate-700 text-right"
+                className="px-3 py-2 text-sm font-bold text-slate-700 dark:text-slate-300 text-right"
               >
                 Total
               </td>
-              <td className="px-3 py-2 text-right font-bold text-slate-900">
+              <td className="px-3 py-2 text-right font-bold text-slate-900 dark:text-slate-100">
                 ${total.toFixed(2)}
               </td>
             </tr>
@@ -538,7 +538,7 @@ function Step3ReviewSubmit({
         <button
           onClick={onBack}
           disabled={isSubmitting}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-40"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:dark:bg-slate-900 disabled:opacity-40"
         >
           <ArrowLeft size={14} /> Back
         </button>
@@ -671,7 +671,7 @@ export default function CompetitionEnterPage() {
       {/* Back link */}
       <button
         onClick={() => router.push('/member/competitions')}
-        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 mb-4"
+        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 mb-4"
       >
         <ArrowLeft size={14} />
         All competitions
@@ -679,7 +679,7 @@ export default function CompetitionEnterPage() {
 
       {/* Competition header */}
       <div className="mb-5">
-        <h1 className="text-xl font-bold text-slate-900">{competition.name}</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">{competition.name}</h1>
         <p className="text-sm text-slate-500 mt-0.5">
           {new Date(competition.start_date).toLocaleDateString('en-US', {
             month: 'long',
@@ -690,7 +690,7 @@ export default function CompetitionEnterPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
         {/* Only show step indicator when not on confirmation screen */}
         {entryResults === null && <StepIndicator step={step} />}
 

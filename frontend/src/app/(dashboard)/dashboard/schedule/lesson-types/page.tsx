@@ -65,19 +65,19 @@ function TypeRow({ lt }: { lt: LessonType }) {
 
   if (!editing) {
     return (
-      <tr className="border-t border-slate-100 hover:bg-slate-50">
+      <tr className="border-t border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900">
         <td className="px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: lt.color }} />
-            <span className="text-sm font-medium text-slate-800">{lt.name}</span>
+            <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{lt.name}</span>
           </div>
           {lt.description && <p className="text-xs text-slate-500 mt-0.5 ml-5">{lt.description}</p>}
         </td>
-        <td className="px-4 py-3 text-sm text-slate-700">{FORMAT_LABELS[lt.lesson_format]}</td>
-        <td className="px-4 py-3 text-sm text-slate-700">{lt.duration_minutes} min</td>
-        <td className="px-4 py-3 text-sm text-slate-700">${lt.price}</td>
+        <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{FORMAT_LABELS[lt.lesson_format]}</td>
+        <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{lt.duration_minutes} min</td>
+        <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">${lt.price}</td>
         <td className="px-4 py-3 text-sm text-slate-500">{lt.drop_in_price ? `$${lt.drop_in_price}` : '—'}</td>
-        <td className="px-4 py-3 text-sm text-slate-700">{lt.max_participants}</td>
+        <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{lt.max_participants}</td>
         <td className="px-4 py-3">
           <span className={`text-xs px-2 py-0.5 rounded-full ${lt.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
             {lt.is_active ? 'Active' : 'Inactive'}
@@ -93,20 +93,20 @@ function TypeRow({ lt }: { lt: LessonType }) {
   }
 
   return (
-    <tr className="border-t border-slate-100 bg-blue-50">
+    <tr className="border-t border-slate-100 dark:border-slate-700 bg-blue-50 dark:bg-blue-950/40">
       <td className="px-4 py-3">
         <div className="flex items-center gap-2 mb-1">
           <input
             type="color"
             value={form.color}
             onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
-            className="w-7 h-7 rounded cursor-pointer border border-slate-300"
+            className="w-7 h-7 rounded cursor-pointer border border-slate-300 dark:border-slate-600"
           />
           <input
             type="text"
             value={form.name}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            className="text-sm border border-slate-300 rounded px-2 py-1 w-40"
+            className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-40"
             placeholder="Name"
           />
         </div>
@@ -114,7 +114,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           type="text"
           value={form.description}
           onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-          className="text-xs border border-slate-300 rounded px-2 py-1 w-full"
+          className="text-xs border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-full"
           placeholder="Description"
         />
       </td>
@@ -122,7 +122,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
         <select
           value={form.lesson_format}
           onChange={e => setForm(f => ({ ...f, lesson_format: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1"
         >
           {Object.entries(FORMAT_LABELS).map(([v, l]) => (
             <option key={v} value={v}>{l}</option>
@@ -134,7 +134,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           type="number"
           value={form.duration_minutes}
           onChange={e => setForm(f => ({ ...f, duration_minutes: Number(e.target.value) }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-16"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-16"
         />
       </td>
       <td className="px-4 py-3">
@@ -142,7 +142,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           type="text"
           value={form.price}
           onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-20"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-20"
         />
       </td>
       <td className="px-4 py-3">
@@ -150,7 +150,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           type="text"
           value={form.drop_in_price}
           onChange={e => setForm(f => ({ ...f, drop_in_price: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-20"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-20"
           placeholder="Optional"
         />
       </td>
@@ -159,7 +159,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           type="number"
           value={form.max_participants}
           onChange={e => setForm(f => ({ ...f, max_participants: Number(e.target.value) }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-16"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-16"
         />
       </td>
       <td className="px-4 py-3">
@@ -169,7 +169,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
             checked={form.is_active}
             onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))}
           />
-          <span className="text-xs text-slate-600">Active</span>
+          <span className="text-xs text-slate-600 dark:text-slate-400">Active</span>
         </label>
       </td>
       <td className="px-4 py-3">
@@ -177,11 +177,11 @@ function TypeRow({ lt }: { lt: LessonType }) {
           <button
             onClick={save}
             disabled={update.isPending}
-            className="text-emerald-600 hover:text-emerald-700 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>
-          <button onClick={() => setEditing(false)} className="text-slate-400 hover:text-slate-600">
+          <button onClick={() => setEditing(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
             <X size={16} />
           </button>
         </div>
@@ -203,20 +203,20 @@ function AddRow({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <tr className="border-t border-slate-100 bg-emerald-50">
+    <tr className="border-t border-slate-100 dark:border-slate-700 bg-emerald-50 dark:bg-emerald-950/40">
       <td className="px-4 py-3">
         <div className="flex items-center gap-2 mb-1">
           <input
             type="color"
             value={form.color}
             onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
-            className="w-7 h-7 rounded cursor-pointer border border-slate-300"
+            className="w-7 h-7 rounded cursor-pointer border border-slate-300 dark:border-slate-600"
           />
           <input
             type="text"
             value={form.name}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            className="text-sm border border-slate-300 rounded px-2 py-1 w-40"
+            className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-40"
             placeholder="Name *"
             autoFocus
           />
@@ -236,7 +236,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
         <select
           value={form.lesson_format}
           onChange={e => setForm(f => ({ ...f, lesson_format: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1"
         >
           {Object.entries(FORMAT_LABELS).map(([v, l]) => (
             <option key={v} value={v}>{l}</option>
@@ -248,7 +248,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
           type="number"
           value={form.duration_minutes}
           onChange={e => setForm(f => ({ ...f, duration_minutes: Number(e.target.value) }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-16"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-16"
         />
       </td>
       <td className="px-4 py-3">
@@ -256,7 +256,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
           type="text"
           value={form.price}
           onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-20"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-20"
           placeholder="0.00"
         />
       </td>
@@ -265,7 +265,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
           type="text"
           value={form.drop_in_price}
           onChange={e => setForm(f => ({ ...f, drop_in_price: e.target.value }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-20"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-20"
           placeholder="Optional"
         />
       </td>
@@ -274,7 +274,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
           type="number"
           value={form.max_participants}
           onChange={e => setForm(f => ({ ...f, max_participants: Number(e.target.value) }))}
-          className="text-sm border border-slate-300 rounded px-2 py-1 w-16"
+          className="text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1 w-16"
         />
       </td>
       <td className="px-4 py-3" />
@@ -283,11 +283,11 @@ function AddRow({ onDone }: { onDone: () => void }) {
           <button
             onClick={save}
             disabled={create.isPending || !form.name}
-            className="text-emerald-600 hover:text-emerald-700 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>
-          <button onClick={onDone} className="text-slate-400 hover:text-slate-600">
+          <button onClick={onDone} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
             <X size={16} />
           </button>
         </div>
@@ -304,11 +304,11 @@ export default function LessonTypesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700">
+          <Link href="/dashboard/schedule" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Lesson Types</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Lesson Types</h1>
             <p className="text-slate-500 text-sm mt-0.5">Define your coaching formats, durations, and pricing</p>
           </div>
         </div>
@@ -320,16 +320,16 @@ export default function LessonTypesPage() {
         </button>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
         {isLoading ? (
           <p className="p-8 text-center text-slate-500">Loading…</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   {['Name', 'Format', 'Duration', 'Price', 'Drop-in', 'Max', 'Status', ''].map(h => (
-                    <th key={h} className="px-4 py-2.5 text-xs font-semibold text-slate-600 uppercase tracking-wide">{h}</th>
+                    <th key={h} className="px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">{h}</th>
                   ))}
                 </tr>
               </thead>

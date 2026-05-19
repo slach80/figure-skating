@@ -82,10 +82,10 @@ export default function BookLessonPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <Link href="/member/lessons" className="text-slate-400 hover:text-slate-600">
+        <Link href="/member/lessons" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">
           <ChevronLeft size={20} />
         </Link>
-        <h1 className="text-xl font-bold text-slate-900">Book a Lesson</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Book a Lesson</h1>
       </div>
 
       {/* Step indicator */}
@@ -96,7 +96,7 @@ export default function BookLessonPage() {
               step > i + 1 ? 'bg-emerald-500 text-white' : step === i + 1 ? 'bg-primary text-white' : 'bg-slate-200 text-slate-500'
             }`}>{step > i + 1 ? '✓' : i + 1}</div>
             <span className={`text-xs ${step === i + 1 ? 'font-medium text-slate-800' : 'text-slate-400'}`}>{label}</span>
-            {i < 2 && <div className="w-6 h-px bg-slate-200" />}
+            {i < 2 && <div className="w-6 h-px bg-slate-200 dark:bg-slate-700" />}
           </div>
         ))}
       </div>
@@ -105,11 +105,11 @@ export default function BookLessonPage() {
       {step === 1 && (
         <div className="space-y-4">
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-2">Coach (optional)</p>
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Coach (optional)</p>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedCoach(null)}
-                className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${!selectedCoach ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 hover:border-slate-400'}`}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${!selectedCoach ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 dark:text-slate-400 hover:border-slate-400'}`}
               >
                 Any coach
               </button>
@@ -117,7 +117,7 @@ export default function BookLessonPage() {
                 <button
                   key={c.id}
                   onClick={() => setSelectedCoach(c)}
-                  className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${selectedCoach?.id === c.id ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 hover:border-slate-400'}`}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${selectedCoach?.id === c.id ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 dark:text-slate-400 hover:border-slate-400'}`}
                 >
                   {c.user_name}
                 </button>
@@ -126,7 +126,7 @@ export default function BookLessonPage() {
           </div>
 
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-2">Lesson type</p>
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Lesson type</p>
             <div className="space-y-2">
               {lessonTypes.filter(lt => lt.is_active && lt.lesson_format !== 'club_ice').map(lt => (
                 <button
@@ -135,15 +135,15 @@ export default function BookLessonPage() {
                   className={`w-full text-left rounded-xl border p-4 transition-all ${
                     selectedType?.id === lt.id
                       ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      : 'border-slate-200 bg-white dark:bg-slate-800 hover:border-slate-300'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ background: lt.color }} />
-                      <span className="font-medium text-slate-900">{lt.name}</span>
+                      <span className="font-medium text-slate-900 dark:text-slate-100">{lt.name}</span>
                     </div>
-                    <span className="text-slate-700 font-semibold">${lt.price}</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-semibold">${lt.price}</span>
                   </div>
                   <p className="text-xs text-slate-500 mt-1 ml-5">
                     {FORMAT_LABELS[lt.lesson_format]} · {lt.duration_minutes} min
@@ -170,17 +170,17 @@ export default function BookLessonPage() {
           <div className="flex items-center justify-between">
             <button
               onClick={() => { const d = new Date(weekAnchor); d.setDate(d.getDate() - 14); setWeekAnchor(d) }}
-              className="p-2 rounded-lg border border-slate-300 hover:bg-slate-50"
+              className="p-2 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900"
             >
               <ChevronLeft size={16} />
             </button>
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
               {weekAnchor.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} —{' '}
               {(() => { const d = new Date(weekAnchor); d.setDate(d.getDate() + 13); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) })()}
             </span>
             <button
               onClick={() => { const d = new Date(weekAnchor); d.setDate(d.getDate() + 14); setWeekAnchor(d) }}
-              className="p-2 rounded-lg border border-slate-300 hover:bg-slate-50"
+              className="p-2 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900"
             >
               <ChevronRight size={16} />
             </button>
@@ -188,10 +188,10 @@ export default function BookLessonPage() {
 
           {slotsLoading ? (
             <div className="space-y-3">
-              {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-100 rounded-xl animate-pulse" />)}
+              {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />)}
             </div>
           ) : slotDates.length === 0 ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
               <p className="text-slate-500">No available slots in this period.</p>
               <p className="text-xs text-slate-400 mt-1">Try a different date range or lesson type.</p>
             </div>
@@ -207,18 +207,18 @@ export default function BookLessonPage() {
                       <button
                         key={slot.id}
                         onClick={() => { setSelectedSlot(slot); setStep(3) }}
-                        className="w-full text-left bg-white rounded-xl border border-slate-200 p-4 hover:border-primary hover:bg-primary/5 transition-all"
+                        className="w-full text-left bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-primary hover:bg-primary/5 transition-all"
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium text-slate-900">
+                            <p className="font-medium text-slate-900 dark:text-slate-100">
                               {slot.start_time.slice(0, 5)} — {slot.end_time.slice(0, 5)}
                             </p>
                             <p className="text-xs text-slate-500 mt-0.5">
                               {slot.coach.user_name} · {slot.spots_remaining} spot{slot.spots_remaining !== 1 ? 's' : ''} left
                             </p>
                           </div>
-                          <span className="font-bold text-slate-800">${slot.effective_price}</span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200">${slot.effective_price}</span>
                         </div>
                       </button>
                     ))}
@@ -228,7 +228,7 @@ export default function BookLessonPage() {
             </div>
           )}
 
-          <button onClick={() => setStep(1)} className="text-sm text-slate-500 hover:text-slate-700">
+          <button onClick={() => setStep(1)} className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
             ← Back
           </button>
         </div>
@@ -237,31 +237,31 @@ export default function BookLessonPage() {
       {/* Step 3: Confirm */}
       {step === 3 && selectedSlot && selectedType && (
         <div className="space-y-4">
-          <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
             <div className="px-5 py-4">
               <p className="text-xs text-slate-500 mb-0.5">Lesson</p>
-              <p className="font-semibold text-slate-900">{selectedType.name}</p>
+              <p className="font-semibold text-slate-900 dark:text-slate-100">{selectedType.name}</p>
               <p className="text-sm text-slate-500">{FORMAT_LABELS[selectedType.lesson_format]} · {selectedType.duration_minutes} min</p>
             </div>
             <div className="px-5 py-4">
               <p className="text-xs text-slate-500 mb-0.5">Coach</p>
-              <p className="font-semibold text-slate-900">{selectedSlot.coach.user_name}</p>
+              <p className="font-semibold text-slate-900 dark:text-slate-100">{selectedSlot.coach.user_name}</p>
             </div>
             <div className="px-5 py-4">
               <p className="text-xs text-slate-500 mb-0.5">Date & time</p>
-              <p className="font-semibold text-slate-900">
+              <p className="font-semibold text-slate-900 dark:text-slate-100">
                 {new Date(selectedSlot.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
               </p>
               <p className="text-sm text-slate-500">{selectedSlot.start_time.slice(0, 5)} — {selectedSlot.end_time.slice(0, 5)}</p>
             </div>
             <div className="px-5 py-4 flex items-center justify-between">
               <p className="text-xs text-slate-500">Total</p>
-              <p className="text-xl font-bold text-slate-900">${selectedSlot.effective_price}</p>
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100">${selectedSlot.effective_price}</p>
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-xl px-4 py-3">{error}</div>
           )}
 
           <button
@@ -271,7 +271,7 @@ export default function BookLessonPage() {
           >
             {createBooking.isPending ? 'Booking…' : 'Confirm Booking'}
           </button>
-          <button onClick={() => setStep(2)} className="text-sm text-slate-500 hover:text-slate-700 w-full text-center">
+          <button onClick={() => setStep(2)} className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 w-full text-center">
             ← Back
           </button>
         </div>

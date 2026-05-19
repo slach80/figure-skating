@@ -67,17 +67,17 @@ export default function CommunicationsPage() {
     <div className="space-y-6">
       <div>
         <h1>Communications</h1>
-        <p className="text-slate-600 mt-1 text-sm">Send announcements and updates to club members</p>
+        <p className="text-slate-600 dark:text-slate-400 mt-1 text-sm">Send announcements and updates to club members</p>
       </div>
 
       {/* Broadcast Email card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
+          <div className="w-8 h-8 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
             <Mail className="w-4 h-4 text-primary" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-slate-900">Broadcast Email</h2>
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Broadcast Email</h2>
             <p className="text-xs text-slate-500">Compose and send an email to a filtered group of members</p>
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function CommunicationsPage() {
         <div className="px-6 py-5 space-y-5">
           {/* Recipient filter */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Send to
             </label>
             <div className="flex flex-wrap gap-2">
@@ -97,7 +97,7 @@ export default function CommunicationsPage() {
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                     recipientFilter === opt.value
                       ? 'bg-primary text-white border-primary'
-                      : 'bg-white text-slate-700 border-slate-200 hover:border-primary/50 hover:text-primary'
+                      : 'bg-white text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:text-primary'
                   }`}
                 >
                   {opt.label}
@@ -108,7 +108,7 @@ export default function CommunicationsPage() {
 
           {/* Subject */}
           <div className="space-y-1.5">
-            <label htmlFor="subject" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Subject
             </label>
             <input
@@ -117,13 +117,13 @@ export default function CommunicationsPage() {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Important update from Line Creek FSC"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50"
             />
           </div>
 
           {/* Body */}
           <div className="space-y-1.5">
-            <label htmlFor="body" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="body" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Message
             </label>
             <textarea
@@ -132,18 +132,18 @@ export default function CommunicationsPage() {
               value={body}
               onChange={(e) => setBody(e.target.value)}
               placeholder="Write your message here…"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 resize-y"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 resize-y"
             />
           </div>
 
           {/* Feedback */}
           {sendState === 'success' && (
-            <div className="rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+            <div className="rounded-lg bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 px-4 py-3 text-sm text-green-700 dark:text-green-400">
               Broadcast queued — email will be delivered to <strong>{selectedLabel}</strong>.
             </div>
           )}
           {sendState === 'error' && (
-            <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-400">
               {errorMessage}
             </div>
           )}
@@ -173,13 +173,13 @@ export default function CommunicationsPage() {
       </div>
 
       {/* Email history placeholder */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
-          <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
+          <div className="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
             <Clock className="w-4 h-4 text-slate-500" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-slate-900">Recent Sent</h2>
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Recent Sent</h2>
           </div>
         </div>
         <div className="px-6 py-10 text-center text-slate-400 text-sm">

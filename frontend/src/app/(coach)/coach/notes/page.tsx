@@ -25,10 +25,10 @@ function NoteRow({ booking }: { booking: BookingList }) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 space-y-3">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-semibold text-slate-800">{booking.skater_name}</p>
+          <p className="font-semibold text-slate-800 dark:text-slate-200">{booking.skater_name}</p>
           <p className="text-sm text-slate-500">
             {booking.lesson_type_name} ·{' '}
             {new Date(booking.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -47,7 +47,7 @@ function NoteRow({ booking }: { booking: BookingList }) {
             onChange={e => setNotes(e.target.value)}
             rows={3}
             autoFocus
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 resize-none"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200 resize-none"
             placeholder="Notes on today's session, progress, areas to focus on…"
           />
           <div className="flex gap-2">
@@ -58,15 +58,15 @@ function NoteRow({ booking }: { booking: BookingList }) {
             >
               <Check size={13} /> {saving ? 'Saving…' : 'Save note'}
             </button>
-            <button onClick={() => setEditing(false)} className="px-3 py-1.5 text-sm text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50">
+            <button onClick={() => setEditing(false)} className="px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900">
               Cancel
             </button>
           </div>
         </div>
       ) : saved ? (
-        <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-          <p className="text-sm text-emerald-700 italic">{notes || 'Note saved.'}</p>
-          <button onClick={() => { setEditing(true); setSaved(false) }} className="text-slate-400 hover:text-slate-600 ml-2">
+        <div className="flex items-center justify-between bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg px-3 py-2">
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 italic">{notes || 'Note saved.'}</p>
+          <button onClick={() => { setEditing(true); setSaved(false) }} className="text-slate-400 hover:text-slate-600 dark:hover:dark:text-slate-400 ml-2">
             <Pencil size={13} />
           </button>
         </div>
@@ -74,7 +74,7 @@ function NoteRow({ booking }: { booking: BookingList }) {
         <div className="flex gap-2">
           <button
             onClick={() => setEditing(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900"
           >
             <Pencil size={13} /> Add note
           </button>
@@ -105,14 +105,14 @@ export default function CoachNotesPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Session Notes</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Session Notes</h1>
         <p className="text-slate-500 text-sm mt-0.5">Add progress notes to completed and recent lessons</p>
       </div>
 
       <select
         value={skaterFilter}
         onChange={e => setSkaterFilter(e.target.value)}
-        className="border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800"
+        className="border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200"
       >
         <option value="">All students</option>
         {skaters.map(s => <option key={s} value={s}>{s}</option>)}
@@ -121,7 +121,7 @@ export default function CoachNotesPage() {
       {isLoading ? (
         <p className="text-center py-8 text-slate-500">Loading…</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
           <p className="text-slate-500">No recent confirmed lessons.</p>
         </div>
       ) : (

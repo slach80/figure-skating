@@ -286,10 +286,7 @@ export default function ClubDetailPage() {
                       <button
                         onClick={() => handleImpersonate(user)}
                         disabled={impersonating === user.uuid || impersonateSuccess === user.uuid}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors
-                          bg-violet-600/20 text-violet-300 border border-violet-600/30
-                          hover:bg-violet-600/40 hover:text-white hover:border-violet-500
-                          disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-violet-600/20 text-violet-300 border border-violet-600/30 hover:bg-violet-600/40 hover:text-white hover:border-violet-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {impersonating === user.uuid ? (
                           <>

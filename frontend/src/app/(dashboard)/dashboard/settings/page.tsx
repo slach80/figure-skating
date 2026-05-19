@@ -29,8 +29,8 @@ const US_STATES = [
   'VA','WA','WV','WI','WY','DC',
 ]
 
-const inputCls = 'w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30'
-const labelCls = 'block text-xs font-medium text-slate-600 mb-1'
+const inputCls = 'w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30'
+const labelCls = 'block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -69,23 +69,23 @@ function MembershipTypeRow({
 
   if (!editing) {
     return (
-      <tr className="hover:bg-slate-50 transition-colors">
-        <td className="px-4 py-3 text-sm font-medium text-slate-900">{mt.name}</td>
-        <td className="px-4 py-3 text-sm text-slate-600">{mt.usfs_category || '—'}</td>
-        <td className="px-4 py-3 text-sm tabular-nums text-slate-900">${parseFloat(mt.price_in_club).toFixed(2)}</td>
+      <tr className="hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+        <td className="px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100">{mt.name}</td>
+        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{mt.usfs_category || '—'}</td>
+        <td className="px-4 py-3 text-sm tabular-nums text-slate-900 dark:text-slate-100">${parseFloat(mt.price_in_club).toFixed(2)}</td>
         <td className="px-4 py-3 text-sm tabular-nums text-slate-500">${parseFloat(mt.price_out_of_club).toFixed(2)}</td>
         <td className="px-4 py-3 text-sm text-slate-500">{mt.is_family_plan ? 'Yes' : 'No'}</td>
         <td className="px-4 py-3">
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${mt.is_active ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${mt.is_active ? 'bg-green-50 text-green-700 dark:text-green-400 border-green-200' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
             {mt.is_active ? 'Active' : 'Inactive'}
           </span>
         </td>
         <td className="px-4 py-3">
           <div className="flex items-center gap-2 justify-end">
-            <button onClick={() => setEditing(true)} className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
+            <button onClick={() => setEditing(true)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors">
               <Pencil size={14} />
             </button>
-            <button onClick={() => onDelete(mt.id)} className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors">
+            <button onClick={() => onDelete(mt.id)} className="p-1.5 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:dark:text-red-400 transition-colors">
               <Trash2 size={14} />
             </button>
           </div>
@@ -101,17 +101,17 @@ function MembershipTypeRow({
       <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} value={form.price_in_club} onChange={e => set('price_in_club', e.target.value)} /></td>
       <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} value={form.price_out_of_club} onChange={e => set('price_out_of_club', e.target.value)} /></td>
       <td className="px-4 py-2">
-        <input type="checkbox" checked={form.is_family_plan} onChange={e => set('is_family_plan', e.target.checked)} className="rounded border-slate-300" />
+        <input type="checkbox" checked={form.is_family_plan} onChange={e => set('is_family_plan', e.target.checked)} className="rounded border-slate-300 dark:border-slate-600" />
       </td>
       <td className="px-4 py-2">
-        <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} className="rounded border-slate-300" />
+        <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} className="rounded border-slate-300 dark:border-slate-600" />
       </td>
       <td className="px-4 py-2">
         <div className="flex items-center gap-2 justify-end">
-          <button onClick={() => { onSave(form); setEditing(false) }} className="p-1.5 rounded hover:bg-green-50 text-green-600 transition-colors">
+          <button onClick={() => { onSave(form); setEditing(false) }} className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors">
             <Check size={14} />
           </button>
-          <button onClick={() => { setForm(mt); setEditing(false) }} className="p-1.5 rounded hover:bg-slate-100 text-slate-500 transition-colors">
+          <button onClick={() => { setForm(mt); setEditing(false) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
             <X size={14} />
           </button>
         </div>
@@ -172,9 +172,9 @@ function WebsiteTab() {
   return (
     <div className="space-y-8">
       {/* Site Config */}
-      <section className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 space-y-5">
+      <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-slate-900">Public Website Content</h2>
+          <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Public Website Content</h2>
           <a href="/home" target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs text-primary hover:underline">
             <ExternalLink size={12} />
@@ -191,7 +191,7 @@ function WebsiteTab() {
           </Field>
         </div>
 
-        <h3 className="text-sm font-semibold text-slate-700 pt-2">Contact Info</h3>
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">Contact Info</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Contact email">
             <input type="email" className={inputCls} value={siteVal('contact_email')} onChange={e => setSiteField('contact_email', e.target.value)} />
@@ -204,7 +204,7 @@ function WebsiteTab() {
           </Field>
         </div>
 
-        <h3 className="text-sm font-semibold text-slate-700 pt-2">Home Rink</h3>
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">Home Rink</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Rink name">
             <input className={inputCls} value={siteVal('rink_name')} onChange={e => setSiteField('rink_name', e.target.value)} placeholder="e.g., Line Creek Recreation Center" />
@@ -214,7 +214,7 @@ function WebsiteTab() {
           </Field>
         </div>
 
-        <h3 className="text-sm font-semibold text-slate-700 pt-2">Social Links</h3>
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">Social Links</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Facebook URL">
             <input type="url" className={inputCls} value={siteVal('facebook_url')} onChange={e => setSiteField('facebook_url', e.target.value)} placeholder="https://facebook.com/…" />
@@ -238,9 +238,9 @@ function WebsiteTab() {
       </section>
 
       {/* Announcements */}
-      <section className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-slate-900">Announcements</h2>
+      <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Announcements</h2>
           <button
             onClick={() => setNewAnn(EMPTY_ANNOUNCEMENT)}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -253,7 +253,7 @@ function WebsiteTab() {
         {announcementsLoading ? (
           <div className="p-6"><LoadingSpinner /></div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-slate-100 dark:divide-slate-700">
             {/* New announcement form */}
             {newAnn && (
               <div className="p-4 bg-green-50/40 space-y-3">
@@ -270,7 +270,7 @@ function WebsiteTab() {
                   onChange={e => setNewAnn(f => f ? { ...f, body: e.target.value } : f)}
                 />
                 <div className="flex items-center gap-3">
-                  <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+                  <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={newAnn.is_published}
@@ -279,7 +279,7 @@ function WebsiteTab() {
                         is_published: e.target.checked,
                         published_at: e.target.checked ? new Date().toISOString() : null,
                       } : f)}
-                      className="rounded border-slate-300"
+                      className="rounded border-slate-300 dark:border-slate-600"
                     />
                     Publish immediately
                   </label>
@@ -290,11 +290,11 @@ function WebsiteTab() {
                         setNewAnn(null)
                       }}
                       disabled={!newAnn.title || createAnn.isPending}
-                      className="p-1.5 rounded hover:bg-green-50 text-green-600 transition-colors disabled:opacity-40"
+                      className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors disabled:opacity-40"
                     >
                       <Check size={16} />
                     </button>
-                    <button onClick={() => setNewAnn(null)} className="p-1.5 rounded hover:bg-slate-100 text-slate-500 transition-colors">
+                    <button onClick={() => setNewAnn(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
                       <X size={16} />
                     </button>
                   </div>
@@ -329,11 +329,11 @@ function WebsiteTab() {
                           setEditingAnn(null)
                           setEditAnnForm({})
                         }}
-                        className="p-1.5 rounded hover:bg-green-50 text-green-600"
+                        className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600"
                       >
                         <Check size={14} />
                       </button>
-                      <button onClick={() => { setEditingAnn(null); setEditAnnForm({}) }} className="p-1.5 rounded hover:bg-slate-100 text-slate-500">
+                      <button onClick={() => { setEditingAnn(null); setEditAnnForm({}) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500">
                         <X size={14} />
                       </button>
                     </div>
@@ -342,8 +342,8 @@ function WebsiteTab() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <p className="text-sm font-medium text-slate-900">{ann.title}</p>
-                        <span className={`text-xs px-1.5 py-0.5 rounded-full border font-medium ${ann.is_published ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
+                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{ann.title}</p>
+                        <span className={`text-xs px-1.5 py-0.5 rounded-full border font-medium ${ann.is_published ? 'bg-green-50 text-green-700 dark:text-green-400 border-green-200' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
                           {ann.is_published ? 'Published' : 'Draft'}
                         </span>
                       </div>
@@ -352,19 +352,19 @@ function WebsiteTab() {
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         onClick={() => togglePublished(ann)}
-                        className={`text-xs px-2 py-1 rounded border transition-colors ${ann.is_published ? 'border-slate-200 text-slate-500 hover:bg-slate-50' : 'border-green-200 text-green-700 hover:bg-green-50'}`}
+                        className={`text-xs px-2 py-1 rounded border transition-colors ${ann.is_published ? 'border-slate-200 text-slate-500 hover:bg-slate-50' : 'border-green-200 text-green-700 dark:text-green-400 hover:bg-green-50'}`}
                       >
                         {ann.is_published ? 'Unpublish' : 'Publish'}
                       </button>
                       <button
                         onClick={() => { setEditingAnn(ann.id); setEditAnnForm({}) }}
-                        className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                        className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
                       >
                         <Pencil size={13} />
                       </button>
                       <button
                         onClick={() => deleteAnn.mutate(ann.id)}
-                        className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
+                        className="p-1.5 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:dark:text-red-400 transition-colors"
                       >
                         <Trash2 size={13} />
                       </button>
@@ -427,9 +427,9 @@ export default function SettingsPage() {
 
   if (clubLoading) return <LoadingSpinner />
   if (clubError) return (
-    <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
-      <p className="text-amber-800 font-medium">No club linked to this account.</p>
-      <p className="text-amber-700 text-sm">Super-admin accounts manage clubs from the super-admin panel.</p>
+    <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 p-6 text-center space-y-3">
+      <p className="text-amber-800 dark:text-amber-300 font-medium">No club linked to this account.</p>
+      <p className="text-amber-700 dark:text-amber-400 text-sm">Super-admin accounts manage clubs from the super-admin panel.</p>
       <a href="/super-admin" className="inline-block px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors">
         Go to Super-Admin Panel
       </a>
@@ -447,11 +447,11 @@ export default function SettingsPage() {
     <div className="space-y-6 max-w-4xl">
       <div>
         <h1>Settings</h1>
-        <p className="text-slate-600 mt-1 text-sm">Manage your club profile, membership types, and public website.</p>
+        <p className="text-slate-600 dark:text-slate-400 mt-1 text-sm">Manage your club profile, membership types, and public website.</p>
       </div>
 
       {/* Tab bar */}
-      <div className="border-b border-slate-200 flex gap-0">
+      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-0">
         <button className={tabCls('club')} onClick={() => setActiveTab('club')}>Club Profile</button>
         <button className={tabCls('membership')} onClick={() => setActiveTab('membership')}>Membership Types</button>
         <button className={tabCls('website')} onClick={() => setActiveTab('website')}>
@@ -462,8 +462,8 @@ export default function SettingsPage() {
       {/* Club Profile */}
       {activeTab === 'club' && (
         <>
-          <section className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Club Profile</h2>
+          <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-5">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Club Profile</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Club name">
                 <input className={inputCls} value={clubVal('name')} onChange={e => setClubField('name', e.target.value)} />
@@ -494,7 +494,7 @@ export default function SettingsPage() {
               </Field>
             </div>
 
-            <h3 className="text-sm font-semibold text-slate-700 pt-2">Season</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">Season</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Field label="Season label (e.g., 2025-2026)">
                 <input className={inputCls} value={clubVal('season_label')} onChange={e => setClubField('season_label', e.target.value)} />
@@ -507,17 +507,17 @@ export default function SettingsPage() {
               </Field>
             </div>
 
-            <h3 className="text-sm font-semibold text-slate-700 pt-2">Branding</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">Branding</h3>
             <div className="grid grid-cols-2 gap-4 max-w-xs">
               <Field label="Primary color">
                 <div className="flex items-center gap-2">
-                  <input type="color" value={clubVal('primary_color', '#5B2C91')} onChange={e => setClubField('primary_color', e.target.value)} className="w-10 h-9 rounded border border-slate-200 p-0.5 cursor-pointer" />
+                  <input type="color" value={clubVal('primary_color', '#5B2C91')} onChange={e => setClubField('primary_color', e.target.value)} className="w-10 h-9 rounded border border-slate-200 dark:border-slate-700 p-0.5 cursor-pointer" />
                   <input className={inputCls} value={clubVal('primary_color', '#5B2C91')} onChange={e => setClubField('primary_color', e.target.value)} maxLength={7} />
                 </div>
               </Field>
               <Field label="Accent color">
                 <div className="flex items-center gap-2">
-                  <input type="color" value={clubVal('accent_color', '#D946EF')} onChange={e => setClubField('accent_color', e.target.value)} className="w-10 h-9 rounded border border-slate-200 p-0.5 cursor-pointer" />
+                  <input type="color" value={clubVal('accent_color', '#D946EF')} onChange={e => setClubField('accent_color', e.target.value)} className="w-10 h-9 rounded border border-slate-200 dark:border-slate-700 p-0.5 cursor-pointer" />
                   <input className={inputCls} value={clubVal('accent_color', '#D946EF')} onChange={e => setClubField('accent_color', e.target.value)} maxLength={7} />
                 </div>
               </Field>
@@ -537,14 +537,14 @@ export default function SettingsPage() {
           </section>
 
           {/* Stripe status */}
-          <section className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-            <h2 className="text-base font-semibold text-slate-900 mb-3">Payments (Stripe)</h2>
+          <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-3">Payments (Stripe)</h2>
             {club?.payments_enabled ? (
-              <p className="text-sm text-green-700 bg-green-50 rounded-lg px-4 py-3 border border-green-200">
+              <p className="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/40 rounded-lg px-4 py-3 border border-green-200 dark:border-green-800">
                 Stripe is connected and payments are enabled.
               </p>
             ) : (
-              <p className="text-sm text-amber-700 bg-amber-50 rounded-lg px-4 py-3 border border-amber-200">
+              <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 rounded-lg px-4 py-3 border border-amber-200 dark:border-amber-800">
                 Stripe is not yet connected. Contact your administrator to complete Stripe onboarding.
               </p>
             )}
@@ -554,9 +554,9 @@ export default function SettingsPage() {
 
       {/* Membership Types */}
       {activeTab === 'membership' && (
-        <section className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-slate-900">Membership Types</h2>
+        <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Membership Types</h2>
             <button
               onClick={() => setNewType(EMPTY_TYPE)}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -571,7 +571,7 @@ export default function SettingsPage() {
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-100">
+                <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
                   <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Name</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">USFS Category</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">In-club $</th>
@@ -581,7 +581,7 @@ export default function SettingsPage() {
                   <th className="px-4 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                 {membershipTypes?.map(mt => (
                   <MembershipTypeRow
                     key={mt.id}
@@ -598,17 +598,17 @@ export default function SettingsPage() {
                     <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} placeholder="0.00" value={newType.price_in_club} onChange={e => setNewField('price_in_club', e.target.value)} /></td>
                     <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} placeholder="0.00" value={newType.price_out_of_club} onChange={e => setNewField('price_out_of_club', e.target.value)} /></td>
                     <td className="px-4 py-2">
-                      <input type="checkbox" checked={newType.is_family_plan} onChange={e => setNewField('is_family_plan', e.target.checked)} className="rounded border-slate-300" />
+                      <input type="checkbox" checked={newType.is_family_plan} onChange={e => setNewField('is_family_plan', e.target.checked)} className="rounded border-slate-300 dark:border-slate-600" />
                     </td>
                     <td className="px-4 py-2">
-                      <input type="checkbox" checked={newType.is_active} onChange={e => setNewField('is_active', e.target.checked)} className="rounded border-slate-300" />
+                      <input type="checkbox" checked={newType.is_active} onChange={e => setNewField('is_active', e.target.checked)} className="rounded border-slate-300 dark:border-slate-600" />
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2 justify-end">
-                        <button onClick={createType} disabled={createMt.isPending} className="p-1.5 rounded hover:bg-green-50 text-green-600 transition-colors">
+                        <button onClick={createType} disabled={createMt.isPending} className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors">
                           <Check size={14} />
                         </button>
-                        <button onClick={() => setNewType(null)} className="p-1.5 rounded hover:bg-slate-100 text-slate-500 transition-colors">
+                        <button onClick={() => setNewType(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
                           <X size={14} />
                         </button>
                       </div>

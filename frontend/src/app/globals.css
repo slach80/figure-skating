@@ -26,6 +26,31 @@ body {
   color: #f1f5f9;
 }
 
+/* Dark mode form inputs */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+.dark select,
+.dark textarea {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="color"])::placeholder,
+.dark textarea::placeholder {
+  color: #64748b;
+}
+
+/* Dark mode headings */
+.dark h1, .dark h2, .dark h3, .dark h4 {
+  color: #f1f5f9;
+}
+
+/* Dark mode status classes from globals */
+.dark .status-active    { @apply bg-green-950/40 text-green-400 border-green-800; }
+.dark .status-pending   { @apply bg-yellow-950/40 text-yellow-400 border-yellow-800; }
+.dark .status-expired   { @apply bg-red-950/40 text-red-400 border-red-800; }
+.dark .status-suspended { @apply bg-slate-800 text-slate-400 border-slate-600; }
+
 /* Typography utilities */
 h1 {
   @apply font-serif text-4xl font-bold text-slate-dark;

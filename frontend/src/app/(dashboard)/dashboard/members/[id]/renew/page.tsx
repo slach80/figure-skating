@@ -44,7 +44,7 @@ export default function RenewPage() {
       <div className="flex items-center gap-3">
         <Link
           href={`/dashboard/members/${id}`}
-          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
         >
           <ChevronLeft size={16} />
           Back to profile
@@ -53,18 +53,18 @@ export default function RenewPage() {
 
       <div>
         <h1>Renew Membership</h1>
-        <p className="text-slate-600 mt-1 text-sm">
+        <p className="text-slate-600 dark:text-slate-400 mt-1 text-sm">
           Renewing for <strong>{skater.first_name} {skater.last_name}</strong>
         </p>
       </div>
 
       {/* Current membership status */}
-      <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-5 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-700">Current Membership</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-5 space-y-3">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Current Membership</h2>
         <div className="flex items-center gap-3">
           <StatusBadge status={skater.membership_status} />
           {skater.membership_type_display && (
-            <span className="text-sm text-slate-600">{skater.membership_type_display.name}</span>
+            <span className="text-sm text-slate-600 dark:text-slate-400">{skater.membership_type_display.name}</span>
           )}
         </div>
         {skater.membership_expiry && (
@@ -75,8 +75,8 @@ export default function RenewPage() {
       </div>
 
       {/* Membership type selection */}
-      <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-700">Select Membership Type</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Select Membership Type</h2>
         {membershipTypes?.length === 0 ? (
           <p className="text-sm text-slate-500">No active membership types. Configure them in Settings.</p>
         ) : (
@@ -87,18 +87,18 @@ export default function RenewPage() {
                 onClick={() => setSelectedTypeId(type.id)}
                 className={`w-full text-left rounded-lg border p-4 transition-colors ${
                   selectedTypeId === type.id
-                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                    : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    ? 'border-primary bg-primary/5 dark:bg-primary/10 dark:bg-primary/20 ring-1 ring-primary'
+                    : 'border-slate-200 hover:border-slate-300 dark:hover:dark:border-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">{type.name}</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
                     {type.usfs_category && (
                       <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>
                     )}
                   </div>
-                  <p className="text-base font-bold text-slate-900">
+                  <p className="text-base font-bold text-slate-900 dark:text-slate-100">
                     ${parseFloat(type.price_in_club).toFixed(2)}
                   </p>
                 </div>
@@ -112,11 +112,11 @@ export default function RenewPage() {
 
       {/* Summary + pay */}
       {selectedType && (
-        <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-slate-700">Order Summary</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Order Summary</h2>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-600">{selectedType.name} — {skater.first_name} {skater.last_name}</span>
-            <span className="font-bold text-slate-900">${parseFloat(selectedType.price_in_club).toFixed(2)}</span>
+            <span className="text-slate-600 dark:text-slate-400">{selectedType.name} — {skater.first_name} {skater.last_name}</span>
+            <span className="font-bold text-slate-900 dark:text-slate-100">${parseFloat(selectedType.price_in_club).toFixed(2)}</span>
           </div>
           <p className="text-xs text-slate-400">
             You will be redirected to Stripe to complete payment. Membership activates automatically on success.

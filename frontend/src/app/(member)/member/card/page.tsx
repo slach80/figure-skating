@@ -82,7 +82,7 @@ export default function MemberCardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Membership Cards</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Membership Cards</h1>
         <p className="text-slate-500 text-sm mt-1">Select a skater to view their card</p>
       </div>
 
@@ -91,13 +91,13 @@ export default function MemberCardPage() {
           <Link
             key={s.id}
             href={`/member/card/${s.id}`}
-            className="flex items-center gap-4 bg-white rounded-xl border border-slate-200 p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+            className="flex items-center gap-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-primary/40 hover:shadow-sm transition-all"
           >
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center shrink-0">
               <CreditCard size={18} className="text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-slate-900">
+              <p className="font-semibold text-slate-900 dark:text-slate-100">
                 {s.first_name} {s.last_name}
               </p>
               {s.usfs_number && (

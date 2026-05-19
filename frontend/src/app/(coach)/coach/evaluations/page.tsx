@@ -9,8 +9,8 @@ import { ErrorAlert } from '@/components/ui/ErrorAlert'
 import { Star, ChevronDown, Send } from 'lucide-react'
 import type { CoachEvaluation } from '@/types/scheduling'
 
-const inputCls = 'w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30'
-const labelCls = 'block text-xs font-medium text-slate-600 mb-1'
+const inputCls = 'w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30'
+const labelCls = 'block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1'
 
 function StarRating({
   value,
@@ -133,16 +133,16 @@ export default function CoachEvaluationsPage() {
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Evaluations</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Evaluations</h1>
         <p className="text-slate-500 text-sm mt-0.5">Write a formal progress evaluation for a student.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-        <h2 className="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3">New Evaluation</h2>
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
+        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-3">New Evaluation</h2>
 
         {error && <ErrorAlert message={error} />}
         {submitted && (
-          <div className="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3">
+          <div className="bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm rounded-lg px-4 py-3">
             Evaluation saved successfully.
           </div>
         )}
@@ -203,7 +203,7 @@ export default function CoachEvaluationsPage() {
 
         {/* Scores */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-700 mb-3">Scored Areas (1–5)</h3>
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Scored Areas (1–5)</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SCORE_FIELDS.map(({ key, label }) => (
               <div key={key}>
@@ -271,8 +271,8 @@ export default function CoachEvaluationsPage() {
 
       {/* Past evaluations for selected student */}
       {selectedSkater && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-          <h2 className="text-base font-semibold text-slate-900">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+          <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
             Past Evaluations for{' '}
             {skaters.find(s => s.id === selectedSkater)
               ? `${skaters.find(s => s.id === selectedSkater)!.first_name} ${skaters.find(s => s.id === selectedSkater)!.last_name}`
@@ -285,9 +285,9 @@ export default function CoachEvaluationsPage() {
           ) : (
             <div className="space-y-3">
               {pastEvals.map(ev => (
-                <div key={ev.id} className="border border-slate-100 rounded-lg p-4">
+                <div key={ev.id} className="border border-slate-100 dark:border-slate-700 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-slate-900">
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       {new Date(ev.evaluation_date + 'T00:00:00').toLocaleDateString('en-US', {
                         month: 'long', day: 'numeric', year: 'numeric',
                       })}
@@ -310,14 +310,14 @@ export default function CoachEvaluationsPage() {
                       ['Interp.', ev.interpretation],
                     ].map(([label, score]) =>
                       score !== null ? (
-                        <span key={String(label)} className="text-xs px-2 py-0.5 bg-slate-100 rounded-full text-slate-600">
+                        <span key={String(label)} className="text-xs px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">
                           {label}: {score}/5
                         </span>
                       ) : null,
                     )}
                   </div>
                   {ev.strengths && (
-                    <p className="text-xs text-slate-600 mt-2">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
                       <span className="font-medium">Strengths:</span> {ev.strengths}
                     </p>
                   )}

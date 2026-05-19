@@ -10,7 +10,7 @@ import type { SkaterStatsHistory } from '@/types/skater-stats'
 function PlacementBadge({ placement }: { placement: string }) {
   if (placement === '1') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
         <Trophy className="w-3 h-3" />
         1st
       </span>
@@ -18,19 +18,19 @@ function PlacementBadge({ placement }: { placement: string }) {
   }
   if (placement === '2') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-200 text-slate-700 border border-slate-300">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600">
         2nd
       </span>
     )
   }
   if (placement === '3') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-200">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-200 dark:border-orange-800">
         3rd
       </span>
     )
   }
-  return <span className="text-slate-700 text-sm">{placement}</span>
+  return <span className="text-slate-700 dark:text-slate-300 text-sm">{placement}</span>
 }
 
 // ── History table ─────────────────────────────────────────────────────────────
@@ -44,23 +44,23 @@ function HistoryTable({ rows }: { rows: SkaterStatsHistory[] }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-50">
-            <th className="px-4 py-3 text-left font-semibold text-slate-700 whitespace-nowrap">Date</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">Competition</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-700">Event</th>
-            <th className="px-4 py-3 text-right font-semibold text-slate-700">Score</th>
-            <th className="px-4 py-3 text-center font-semibold text-slate-700">Placement</th>
+          <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">Date</th>
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">Competition</th>
+            <th className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">Event</th>
+            <th className="px-4 py-3 text-right font-semibold text-slate-700 dark:text-slate-300">Score</th>
+            <th className="px-4 py-3 text-center font-semibold text-slate-700 dark:text-slate-300">Placement</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
           {sorted.map((item, idx) => (
-            <tr key={idx} className="hover:bg-slate-50 transition-colors">
-              <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
+            <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+              <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                 {item.date ? new Date(item.date + 'T00:00:00').toLocaleDateString() : '—'}
               </td>
-              <td className="px-4 py-3 text-slate-900 font-medium">{item.competition}</td>
-              <td className="px-4 py-3 text-slate-600">{item.event}</td>
-              <td className="px-4 py-3 text-right text-slate-700 tabular-nums">
+              <td className="px-4 py-3 text-slate-900 dark:text-slate-100 font-medium">{item.competition}</td>
+              <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{item.event}</td>
+              <td className="px-4 py-3 text-right text-slate-700 dark:text-slate-300 tabular-nums">
                 {item.score != null ? item.score.toFixed(2) : '—'}
               </td>
               <td className="px-4 py-3 text-center">
@@ -100,7 +100,7 @@ function SlugForm({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="e.g. emma-anderson"
-        className="flex-1 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+        className="flex-1 px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
         disabled={mutation.isPending}
         autoFocus
       />
@@ -116,13 +116,13 @@ function SlugForm({
         <button
           type="button"
           onClick={onCancel}
-          className="px-3 py-1.5 text-sm text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+          className="px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors"
         >
           Cancel
         </button>
       )}
       {mutation.isError && (
-        <span className="text-xs text-red-600 ml-1">Failed to save.</span>
+        <span className="text-xs text-red-600 dark:text-red-400 ml-1">Failed to save.</span>
       )}
     </form>
   )
@@ -169,7 +169,7 @@ export function CompetitionHistory({ skaterId, skaterStatsSlug }: CompetitionHis
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="mt-2 flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 transition-colors"
+            className="mt-2 flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
           >
             <Pencil className="w-3 h-3" />
             Edit slug ({skaterStatsSlug})
@@ -190,10 +190,10 @@ export function CompetitionHistory({ skaterId, skaterStatsSlug }: CompetitionHis
       {/* Stat chips + edit slug button */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-sm font-medium">
+          <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium">
             {data.totalCompetitions} competitions
           </span>
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-sm font-medium">
+          <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium">
             {data.totalEvents} events
           </span>
           {data.club && (
@@ -203,7 +203,7 @@ export function CompetitionHistory({ skaterId, skaterStatsSlug }: CompetitionHis
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 transition-colors"
+            className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 dark:hover:dark:text-slate-400 transition-colors"
             title="Edit Skater-Stats slug"
           >
             <Pencil className="w-3 h-3" />

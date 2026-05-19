@@ -79,7 +79,7 @@ export default function MemberPage() {
       return (
         <div className="space-y-4">
           <ErrorAlert message="No membership profile linked to your account. Please contact your club administrator." />
-          <button onClick={handleLogout} className="text-sm text-slate-500 hover:text-slate-700">Sign out</button>
+          <button onClick={handleLogout} className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Sign out</button>
         </div>
       )
     }
@@ -122,12 +122,12 @@ export default function MemberPage() {
       )}
 
       {/* Profile details */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm divide-y divide-slate-100">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm divide-y divide-slate-100 dark:divide-slate-700">
         <div className="px-5 py-4 flex items-center gap-3">
           <User size={16} className="text-slate-400 shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-xs text-slate-500">Full name</p>
-            <p className="text-sm font-medium text-slate-900">{skater.first_name} {skater.middle_name || ''} {skater.last_name}</p>
+            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{skater.first_name} {skater.middle_name || ''} {skater.last_name}</p>
           </div>
         </div>
         {skater.date_of_birth && (
@@ -135,7 +135,7 @@ export default function MemberPage() {
             <div className="w-4 shrink-0" />
             <div>
               <p className="text-xs text-slate-500">Date of birth</p>
-              <p className="text-sm font-medium text-slate-900">
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 {new Date(skater.date_of_birth + 'T00:00:00').toLocaleDateString()}
               </p>
             </div>
@@ -146,7 +146,7 @@ export default function MemberPage() {
             <div className="w-4 shrink-0" />
             <div>
               <p className="text-xs text-slate-500">Email</p>
-              <p className="text-sm font-medium text-slate-900 truncate">{skater.email}</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{skater.email}</p>
             </div>
           </div>
         )}
@@ -155,7 +155,7 @@ export default function MemberPage() {
             <MapPin size={16} className="text-slate-400 shrink-0" />
             <div>
               <p className="text-xs text-slate-500">Address</p>
-              <p className="text-sm font-medium text-slate-900">
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 {[skater.address_line1, skater.city, skater.state].filter(Boolean).join(', ')}
               </p>
             </div>
@@ -166,7 +166,7 @@ export default function MemberPage() {
             <Phone size={16} className="text-slate-400 shrink-0" />
             <div>
               <p className="text-xs text-slate-500">Emergency contact</p>
-              <p className="text-sm font-medium text-slate-900">
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 {skater.emergency_contact_name}
                 {skater.emergency_contact_phone ? ` · ${skater.emergency_contact_phone}` : ''}
               </p>
@@ -186,7 +186,7 @@ export default function MemberPage() {
         </Link>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 py-3 border border-slate-200 text-slate-600 rounded-xl text-sm hover:bg-slate-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 rounded-xl text-sm hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors"
         >
           <LogOut size={15} />
           Sign out

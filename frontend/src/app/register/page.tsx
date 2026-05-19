@@ -54,7 +54,7 @@ function Field({ label, required, error, children }: {
 }) {
   return (
     <div className="space-y-1">
-      <label className="block text-sm font-medium text-slate-700">
+      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
         {label}{required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       {children}
@@ -63,7 +63,7 @@ function Field({ label, required, error, children }: {
   )
 }
 
-const inputCls = "w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white"
+const inputCls = "w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white dark:bg-slate-800"
 
 function isMinor(dob: string) {
   if (!dob) return false
@@ -286,37 +286,37 @@ export default function RegisterPage() {
   // ── mode selection ──
   if (mode === 'choose') {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200 px-6 py-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
           <div className="max-w-2xl mx-auto flex items-center gap-3">
             <span className="text-3xl">⛸</span>
             <div>
-              <h1 className="font-serif font-bold text-slate-900">Line Creek FSC</h1>
+              <h1 className="font-serif font-bold text-slate-900 dark:text-slate-100">Line Creek FSC</h1>
               <p className="text-xs text-slate-500">Member Registration</p>
             </div>
           </div>
         </header>
         <main className="max-w-2xl mx-auto px-4 py-12">
-          <h2 className="text-2xl font-bold text-slate-900 text-center mb-2">Who are you registering?</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 text-center mb-2">Who are you registering?</h2>
           <p className="text-slate-500 text-sm text-center mb-8">Choose single for one skater, or family to register multiple skaters in one checkout.</p>
           <div className="grid grid-cols-2 gap-4">
             <button
               onClick={() => setMode('single')}
-              className="flex flex-col items-center gap-3 rounded-xl border-2 border-slate-200 hover:border-primary hover:bg-primary/5 p-8 transition-colors text-left"
+              className="flex flex-col items-center gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary hover:bg-primary/5 dark:hover:dark:bg-primary/20 p-8 transition-colors text-left"
             >
               <User className="w-10 h-10 text-primary" />
               <div>
-                <p className="font-semibold text-slate-900">Single Skater</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Single Skater</p>
                 <p className="text-xs text-slate-500 mt-1">Register one club member</p>
               </div>
             </button>
             <button
               onClick={() => setMode('family')}
-              className="flex flex-col items-center gap-3 rounded-xl border-2 border-slate-200 hover:border-primary hover:bg-primary/5 p-8 transition-colors text-left"
+              className="flex flex-col items-center gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary hover:bg-primary/5 dark:hover:dark:bg-primary/20 p-8 transition-colors text-left"
             >
               <Users className="w-10 h-10 text-primary" />
               <div>
-                <p className="font-semibold text-slate-900">Family</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Family</p>
                 <p className="text-xs text-slate-500 mt-1">Register 2–10 skaters, one checkout</p>
               </div>
             </button>
@@ -331,17 +331,17 @@ export default function RegisterPage() {
     const currentForm = skaters[activeSkaterIdx]
 
     return (
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200 px-6 py-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
           <div className="max-w-3xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-3xl">⛸</span>
               <div>
-                <h1 className="font-serif font-bold text-slate-900">Line Creek FSC</h1>
+                <h1 className="font-serif font-bold text-slate-900 dark:text-slate-100">Line Creek FSC</h1>
                 <p className="text-xs text-slate-500">Family Registration</p>
               </div>
             </div>
-            <button onClick={() => setMode('choose')} className="text-xs text-slate-400 hover:text-slate-600">← Change</button>
+            <button onClick={() => setMode('choose')} className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">← Change</button>
           </div>
         </header>
 
@@ -354,7 +354,7 @@ export default function RegisterPage() {
                 <div key={i} className="flex items-center gap-2">
                   <button
                     onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
-                    className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'}`}
+                    className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50'}`}
                   >
                     {s.first_name || `Skater ${i + 1}`}
                   </button>
@@ -368,7 +368,7 @@ export default function RegisterPage() {
               {skaters.length < 10 && (
                 <button
                   onClick={addSkater}
-                  className="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-primary border border-dashed border-primary/40 hover:bg-primary/5 transition-colors"
+                  className="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-primary border border-dashed border-primary/40 hover:bg-primary/5 dark:hover:dark:bg-primary/20 transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" /> Add skater
                 </button>
@@ -386,24 +386,24 @@ export default function RegisterPage() {
                 </>
               )}
 
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+              <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
                 {familyStep === 1 && (
                   <>
-                    <h2 className="text-lg font-semibold text-slate-900 mb-5">Skater Information</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Skater Information</h2>
                     <SkaterForm form={currentForm} errors={familyErrors} onChange={(f, v) => setFamilyField(activeSkaterIdx, f, v)} />
                   </>
                 )}
 
                 {familyStep === 2 && (
                   <>
-                    <h2 className="text-lg font-semibold text-slate-900 mb-5">Home Address</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Home Address</h2>
                     <AddressForm form={currentForm} errors={familyErrors} onChange={(f, v) => setFamilyField(activeSkaterIdx, f, v)} />
                   </>
                 )}
 
                 {familyStep === 3 && (
                   <>
-                    <h2 className="text-lg font-semibold text-slate-900 mb-5">Membership Type</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Membership Type</h2>
                     {typesLoading && <LoadingSpinner />}
                     {typesError && <ErrorAlert message="Failed to load membership types." />}
                     {membershipTypes && (
@@ -417,7 +417,7 @@ export default function RegisterPage() {
                           >
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="font-semibold text-slate-900">{type.name}</p>
+                                <p className="font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
                                 {type.usfs_category && <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>}
                               </div>
                               <p className="text-xl font-bold text-primary">${parseFloat(type.price_in_club).toFixed(0)}</p>
@@ -432,7 +432,7 @@ export default function RegisterPage() {
 
                 {familyStep === 4 && (
                   <>
-                    <h2 className="text-lg font-semibold text-slate-900 mb-5">Emergency Contact</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Emergency Contact</h2>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <Field label="Contact name">
@@ -446,12 +446,12 @@ export default function RegisterPage() {
                         <input className={inputCls} placeholder="e.g., Parent, Spouse, Coach" value={currentForm.emergency_contact_relation} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_relation', e.target.value)} />
                       </Field>
                       {isMinor(currentForm.date_of_birth) && (
-                        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-3 mt-4">
+                        <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40 p-4 space-y-3 mt-4">
                           <div className="flex items-start gap-2">
                             <Shield className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                             <div>
-                              <p className="font-semibold text-blue-900 text-sm">Parental Consent Required (COPPA)</p>
-                              <p className="text-blue-700 text-xs mt-1">This skater is under 13. A parent or legal guardian must consent to collection and use of their personal information.</p>
+                              <p className="font-semibold text-blue-900 dark:text-blue-300 text-sm">Parental Consent Required (COPPA)</p>
+                              <p className="text-blue-700 dark:text-blue-400 text-xs mt-1">This skater is under 13. A parent or legal guardian must consent to collection and use of their personal information.</p>
                             </div>
                           </div>
                           <label className="flex items-start gap-3 cursor-pointer">
@@ -461,7 +461,7 @@ export default function RegisterPage() {
                               checked={currentForm.coppa_consent}
                               onChange={e => setFamilyField(activeSkaterIdx, 'coppa_consent', e.target.checked)}
                             />
-                            <span className="text-sm text-blue-900">I am the parent or legal guardian and consent to registration of this minor.</span>
+                            <span className="text-sm text-blue-900 dark:text-blue-300">I am the parent or legal guardian and consent to registration of this minor.</span>
                           </label>
                           {familyErrors.coppa_consent && <p className="text-red-500 text-xs">{familyErrors.coppa_consent}</p>}
                         </div>
@@ -472,22 +472,22 @@ export default function RegisterPage() {
 
                 {familyStep === 5 && (
                   <>
-                    <h2 className="text-lg font-semibold text-slate-900 mb-5">Review &amp; Pay</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Review &amp; Pay</h2>
                     <div className="space-y-3">
                       {skaters.map((s, i) => {
                         const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
                         return (
-                          <div key={i} className="flex items-center justify-between bg-slate-50 rounded-lg px-4 py-3">
+                          <div key={i} className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 rounded-lg px-4 py-3">
                             <div>
-                              <p className="font-medium text-slate-900 text-sm">{s.first_name} {s.last_name}</p>
+                              <p className="font-medium text-slate-900 dark:text-slate-100 text-sm">{s.first_name} {s.last_name}</p>
                               <p className="text-xs text-slate-500">{mt?.name ?? '—'}{isMinor(s.date_of_birth) ? ' · minor' : ''}</p>
                             </div>
                             <p className="font-bold text-primary">${mt ? parseFloat(mt.price_in_club).toFixed(2) : '—'}</p>
                           </div>
                         )
                       })}
-                      <div className="flex items-center justify-between pt-3 border-t border-slate-200">
-                        <p className="font-semibold text-slate-900">Total</p>
+                      <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700">
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">Total</p>
                         <p className="text-2xl font-bold text-primary">
                           ${skaters.reduce((sum, s) => {
                             const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
@@ -502,9 +502,9 @@ export default function RegisterPage() {
                   </>
                 )}
 
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
                   {familyStep > 1 ? (
-                    <button onClick={() => setFamilyStep(s => s - 1)} className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <button onClick={() => setFamilyStep(s => s - 1)} className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors">
                       <ChevronLeft className="w-4 h-4" /> Back
                     </button>
                   ) : <div />}
@@ -540,41 +540,41 @@ export default function RegisterPage() {
   const minor = isMinor(form.date_of_birth)
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 px-6 py-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-3xl">⛸</span>
             <div>
-              <h1 className="font-serif font-bold text-slate-900">Line Creek FSC</h1>
+              <h1 className="font-serif font-bold text-slate-900 dark:text-slate-100">Line Creek FSC</h1>
               <p className="text-xs text-slate-500">Member Registration</p>
             </div>
           </div>
-          <button onClick={() => setMode('choose')} className="text-xs text-slate-400 hover:text-slate-600">← Change</button>
+          <button onClick={() => setMode('choose')} className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-400">← Change</button>
         </div>
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <StepIndicator current={step} />
 
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8">
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 sm:p-8">
           {step === 1 && (
             <>
-              <h2 className="text-lg font-semibold text-slate-900 mb-5">Skater Information</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Skater Information</h2>
               <SkaterForm form={form} errors={errors} onChange={setField} />
             </>
           )}
 
           {step === 2 && (
             <>
-              <h2 className="text-lg font-semibold text-slate-900 mb-5">Home Address</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Home Address</h2>
               <AddressForm form={form} errors={errors} onChange={setField} />
             </>
           )}
 
           {step === 3 && (
             <div className="space-y-5">
-              <h2 className="text-lg font-semibold text-slate-900">Membership Type</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Membership Type</h2>
               {typesLoading && <LoadingSpinner />}
               {typesError && <ErrorAlert message="Failed to load membership types." />}
               {membershipTypes && (
@@ -588,7 +588,7 @@ export default function RegisterPage() {
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-semibold text-slate-900">{type.name}</p>
+                          <p className="font-semibold text-slate-900 dark:text-slate-100">{type.name}</p>
                           {type.usfs_category && <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>}
                           {type.is_family_plan && <p className="text-xs text-blue-600 mt-0.5">Family plan</p>}
                         </div>
@@ -607,7 +607,7 @@ export default function RegisterPage() {
 
           {step === 4 && (
             <div className="space-y-5">
-              <h2 className="text-lg font-semibold text-slate-900">Emergency Contact</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Emergency Contact</h2>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Contact name">
                   <input className={inputCls} value={form.emergency_contact_name} onChange={e => setField('emergency_contact_name', e.target.value)} />
@@ -620,17 +620,17 @@ export default function RegisterPage() {
                 <input className={inputCls} placeholder="e.g., Parent, Spouse, Coach" value={form.emergency_contact_relation} onChange={e => setField('emergency_contact_relation', e.target.value)} />
               </Field>
               {minor && (
-                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-3 mt-2">
+                <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40 p-4 space-y-3 mt-2">
                   <div className="flex items-start gap-2">
                     <Shield className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-semibold text-blue-900 text-sm">Parental Consent Required (COPPA)</p>
-                      <p className="text-blue-700 text-xs mt-1">This skater is under 13. Under COPPA and US Figure Skating policy, a parent or legal guardian must consent to collection and use of this skater&apos;s personal information.</p>
+                      <p className="font-semibold text-blue-900 dark:text-blue-300 text-sm">Parental Consent Required (COPPA)</p>
+                      <p className="text-blue-700 dark:text-blue-400 text-xs mt-1">This skater is under 13. Under COPPA and US Figure Skating policy, a parent or legal guardian must consent to collection and use of this skater&apos;s personal information.</p>
                     </div>
                   </div>
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" className="mt-0.5 w-4 h-4 accent-primary" checked={form.coppa_consent} onChange={e => setField('coppa_consent', e.target.checked)} />
-                    <span className="text-sm text-blue-900">I am the parent or legal guardian and consent to registration and use of this minor&apos;s personal information for USFS registration and club membership.</span>
+                    <span className="text-sm text-blue-900 dark:text-blue-300">I am the parent or legal guardian and consent to registration and use of this minor&apos;s personal information for USFS registration and club membership.</span>
                   </label>
                   {errors.coppa_consent && <p className="text-red-500 text-xs">{errors.coppa_consent}</p>}
                 </div>
@@ -640,25 +640,25 @@ export default function RegisterPage() {
 
           {step === 5 && (
             <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-slate-900">Review &amp; Pay</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Review &amp; Pay</h2>
               <div className="space-y-4 text-sm">
-                <div className="bg-slate-50 rounded-lg p-4 space-y-1">
-                  <p className="font-semibold text-slate-700 text-xs uppercase tracking-wide mb-2">Skater</p>
-                  <p className="text-slate-900 font-medium">{form.first_name} {form.last_name}</p>
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 space-y-1">
+                  <p className="font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wide mb-2">Skater</p>
+                  <p className="text-slate-900 dark:text-slate-100 font-medium">{form.first_name} {form.last_name}</p>
                   <p className="text-slate-500">DOB: {form.date_of_birth}</p>
                   {minor && <p className="text-blue-600 text-xs">Minor — parental consent recorded</p>}
                 </div>
-                <div className="bg-slate-50 rounded-lg p-4 space-y-1">
-                  <p className="font-semibold text-slate-700 text-xs uppercase tracking-wide mb-2">Address</p>
-                  <p className="text-slate-900">{form.address_line1}{form.address_line2 ? `, ${form.address_line2}` : ''}</p>
-                  <p className="text-slate-900">{form.city}, {form.state} {form.zip_code}</p>
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 space-y-1">
+                  <p className="font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wide mb-2">Address</p>
+                  <p className="text-slate-900 dark:text-slate-100">{form.address_line1}{form.address_line2 ? `, ${form.address_line2}` : ''}</p>
+                  <p className="text-slate-900 dark:text-slate-100">{form.city}, {form.state} {form.zip_code}</p>
                 </div>
                 {selectedType && (
                   <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-slate-700 text-xs uppercase tracking-wide mb-1">Membership</p>
-                        <p className="text-slate-900 font-medium">{selectedType.name}</p>
+                        <p className="font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wide mb-1">Membership</p>
+                        <p className="text-slate-900 dark:text-slate-100 font-medium">{selectedType.name}</p>
                         <p className="text-slate-500 text-xs">{selectedType.usfs_category}</p>
                       </div>
                       <p className="text-2xl font-bold text-primary">${parseFloat(selectedType.price_in_club).toFixed(2)}</p>
@@ -671,9 +671,9 @@ export default function RegisterPage() {
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
             {step > 1 ? (
-              <button onClick={() => setStep(s => s - 1)} disabled={singleMutation.isPending} className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors disabled:opacity-40">
+              <button onClick={() => setStep(s => s - 1)} disabled={singleMutation.isPending} className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors disabled:opacity-40">
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
             ) : <div />}

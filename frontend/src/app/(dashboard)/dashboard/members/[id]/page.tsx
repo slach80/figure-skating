@@ -37,15 +37,15 @@ const LEVEL_CHOICES: { value: SkaterLevelValue; label: string }[] = [
 ]
 
 const LEVEL_COLORS: Record<SkaterLevelValue, string> = {
-  pre_alpha: 'bg-slate-100 text-slate-600 border-slate-200',
-  alpha: 'bg-blue-50 text-blue-700 border-blue-200',
+  pre_alpha: 'bg-slate-100 text-slate-600 dark:text-slate-400 border-slate-200',
+  alpha: 'bg-blue-50 text-blue-700 dark:text-blue-400 border-blue-200',
   beta: 'bg-cyan-50 text-cyan-700 border-cyan-200',
   gamma: 'bg-teal-50 text-teal-700 border-teal-200',
-  delta: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  pre_juvenile: 'bg-green-50 text-green-700 border-green-200',
+  delta: 'bg-emerald-50 text-emerald-700 dark:text-emerald-400 border-emerald-200',
+  pre_juvenile: 'bg-green-50 text-green-700 dark:text-green-400 border-green-200',
   juvenile: 'bg-lime-50 text-lime-700 border-lime-200',
-  intermediate: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-  novice: 'bg-orange-50 text-orange-700 border-orange-200',
+  intermediate: 'bg-yellow-50 text-yellow-700 dark:text-yellow-400 border-yellow-200',
+  novice: 'bg-orange-50 text-orange-700 dark:text-orange-400 border-orange-200',
   junior: 'bg-rose-50 text-rose-700 border-rose-200',
   senior: 'bg-purple-50 text-purple-700 border-purple-200',
 }
@@ -68,9 +68,9 @@ function ScoreBar({ score }: { score: number | null }) {
 function InfoRow({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null
   return (
-    <div className="grid grid-cols-3 gap-4 py-2 border-b border-slate-100 last:border-0">
+    <div className="grid grid-cols-3 gap-4 py-2 border-b border-slate-100 dark:border-slate-700 last:border-0">
       <dt className="text-sm text-slate-500">{label}</dt>
-      <dd className="col-span-2 text-sm text-slate-900">{value}</dd>
+      <dd className="col-span-2 text-sm text-slate-900 dark:text-slate-100">{value}</dd>
     </div>
   )
 }
@@ -110,8 +110,8 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
   return (
     <div className="space-y-6">
       {/* Discipline grid */}
-      <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-        <h2 className="text-base font-semibold text-slate-900 mb-4 flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-slate-400" />
           USFS Levels
         </h2>
@@ -120,9 +120,9 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
             const lvl = levelMap[key]
             const isEditing = editing === key
             return (
-              <div key={key} className="border border-slate-200 rounded-lg p-4">
+              <div key={key} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-sm font-medium text-slate-700">{label}</p>
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{label}</p>
                   {!isEditing && (
                     <button
                       onClick={() => startEdit(key)}
@@ -159,7 +159,7 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
                       <select
                         value={editValue}
                         onChange={e => setEditValue(e.target.value as SkaterLevelValue)}
-                        className="w-full rounded border border-slate-200 px-2 py-1.5 text-sm appearance-none pr-7 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        className="w-full rounded border border-slate-200 dark:border-slate-700 px-2 py-1.5 text-sm appearance-none pr-7 focus:outline-none focus:ring-2 focus:ring-primary/30"
                       >
                         {LEVEL_CHOICES.map(c => (
                           <option key={c.value} value={c.value}>{c.label}</option>
@@ -172,14 +172,14 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
                       value={editDate}
                       onChange={e => setEditDate(e.target.value)}
                       placeholder="Passed date"
-                      className="w-full rounded border border-slate-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="w-full rounded border border-slate-200 dark:border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                     <input
                       type="text"
                       value={editJudge}
                       onChange={e => setEditJudge(e.target.value)}
                       placeholder="Judge name (optional)"
-                      className="w-full rounded border border-slate-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="w-full rounded border border-slate-200 dark:border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                     <div className="flex gap-2">
                       <button
@@ -192,7 +192,7 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
                       </button>
                       <button
                         onClick={() => setEditing(null)}
-                        className="px-2.5 py-1 border border-slate-200 text-slate-600 rounded text-xs hover:bg-slate-50"
+                        className="px-2.5 py-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 rounded text-xs hover:bg-slate-50 dark:hover:bg-slate-900"
                       >
                         Cancel
                       </button>
@@ -206,8 +206,8 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
       </div>
 
       {/* Evaluations */}
-      <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-        <h2 className="text-base font-semibold text-slate-900 mb-4">Coach Evaluations</h2>
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">Coach Evaluations</h2>
         {evalsLoading ? (
           <LoadingSpinner />
         ) : evaluations.length === 0 ? (
@@ -215,10 +215,10 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
         ) : (
           <div className="space-y-4">
             {evaluations.map(ev => (
-              <div key={ev.id} className="border border-slate-100 rounded-lg p-4 space-y-3">
+              <div key={ev.id} className="border border-slate-100 dark:border-slate-700 rounded-lg p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                       {new Date(ev.evaluation_date + 'T00:00:00').toLocaleDateString('en-US', {
                         month: 'long', day: 'numeric', year: 'numeric',
                       })}
@@ -248,19 +248,19 @@ function ProgressTab({ skaterId }: { skaterId: string }) {
                 {ev.strengths && (
                   <div>
                     <p className="text-xs font-medium text-slate-500 mb-0.5">Strengths</p>
-                    <p className="text-sm text-slate-700">{ev.strengths}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{ev.strengths}</p>
                   </div>
                 )}
                 {ev.areas_to_improve && (
                   <div>
                     <p className="text-xs font-medium text-slate-500 mb-0.5">Areas to Improve</p>
-                    <p className="text-sm text-slate-700">{ev.areas_to_improve}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{ev.areas_to_improve}</p>
                   </div>
                 )}
                 {ev.goals_next_period && (
                   <div>
                     <p className="text-xs font-medium text-slate-500 mb-0.5">Goals</p>
-                    <p className="text-sm text-slate-700">{ev.goals_next_period}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{ev.goals_next_period}</p>
                   </div>
                 )}
               </div>
@@ -302,7 +302,7 @@ export default function SkaterDetailPage() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.back()}
-          className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-500 hover:text-slate-700"
+          className="p-2 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 transition-colors text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -310,7 +310,7 @@ export default function SkaterDetailPage() {
           <h1 className="flex items-center gap-3">
             {fullName}
             {skater.is_minor && (
-              <span className="text-xs font-normal bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">Minor</span>
+              <span className="text-xs font-normal bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 px-2 py-0.5 rounded-full">Minor</span>
             )}
           </h1>
           <p className="text-slate-500 text-sm mt-0.5">USFS #{skater.usfs_number || 'Not assigned'}</p>
@@ -328,7 +328,7 @@ export default function SkaterDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-slate-200 flex gap-0">
+      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-0">
         <button className={tabCls('profile')} onClick={() => setTab('profile')}>Profile</button>
         <button className={tabCls('progress')} onClick={() => setTab('progress')}>Progress</button>
         <button className={tabCls('competition')} onClick={() => setTab('competition')}>
@@ -340,8 +340,8 @@ export default function SkaterDetailPage() {
       {tab === 'profile' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                 <User className="w-4 h-4 text-slate-400" />
                 Profile
               </h2>
@@ -357,8 +357,8 @@ export default function SkaterDetailPage() {
               </dl>
             </div>
 
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                 <MapPin className="w-4 h-4 text-slate-400" />
                 Address
               </h2>
@@ -369,8 +369,8 @@ export default function SkaterDetailPage() {
             </div>
 
             {(skater.emergency_contact_name || skater.medical_notes) && (
-              <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-                <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-4">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   <AlertTriangle className="w-4 h-4 text-slate-400" />
                   Emergency &amp; Medical
                 </h2>
@@ -385,8 +385,8 @@ export default function SkaterDetailPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                 <Calendar className="w-4 h-4 text-slate-400" />
                 Membership
               </h2>
@@ -398,25 +398,25 @@ export default function SkaterDetailPage() {
                 {skater.membership_type_display && (
                   <div>
                     <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">Type</dt>
-                    <dd className="text-sm text-slate-900">{skater.membership_type_display.name}</dd>
+                    <dd className="text-sm text-slate-900 dark:text-slate-100">{skater.membership_type_display.name}</dd>
                   </div>
                 )}
                 {skater.membership_expiry && (
                   <div>
                     <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">Expires</dt>
-                    <dd className="text-sm text-slate-900">{new Date(skater.membership_expiry).toLocaleDateString()}</dd>
+                    <dd className="text-sm text-slate-900 dark:text-slate-100">{new Date(skater.membership_expiry).toLocaleDateString()}</dd>
                   </div>
                 )}
               </dl>
             </div>
 
             {skater.managed_by && (
-              <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-                <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-3">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-3">
                   <Phone className="w-4 h-4 text-slate-400" />
                   Guardian
                 </h2>
-                <p className="text-sm text-slate-900">{skater.managed_by}</p>
+                <p className="text-sm text-slate-900 dark:text-slate-100">{skater.managed_by}</p>
                 {skater.managed_by_email && (
                   <p className="text-sm text-slate-500 mt-1">{skater.managed_by_email}</p>
                 )}
@@ -431,8 +431,8 @@ export default function SkaterDetailPage() {
 
       {/* Competition tab */}
       {tab === 'competition' && (
-        <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-          <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+          <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
             <Trophy className="w-4 h-4 text-slate-400" />
             Competition History
           </h2>
