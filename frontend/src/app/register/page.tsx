@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useMembershipTypes, useRegisterSkater, useRegisterFamily } from '@/hooks/useRegistration'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorAlert } from '@/components/ui/ErrorAlert'
@@ -65,6 +65,75 @@ function Field({ label, required, error, children }: {
 }
 
 const inputCls = "w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white dark:bg-slate-800"
+
+const EMAIL_DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'icloud.com', 'hotmail.com', 'me.com', 'aol.com']
+
+function EmailInput({ value, onChange, placeholder }: {
+  value: string
+  onChange: (v: string) => void
+  placeholder?: string
+}) {
+  const [suggestion, setSuggestion] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value
+    onChange(val)
+    const atIdx = val.lastIndexOf('@')
+    if (atIdx !== -1) {
+      const typed = val.slice(atIdx + 1).toLowerCase()
+      const match = typed ? EMAIL_DOMAINS.find(d => d.startsWith(typed)) : null
+      setSuggestion(match && typed !== match ? val.slice(0, atIdx + 1) + match : '')
+    } else {
+      setSuggestion('')
+    }
+  }
+
+  function acceptSuggestion() {
+    if (suggestion) {
+      onChange(suggestion)
+      setSuggestion('')
+      inputRef.current?.focus()
+    }
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (suggestion && (e.key === 'Tab' || e.key === 'ArrowRight' || e.key === 'Enter')) {
+      e.preventDefault()
+      acceptSuggestion()
+    }
+    if (e.key === 'Escape') setSuggestion('')
+  }
+
+  return (
+    <div className="relative">
+      <input
+        ref={inputRef}
+        type="email"
+        inputMode="email"
+        autoCapitalize="none"
+        autoCorrect="off"
+        autoComplete="email"
+        className={inputCls}
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onBlur={() => setSuggestion('')}
+      />
+      {suggestion && (
+        <button
+          type="button"
+          onMouseDown={e => { e.preventDefault(); acceptSuggestion() }}
+          className="absolute inset-x-0 top-full mt-1 z-10 flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm shadow-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+        >
+          <span className="text-slate-900 dark:text-slate-100">{suggestion}</span>
+          <span className="text-xs text-slate-400 ml-3">tap to complete</span>
+        </button>
+      )}
+    </div>
+  )
+}
 
 // Proxied through backend to avoid CORS restrictions on the Census Geocoder
 async function validateUSAddress(
@@ -150,7 +219,7 @@ function SkaterForm({
         </select>
       </Field>
       <Field label="Contact email">
-        <input type="email" className={inputCls} placeholder="skater@example.com" value={form.email} onChange={e => onChange('email', e.target.value)} />
+        <EmailInput value={form.email} onChange={v => onChange('email', v)} placeholder="skater@example.com" />
       </Field>
       <Field label="Phone">
         <input type="tel" inputMode="tel" className={inputCls} placeholder="(555) 000-0000" value={form.phone} onChange={e => onChange('phone', e.target.value)} />
