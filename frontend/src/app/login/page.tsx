@@ -88,7 +88,7 @@ function LoginForm() {
         <Link href="/forgot-password" className="text-slate-400 hover:text-slate-300 transition-colors">
           Forgot password?
         </Link>
-        <Link href="/register" className="text-primary hover:text-accent font-medium transition-colors">
+        <Link href="/register" className="text-white hover:text-accent font-medium transition-colors">
           Create account →
         </Link>
       </div>
