@@ -2,7 +2,8 @@
 
 import { useEffect, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { Building2, Users, Shield, LogOut } from 'lucide-react'
+import { Building2, Users, Shield, LogOut, Globe } from 'lucide-react'
+import Link from 'next/link'
 import { getTokenRole, logout } from '@/lib/auth'
 import { NavLink } from '@/components/ui/NavLink'
 
@@ -32,7 +33,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 text-white border-r border-slate-700 flex flex-col">
         <div className="p-6 border-b border-slate-700">
-          <div className="flex items-center gap-3">
+          <Link href="/home" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
               <Shield size={16} className="text-white" />
             </div>
@@ -40,7 +41,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
               <p className="font-bold text-white text-sm leading-tight">Super Admin</p>
               <p className="text-xs text-slate-400">Platform Control</p>
             </div>
-          </div>
+          </Link>
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-1">
@@ -55,10 +56,17 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-700">
+        <div className="p-4 border-t border-slate-700 space-y-1">
+          <Link
+            href="/home"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800"
+          >
+            <Globe size={18} />
+            Club Site
+          </Link>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-red-900/60 text-slate-300 hover:text-white"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-red-900/60 text-slate-300 hover:text-white"
           >
             <LogOut size={18} />
             Logout
