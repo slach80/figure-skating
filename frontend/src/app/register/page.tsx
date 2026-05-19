@@ -196,10 +196,10 @@ function SkaterForm({
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="First name" required error={errors.first_name}>
-          <input className={inputCls} value={form.first_name} onChange={e => onChange('first_name', e.target.value)} />
+          <input className={inputCls} autoComplete="given-name" value={form.first_name} onChange={e => onChange('first_name', e.target.value)} />
         </Field>
         <Field label="Last name" required error={errors.last_name}>
-          <input className={inputCls} value={form.last_name} onChange={e => onChange('last_name', e.target.value)} />
+          <input className={inputCls} autoComplete="family-name" value={form.last_name} onChange={e => onChange('last_name', e.target.value)} />
         </Field>
       </div>
       <Field label="Date of birth" required error={errors.date_of_birth}>
@@ -222,7 +222,7 @@ function SkaterForm({
         <EmailInput value={form.email} onChange={v => onChange('email', v)} placeholder="skater@example.com" />
       </Field>
       <Field label="Phone">
-        <input type="tel" inputMode="tel" className={inputCls} placeholder="(555) 000-0000" value={form.phone} onChange={e => onChange('phone', e.target.value)} />
+        <input type="tel" inputMode="tel" autoComplete="tel" className={inputCls} placeholder="(555) 000-0000" value={form.phone} onChange={e => onChange('phone', e.target.value)} />
       </Field>
     </div>
   )
@@ -252,20 +252,20 @@ function AddressForm({
         </div>
       )}
       <Field label="Address line 1" required error={errors.address_line1}>
-        <input className={inputCls} placeholder="123 Main St" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
+        <input className={inputCls} placeholder="123 Main St" autoComplete="address-line1" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
       </Field>
       <Field label="Address line 2">
-        <input className={inputCls} placeholder="Apt, Suite, etc." value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
+        <input className={inputCls} placeholder="Apt, Suite, etc." autoComplete="address-line2" value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
       </Field>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
         <div className="col-span-2 sm:col-span-3">
           <Field label="City" required error={errors.city}>
-            <input className={inputCls} value={form.city} onChange={e => onChange('city', e.target.value)} />
+            <input className={inputCls} autoComplete="address-level2" value={form.city} onChange={e => onChange('city', e.target.value)} />
           </Field>
         </div>
         <div className="col-span-1">
           <Field label="State" required error={errors.state}>
-            <select className={inputCls} value={form.state} onChange={e => onChange('state', e.target.value)}>
+            <select className={inputCls} autoComplete="address-level1" value={form.state} onChange={e => onChange('state', e.target.value)}>
               <option value="">—</option>
               {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
@@ -273,7 +273,7 @@ function AddressForm({
         </div>
         <div className="col-span-1 sm:col-span-2">
           <Field label="ZIP" required error={errors.zip_code}>
-            <input className={inputCls} placeholder="00000" inputMode="numeric" pattern="[0-9]*" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
+            <input className={inputCls} placeholder="00000" inputMode="numeric" pattern="[0-9]*" autoComplete="postal-code" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
           </Field>
         </div>
       </div>
@@ -598,7 +598,7 @@ export default function RegisterPage() {
                           <input className={inputCls} value={currentForm.emergency_contact_name} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_name', e.target.value)} />
                         </Field>
                         <Field label="Phone">
-                          <input type="tel" inputMode="tel" className={inputCls} value={currentForm.emergency_contact_phone} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_phone', e.target.value)} />
+                          <input type="tel" inputMode="tel" autoComplete="tel" className={inputCls} value={currentForm.emergency_contact_phone} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_phone', e.target.value)} />
                         </Field>
                       </div>
                       <Field label="Relationship">
