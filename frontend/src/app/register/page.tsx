@@ -153,7 +153,7 @@ function SkaterForm({
         <input type="email" className={inputCls} placeholder="skater@example.com" value={form.email} onChange={e => onChange('email', e.target.value)} />
       </Field>
       <Field label="Phone">
-        <input type="tel" className={inputCls} placeholder="(555) 000-0000" value={form.phone} onChange={e => onChange('phone', e.target.value)} />
+        <input type="tel" inputMode="tel" className={inputCls} placeholder="(555) 000-0000" value={form.phone} onChange={e => onChange('phone', e.target.value)} />
       </Field>
     </div>
   )
@@ -204,7 +204,7 @@ function AddressForm({
         </div>
         <div className="col-span-1 sm:col-span-2">
           <Field label="ZIP" required error={errors.zip_code}>
-            <input className={inputCls} placeholder="00000" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
+            <input className={inputCls} placeholder="00000" inputMode="numeric" pattern="[0-9]*" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
           </Field>
         </div>
       </div>
@@ -529,7 +529,7 @@ export default function RegisterPage() {
                           <input className={inputCls} value={currentForm.emergency_contact_name} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_name', e.target.value)} />
                         </Field>
                         <Field label="Phone">
-                          <input type="tel" className={inputCls} value={currentForm.emergency_contact_phone} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_phone', e.target.value)} />
+                          <input type="tel" inputMode="tel" className={inputCls} value={currentForm.emergency_contact_phone} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_phone', e.target.value)} />
                         </Field>
                       </div>
                       <Field label="Relationship">
@@ -703,7 +703,7 @@ export default function RegisterPage() {
                   <input className={inputCls} value={form.emergency_contact_name} onChange={e => setField('emergency_contact_name', e.target.value)} />
                 </Field>
                 <Field label="Phone">
-                  <input type="tel" className={inputCls} value={form.emergency_contact_phone} onChange={e => setField('emergency_contact_phone', e.target.value)} />
+                  <input type="tel" inputMode="tel" className={inputCls} value={form.emergency_contact_phone} onChange={e => setField('emergency_contact_phone', e.target.value)} />
                 </Field>
               </div>
               <Field label="Relationship">
