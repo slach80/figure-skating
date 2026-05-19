@@ -7,7 +7,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from apps.accounts.models import FamilyGroup
@@ -43,6 +43,11 @@ def _resolve_club(request):
     if club is None and request.user.is_authenticated:
         club = getattr(request.user, "club", None)
         request.club = club
+    if club is None:
+        # Public endpoints (registration) — fall back to the single club on this platform
+        from apps.clubs.models import Club
+        club = Club.objects.filter(is_active=True).first()
+        request.club = club
     return club
 
 
@@ -54,7 +59,7 @@ class MembershipTypeSerializer(serializers.ModelSerializer):
 
 class MembershipTypeListView(ListAPIView):
     serializer_class = MembershipTypeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         club = _resolve_club(self.request)
