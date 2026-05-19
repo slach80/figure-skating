@@ -602,7 +602,7 @@ export default function MemberLessonsPage() {
       </div>
 
       {/* Two-column layout on md+ */}
-      <div className="flex flex-col md:flex-row gap-4 items-start">
+      <div className="flex flex-col md:flex-row gap-4 md:items-start">
         {/* Calendar panel */}
         <div className="flex-1 min-w-0 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           {/* Week navigation */}
