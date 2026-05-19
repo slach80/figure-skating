@@ -82,10 +82,10 @@ function MembershipTypeRow({
         </td>
         <td className="px-4 py-3">
           <div className="flex items-center gap-2 justify-end">
-            <button onClick={() => setEditing(true)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors">
+            <button onClick={() => setEditing(true)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
               <Pencil size={14} />
             </button>
-            <button onClick={() => onDelete(mt.id)} className="p-1.5 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:dark:text-red-400 transition-colors">
+            <button onClick={() => onDelete(mt.id)} className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
               <Trash2 size={14} />
             </button>
           </div>
@@ -95,7 +95,7 @@ function MembershipTypeRow({
   }
 
   return (
-    <tr className="bg-blue-50/40">
+    <tr className="bg-blue-50/40 dark:bg-blue-950/20">
       <td className="px-4 py-2"><input className={inputCls} value={form.name} onChange={e => set('name', e.target.value)} /></td>
       <td className="px-4 py-2"><input className={inputCls} value={form.usfs_category} onChange={e => set('usfs_category', e.target.value)} placeholder="e.g., Adult" /></td>
       <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} value={form.price_in_club} onChange={e => set('price_in_club', e.target.value)} /></td>
@@ -108,10 +108,10 @@ function MembershipTypeRow({
       </td>
       <td className="px-4 py-2">
         <div className="flex items-center gap-2 justify-end">
-          <button onClick={() => { onSave(form); setEditing(false) }} className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors">
+          <button onClick={() => { onSave(form); setEditing(false) }} className="p-1.5 rounded hover:bg-green-50 dark:hover:bg-green-950/40 text-green-600 transition-colors">
             <Check size={14} />
           </button>
-          <button onClick={() => { setForm(mt); setEditing(false) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
+          <button onClick={() => { setForm(mt); setEditing(false) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
             <X size={14} />
           </button>
         </div>
@@ -239,7 +239,7 @@ function WebsiteTab() {
 
       {/* Announcements */}
       <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Announcements</h2>
           <button
             onClick={() => setNewAnn(EMPTY_ANNOUNCEMENT)}
@@ -256,7 +256,7 @@ function WebsiteTab() {
           <div className="divide-y divide-slate-100 dark:divide-slate-700">
             {/* New announcement form */}
             {newAnn && (
-              <div className="p-4 bg-green-50/40 space-y-3">
+              <div className="p-4 bg-green-50/40 dark:bg-green-950/20 space-y-3">
                 <input
                   className={inputCls}
                   placeholder="Title"
@@ -290,11 +290,11 @@ function WebsiteTab() {
                         setNewAnn(null)
                       }}
                       disabled={!newAnn.title || createAnn.isPending}
-                      className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors disabled:opacity-40"
+                      className="p-1.5 rounded hover:bg-green-50 dark:hover:bg-green-950/40 text-green-600 transition-colors disabled:opacity-40"
                     >
                       <Check size={16} />
                     </button>
-                    <button onClick={() => setNewAnn(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
+                    <button onClick={() => setNewAnn(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
                       <X size={16} />
                     </button>
                   </div>
@@ -329,11 +329,11 @@ function WebsiteTab() {
                           setEditingAnn(null)
                           setEditAnnForm({})
                         }}
-                        className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600"
+                        className="p-1.5 rounded hover:bg-green-50 dark:hover:bg-green-950/40 text-green-600"
                       >
                         <Check size={14} />
                       </button>
-                      <button onClick={() => { setEditingAnn(null); setEditAnnForm({}) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500">
+                      <button onClick={() => { setEditingAnn(null); setEditAnnForm({}) }} className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
                         <X size={14} />
                       </button>
                     </div>
@@ -358,13 +358,13 @@ function WebsiteTab() {
                       </button>
                       <button
                         onClick={() => { setEditingAnn(ann.id); setEditAnnForm({}) }}
-                        className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 transition-colors"
+                        className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                       >
                         <Pencil size={13} />
                       </button>
                       <button
                         onClick={() => deleteAnn.mutate(ann.id)}
-                        className="p-1.5 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:dark:text-red-400 transition-colors"
+                        className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                       >
                         <Trash2 size={13} />
                       </button>
@@ -555,7 +555,7 @@ export default function SettingsPage() {
       {/* Membership Types */}
       {activeTab === 'membership' && (
         <section className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Membership Types</h2>
             <button
               onClick={() => setNewType(EMPTY_TYPE)}
@@ -592,7 +592,7 @@ export default function SettingsPage() {
                 ))}
 
                 {newType && (
-                  <tr className="bg-green-50/40">
+                  <tr className="bg-green-50/40 dark:bg-green-950/20">
                     <td className="px-4 py-2"><input className={inputCls} placeholder="e.g., Adult" value={newType.name} onChange={e => setNewField('name', e.target.value)} /></td>
                     <td className="px-4 py-2"><input className={inputCls} placeholder="e.g., Adult" value={newType.usfs_category} onChange={e => setNewField('usfs_category', e.target.value)} /></td>
                     <td className="px-4 py-2"><input type="number" step="0.01" className={inputCls} placeholder="0.00" value={newType.price_in_club} onChange={e => setNewField('price_in_club', e.target.value)} /></td>
@@ -605,10 +605,10 @@ export default function SettingsPage() {
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2 justify-end">
-                        <button onClick={createType} disabled={createMt.isPending} className="p-1.5 rounded hover:bg-green-50 dark:hover:dark:bg-green-950/40 text-green-600 transition-colors">
+                        <button onClick={createType} disabled={createMt.isPending} className="p-1.5 rounded hover:bg-green-50 dark:hover:bg-green-950/40 text-green-600 transition-colors">
                           <Check size={14} />
                         </button>
-                        <button onClick={() => setNewType(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 transition-colors">
+                        <button onClick={() => setNewType(null)} className="p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
                           <X size={14} />
                         </button>
                       </div>

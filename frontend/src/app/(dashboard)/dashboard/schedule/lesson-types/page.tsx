@@ -79,7 +79,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
         <td className="px-4 py-3 text-sm text-slate-500">{lt.drop_in_price ? `$${lt.drop_in_price}` : '—'}</td>
         <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{lt.max_participants}</td>
         <td className="px-4 py-3">
-          <span className={`text-xs px-2 py-0.5 rounded-full ${lt.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full ${lt.is_active ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
             {lt.is_active ? 'Active' : 'Inactive'}
           </span>
         </td>
@@ -177,7 +177,7 @@ function TypeRow({ lt }: { lt: LessonType }) {
           <button
             onClick={save}
             disabled={update.isPending}
-            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>
@@ -283,7 +283,7 @@ function AddRow({ onDone }: { onDone: () => void }) {
           <button
             onClick={save}
             disabled={create.isPending || !form.name}
-            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>

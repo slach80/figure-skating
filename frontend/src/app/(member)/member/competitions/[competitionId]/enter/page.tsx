@@ -50,14 +50,14 @@ function StepIndicator({ step }: StepIndicatorProps) {
                   ? 'bg-emerald-500 text-white'
                   : active
                   ? 'bg-primary text-white'
-                  : 'bg-slate-200 text-slate-500'
+                  : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
               }`}
             >
               {done ? <CheckCircle size={14} /> : num}
             </div>
             <span
               className={`text-xs font-medium hidden sm:inline ${
-                active ? 'text-slate-900' : done ? 'text-emerald-600' : 'text-slate-400'
+                active ? 'text-slate-900 dark:text-slate-100' : done ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'
               }`}
             >
               {label}
@@ -106,14 +106,14 @@ function Step1SelectSkater({ skaters, selectedSkater, onSelect, onNext }: Step1P
               onClick={() => onSelect(skater)}
               className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                 selected
-                  ? 'border-primary bg-primary/5'
-                  : 'border-slate-200 hover:border-slate-300 dark:hover:dark:border-slate-600 bg-white'
+                  ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-white dark:bg-slate-900'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                    selected ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'
+                    selected ? 'bg-primary text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   {skater.first_name[0]}
@@ -184,6 +184,14 @@ const SEGMENT_LABELS: Record<string, string> = {
   pattern: 'Pattern Dance',
   rhythm_dance: 'Rhythm Dance',
   free_dance: 'Free Dance',
+}
+
+function disciplineLabel(d: string) {
+  return DISCIPLINE_LABELS[d] ?? d
+}
+
+function segmentLabel(s: string) {
+  return SEGMENT_LABELS[s] ?? s
 }
 
 function Step2SelectCategories({
@@ -258,8 +266,8 @@ function Step2SelectCategories({
       <div className="space-y-5">
         {Array.from(grouped.entries()).map(([discipline, cats]) => (
           <div key={discipline}>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-              {DISCIPLINE_LABELS[discipline] ?? discipline}
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+              {disciplineLabel(discipline)}
             </p>
             <div className="space-y-1.5">
               {cats.map(cat => {
@@ -275,10 +283,10 @@ function Step2SelectCategories({
                     key={cat.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
                       disabled
-                        ? 'bg-slate-50 border-slate-100 dark:border-slate-700 cursor-not-allowed opacity-60'
+                        ? 'bg-slate-50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-700 cursor-not-allowed opacity-60'
                         : checked
-                        ? 'bg-primary/5 border-primary'
-                        : 'bg-white border-slate-200 dark:border-slate-700 hover:border-slate-300'
+                        ? 'bg-primary/5 dark:bg-primary/10 border-primary'
+                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
                     <input
@@ -303,7 +311,7 @@ function Step2SelectCategories({
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {SEGMENT_LABELS[cat.segment] ?? cat.segment} · {cat.level}
+                        {segmentLabel(cat.segment)}{cat.level ? ` · ${cat.level}` : ''}
                       </p>
                     </div>
                     <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex-shrink-0">
@@ -389,8 +397,8 @@ function Step3ReviewSubmit({
         <div className="text-center mb-6">
           {failed.length === 0 ? (
             <>
-              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle size={28} className="text-emerald-600" />
+              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle size={28} className="text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Entries Submitted!</h2>
               <p className="text-sm text-slate-500 mt-1">
@@ -399,8 +407,8 @@ function Step3ReviewSubmit({
             </>
           ) : (
             <>
-              <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <AlertTriangle size={28} className="text-amber-600" />
+              <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center mx-auto mb-3">
+                <AlertTriangle size={28} className="text-amber-600 dark:text-amber-400" />
               </div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Partially Submitted</h2>
               <p className="text-sm text-slate-500 mt-1">
@@ -538,7 +546,7 @@ function Step3ReviewSubmit({
         <button
           onClick={onBack}
           disabled={isSubmitting}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:dark:bg-slate-900 disabled:opacity-40"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-40"
         >
           <ArrowLeft size={14} /> Back
         </button>
@@ -671,7 +679,7 @@ export default function CompetitionEnterPage() {
       {/* Back link */}
       <button
         onClick={() => router.push('/member/competitions')}
-        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:dark:text-slate-300 mb-4"
+        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 mb-4"
       >
         <ArrowLeft size={14} />
         All competitions

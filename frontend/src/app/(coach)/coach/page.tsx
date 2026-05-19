@@ -6,11 +6,11 @@ import { useTodaysBookings, useConfirmBooking, useCompleteBooking, useCancelBook
 import type { BookingList } from '@/types/scheduling'
 
 const STATUS_CONFIG = {
-  pending: { label: 'Pending', icon: Clock, color: 'text-yellow-600 bg-yellow-50 dark:bg-yellow-950/40 border-yellow-200' },
-  confirmed: { label: 'Confirmed', icon: CheckCircle, color: 'text-blue-600 bg-blue-50 dark:bg-blue-950/40 border-blue-200' },
-  completed: { label: 'Completed', icon: CheckCircle, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200' },
-  cancelled: { label: 'Cancelled', icon: XCircle, color: 'text-slate-500 bg-slate-50 dark:bg-slate-900 border-slate-200' },
-  no_show: { label: 'No show', icon: UserX, color: 'text-red-600 bg-red-50 dark:bg-red-950/40 border-red-200' },
+  pending: { label: 'Pending', icon: Clock, color: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950/40 border-yellow-200 dark:border-yellow-800' },
+  confirmed: { label: 'Confirmed', icon: CheckCircle, color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-800' },
+  completed: { label: 'Completed', icon: CheckCircle, color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800' },
+  cancelled: { label: 'Cancelled', icon: XCircle, color: 'text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700' },
+  no_show: { label: 'No show', icon: UserX, color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800' },
 }
 
 function BookingCard({ booking }: { booking: BookingList }) {
@@ -44,7 +44,7 @@ function BookingCard({ booking }: { booking: BookingList }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <span className={`text-xs px-2 py-0.5 rounded ${booking.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-yellow-100 text-yellow-700'}`}>
+        <span className={`text-xs px-2 py-0.5 rounded ${booking.payment_status === 'paid' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400'}`}>
           {booking.payment_status === 'paid' ? `Paid $${booking.amount_paid}` : 'Payment pending'}
         </span>
       </div>
@@ -115,7 +115,7 @@ export default function CoachTodayPage() {
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'Total lessons', value: bookings.length, color: 'text-slate-800' },
+          { label: 'Total lessons', value: bookings.length, color: 'text-slate-800 dark:text-slate-200' },
           { label: 'Confirmed', value: confirmed.length, color: 'text-blue-600' },
           { label: 'Pending', value: pending.length, color: 'text-yellow-600' },
         ].map(s => (

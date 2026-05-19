@@ -37,17 +37,17 @@ const LEVEL_CHOICES: { value: SkaterLevelValue; label: string }[] = [
 ]
 
 const LEVEL_COLORS: Record<SkaterLevelValue, string> = {
-  pre_alpha: 'bg-slate-100 text-slate-600 dark:text-slate-400 border-slate-200',
-  alpha: 'bg-blue-50 text-blue-700 dark:text-blue-400 border-blue-200',
-  beta: 'bg-cyan-50 text-cyan-700 border-cyan-200',
-  gamma: 'bg-teal-50 text-teal-700 border-teal-200',
-  delta: 'bg-emerald-50 text-emerald-700 dark:text-emerald-400 border-emerald-200',
-  pre_juvenile: 'bg-green-50 text-green-700 dark:text-green-400 border-green-200',
-  juvenile: 'bg-lime-50 text-lime-700 border-lime-200',
-  intermediate: 'bg-yellow-50 text-yellow-700 dark:text-yellow-400 border-yellow-200',
-  novice: 'bg-orange-50 text-orange-700 dark:text-orange-400 border-orange-200',
-  junior: 'bg-rose-50 text-rose-700 border-rose-200',
-  senior: 'bg-purple-50 text-purple-700 border-purple-200',
+  pre_alpha: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700',
+  alpha: 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+  beta: 'bg-cyan-50 dark:bg-cyan-950/40 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-800',
+  gamma: 'bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 border-teal-200 dark:border-teal-800',
+  delta: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
+  pre_juvenile: 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800',
+  juvenile: 'bg-lime-50 dark:bg-lime-950/40 text-lime-700 dark:text-lime-400 border-lime-200 dark:border-lime-800',
+  intermediate: 'bg-yellow-50 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
+  novice: 'bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800',
+  junior: 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800',
+  senior: 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800',
 }
 
 function ScoreBar({ score }: { score: number | null }) {
@@ -57,7 +57,7 @@ function ScoreBar({ score }: { score: number | null }) {
       {[1, 2, 3, 4, 5].map(n => (
         <div
           key={n}
-          className={`w-4 h-4 rounded-full border ${n <= score ? 'bg-primary border-primary' : 'bg-slate-100 border-slate-200'}`}
+          className={`w-4 h-4 rounded-full border ${n <= score ? 'bg-primary border-primary' : 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600'}`}
         />
       ))}
       <span className="text-xs text-slate-500 ml-1">{score}/5</span>
@@ -302,7 +302,7 @@ export default function SkaterDetailPage() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.back()}
-          className="p-2 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 transition-colors text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+          className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>

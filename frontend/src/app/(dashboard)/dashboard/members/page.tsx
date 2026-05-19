@@ -34,7 +34,7 @@ export default function MembersPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={downloadUsfsExport}
-            className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors"
+            className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
           >
             <Download className="w-4 h-4" />
             USFS Export

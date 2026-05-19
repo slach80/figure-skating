@@ -18,10 +18,10 @@ interface PaginatedResponse<T> {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  paid: 'bg-emerald-100 text-emerald-700',
-  pending: 'bg-yellow-100 text-yellow-700',
-  failed: 'bg-red-100 text-red-700',
-  refunded: 'bg-slate-100 text-slate-500',
+  paid: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+  pending: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400',
+  failed: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
+  refunded: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400',
 }
 
 function useMyPayments() {

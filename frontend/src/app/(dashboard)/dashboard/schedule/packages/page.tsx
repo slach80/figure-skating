@@ -13,9 +13,9 @@ import { useLessonTypes } from '@/hooks/useScheduling'
 import type { LessonPackage } from '@/types/scheduling'
 
 const PAYMENT_BADGE: Record<string, string> = {
-  pending: 'bg-yellow-50 text-yellow-700',
-  paid: 'bg-emerald-50 text-emerald-700',
-  refunded: 'bg-slate-50 text-slate-500',
+  pending: 'bg-yellow-50 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-400',
+  paid: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400',
+  refunded: 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400',
 }
 
 interface PackageRowState {
@@ -74,7 +74,7 @@ function PackageRow({ pkg, lessonTypeOptions }: { pkg: LessonPackage; lessonType
           )}
         </td>
         <td className="px-4 py-3">
-          <span className={`text-xs px-2 py-0.5 rounded-full ${pkg.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full ${pkg.is_active ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
             {pkg.is_active ? 'Active' : 'Inactive'}
           </span>
         </td>
@@ -151,7 +151,7 @@ function PackageRow({ pkg, lessonTypeOptions }: { pkg: LessonPackage; lessonType
           <button
             onClick={save}
             disabled={update.isPending}
-            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>
@@ -247,7 +247,7 @@ function AddRow({
           <button
             onClick={save}
             disabled={create.isPending || !form.name || !form.lesson_type}
-            className="text-emerald-600 hover:text-emerald-700 dark:hover:dark:text-emerald-400 disabled:opacity-50"
+            className="text-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 disabled:opacity-50"
           >
             <Check size={16} />
           </button>
@@ -351,7 +351,7 @@ export default function PackagesPage() {
                       <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">{purchase.package_name}</td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-24 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                          <div className="h-1.5 w-24 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-primary rounded-full"
                               style={{

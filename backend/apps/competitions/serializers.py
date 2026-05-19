@@ -35,7 +35,7 @@ class CompetitionEntrySerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     competition_name = serializers.CharField(source='competition.name', read_only=True)
     coach_name = serializers.SerializerMethodField()
-    total_fee = serializers.DecimalField(source='total_fee', max_digits=8, decimal_places=2, read_only=True)
+    total_fee = serializers.DecimalField(max_digits=8, decimal_places=2, read_only=True)
 
     def get_coach_name(self, obj):
         return obj.coach.user.get_full_name() if obj.coach else None

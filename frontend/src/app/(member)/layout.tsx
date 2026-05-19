@@ -26,7 +26,7 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
     : null
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-0">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-0">
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           {/* Logo — links to home page */}
@@ -74,7 +74,10 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
       <InstallPrompt />
 
       {/* Mobile bottom tab bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 z-10">
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 z-10"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}
+      >
         <div className="max-w-lg mx-auto flex">
           {NAV.map(item => {
             const isActive = item.href === '/member'
@@ -85,7 +88,7 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex-1 flex flex-col items-center gap-0.5 py-3 text-xs transition-colors ${
+                className={`flex-1 flex flex-col items-center gap-0.5 pt-3 pb-2 text-xs transition-colors ${
                   isActive ? 'text-primary' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >

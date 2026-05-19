@@ -23,10 +23,10 @@ function useFamilyMembers(familyGroupId: string | null) {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  active: 'bg-emerald-100 text-emerald-700',
-  pending: 'bg-yellow-100 text-yellow-700',
-  expired: 'bg-red-100 text-red-700',
-  suspended: 'bg-slate-100 text-slate-500',
+  active: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+  pending: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400',
+  expired: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
+  suspended: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400',
 }
 
 export default function MemberFamilyPage() {

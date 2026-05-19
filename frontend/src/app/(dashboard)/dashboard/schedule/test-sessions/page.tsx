@@ -23,10 +23,10 @@ import { TEST_TYPE_LABELS } from '@/types/scheduling'
 // ── Result badge ──────────────────────────────────────────────────────────────
 
 const RESULT_STYLES: Record<string, string> = {
-  registered: 'bg-blue-100 text-blue-700',
-  pass: 'bg-emerald-100 text-emerald-700',
-  retry: 'bg-amber-100 text-amber-700',
-  scratch: 'bg-slate-100 text-slate-500 line-through',
+  registered: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
+  pass: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+  retry: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
+  scratch: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 line-through',
 }
 
 const RESULT_LABELS: Record<string, string> = {
@@ -38,7 +38,7 @@ const RESULT_LABELS: Record<string, string> = {
 
 function ResultBadge({ result }: { result: string }) {
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${RESULT_STYLES[result] ?? 'bg-slate-100 text-slate-600'}`}>
+    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${RESULT_STYLES[result] ?? 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'}`}>
       {RESULT_LABELS[result] ?? result}
     </span>
   )
@@ -146,7 +146,7 @@ function SessionCard({ session }: { session: TestSession }) {
       {/* Card header — clickable to expand */}
       <button
         onClick={() => setExpanded(e => !e)}
-        className="w-full text-left px-5 py-4 hover:bg-slate-50 dark:hover:dark:bg-slate-900 transition-colors"
+        className="w-full text-left px-5 py-4 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
@@ -187,7 +187,7 @@ function SessionCard({ session }: { session: TestSession }) {
         {session.test_types.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
             {session.test_types.map(t => (
-              <span key={t} className="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full">
+              <span key={t} className="text-xs bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded-full">
                 {TEST_TYPE_LABELS[t] ?? t}
               </span>
             ))}

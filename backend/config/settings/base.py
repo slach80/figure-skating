@@ -212,6 +212,7 @@ STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_CONNECT_CLIENT_ID = config("STRIPE_CONNECT_CLIENT_ID", default="")
+STRIPE_TEST_MODE = config("STRIPE_TEST_MODE", default=False, cast=bool)
 
 # VAPID (Web Push)
 VAPID_PUBLIC_KEY = config("VAPID_PUBLIC_KEY", default="")

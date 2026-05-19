@@ -86,11 +86,11 @@ function buildSlotBlocks(slots: AvailableSlot[], weekStart: Date): SlotBlock[] {
 // ── Status config ──────────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  pending: { label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
-  confirmed: { label: 'Confirmed', color: 'bg-blue-100 text-blue-800' },
-  completed: { label: 'Completed', color: 'bg-emerald-100 text-emerald-800' },
-  cancelled: { label: 'Cancelled', color: 'bg-slate-100 text-slate-500' },
-  no_show: { label: 'No show', color: 'bg-red-100 text-red-700' },
+  pending: { label: 'Pending', color: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-400' },
+  confirmed: { label: 'Confirmed', color: 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400' },
+  completed: { label: 'Completed', color: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-400' },
+  cancelled: { label: 'Cancelled', color: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400' },
+  no_show: { label: 'No show', color: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400' },
 }
 
 // ── Booking Modal ─────────────────────────────────────────────────────────────
@@ -159,10 +159,10 @@ function BookingModal({ slot, skaters, packages, onClose, onSuccess }: BookingMo
         </div>
 
         {/* Slot summary */}
-        <div className="px-5 py-4 bg-violet-50 border-b border-violet-100">
-          <p className="font-semibold text-violet-900">{slot.lesson_type_name}</p>
-          <p className="text-sm text-violet-700 mt-0.5">with {slot.coach_name}</p>
-          <div className="flex items-center gap-4 mt-2 text-sm text-violet-700">
+        <div className="px-5 py-4 bg-violet-50 dark:bg-violet-900/30 border-b border-violet-100 dark:border-violet-800">
+          <p className="font-semibold text-violet-900 dark:text-violet-200">{slot.lesson_type_name}</p>
+          <p className="text-sm text-violet-700 dark:text-violet-300 mt-0.5">with {slot.coach_name}</p>
+          <div className="flex items-center gap-4 mt-2 text-sm text-violet-700 dark:text-violet-300">
             <span className="flex items-center gap-1">
               <Calendar size={13} />
               {formatDateShort(slot.start_datetime)}
@@ -312,7 +312,6 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
 
   const blocks = useMemo(() => buildSlotBlocks(slots, weekStart), [slots, weekStart])
 
-  // Group blocks by dayIndex
   const blocksByDay = useMemo(() => {
     const map: Record<number, SlotBlock[]> = {}
     for (const b of blocks) {
@@ -322,17 +321,50 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
     return map
   }, [blocks])
 
-  const weekDates = Array.from({ length: 7 }, (_, i) => {
+  const allDates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart)
     d.setDate(weekStart.getDate() + i)
     return d
   })
 
+  // On mobile show 3 days centred around today (or Mon–Wed if today not in week)
   const todayStr = toISODate(new Date())
+  const todayIndexInWeek = allDates.findIndex(d => toISODate(d) === todayStr)
+  const [mobileOffset, setMobileOffset] = useState(() => {
+    if (todayIndexInWeek >= 0) return Math.min(Math.max(todayIndexInWeek - 1, 0), 4)
+    return 0
+  })
+  const weekDates = typeof window !== 'undefined' && window.innerWidth < 768
+    ? allDates.slice(mobileOffset, mobileOffset + 3)
+    : allDates
+  const dayOffset = typeof window !== 'undefined' && window.innerWidth < 768 ? mobileOffset : 0
 
   return (
-    <div className="overflow-x-auto">
-      <div className="min-w-[520px]">
+    <div>
+      {/* Mobile day navigator */}
+      <div className="flex items-center justify-between mb-1 md:hidden">
+        <button
+          onClick={() => setMobileOffset(o => Math.max(0, o - 3))}
+          disabled={mobileOffset === 0}
+          className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 disabled:opacity-30"
+        >
+          <ChevronLeft size={14} />
+        </button>
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          {weekDates[0] && weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          {' — '}
+          {weekDates[weekDates.length - 1] && weekDates[weekDates.length - 1].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </span>
+        <button
+          onClick={() => setMobileOffset(o => Math.min(4, o + 3))}
+          disabled={mobileOffset >= 4}
+          className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 disabled:opacity-30"
+        >
+          <ChevronRight size={14} />
+        </button>
+      </div>
+      <div className="overflow-x-hidden">
+        <div className="w-full">
         {/* Day headers */}
         <div className="flex pl-10 border-b border-slate-200 dark:border-slate-700">
           {weekDates.map((d, i) => {
@@ -343,8 +375,8 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
                 key={i}
                 className={`flex-1 text-center py-2 text-xs font-medium ${isToday ? 'text-violet-700' : 'text-slate-500'}`}
               >
-                <span className={`block ${isToday ? 'font-bold' : ''}`}>{DAY_LABELS[i]}</span>
-                <span className={`block text-base ${isToday ? 'text-violet-700 font-bold' : 'text-slate-700'}`}>
+                <span className={`block ${isToday ? 'font-bold' : ''}`}>{DAY_LABELS[i + dayOffset]}</span>
+                <span className={`block text-base ${isToday ? 'text-violet-700 font-bold' : 'text-slate-700 dark:text-slate-300'}`}>
                   {d.getDate()}
                 </span>
               </div>
@@ -368,18 +400,20 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
           </div>
 
           {/* Day columns */}
-          {weekDates.map((_, dayIndex) => (
+          {weekDates.map((_, i) => {
+            const dayIndex = i + dayOffset
+            return (
             <div
               key={dayIndex}
               className="flex-1 relative border-l border-slate-100 dark:border-slate-700"
               style={{ height: gridHeightPx }}
             >
               {/* Hour lines */}
-              {timeLabels.map((_, i) => (
+              {timeLabels.map((_, j) => (
                 <div
-                  key={i}
+                  key={j}
                   className="absolute left-0 right-0 border-t border-slate-100 dark:border-slate-700"
-                  style={{ top: i * 60 * SLOT_HEIGHT_PER_MIN }}
+                  style={{ top: j * 60 * SLOT_HEIGHT_PER_MIN }}
                 />
               ))}
 
@@ -388,28 +422,29 @@ function WeekGrid({ slots, weekStart, onSelectSlot }: WeekGridProps) {
                 <button
                   key={slot.id}
                   onClick={() => onSelectSlot(slot)}
-                  className="absolute left-0.5 right-0.5 rounded text-left overflow-hidden hover:opacity-90 active:scale-[0.98] transition-all border-l-4 border-violet-500 bg-violet-100 cursor-pointer"
+                  className="absolute left-0.5 right-0.5 rounded text-left overflow-hidden hover:opacity-90 active:scale-[0.98] transition-all border-l-4 border-violet-500 bg-violet-100 dark:bg-violet-900/40 cursor-pointer"
                   style={{ top: topPx, height: Math.max(heightPx, 20) }}
                   title={`${slot.lesson_type_name} with ${slot.coach_name}`}
                 >
                   <div className="px-1 pt-0.5">
-                    <p className="text-[10px] font-semibold text-violet-900 leading-tight truncate">
+                    <p className="text-[10px] font-semibold text-violet-900 dark:text-violet-200 leading-tight truncate">
                       {slot.lesson_type_name}
                     </p>
                     {heightPx >= 30 && (
-                      <p className="text-[9px] text-violet-700 truncate">{slot.coach_name}</p>
+                      <p className="text-[9px] text-violet-700 dark:text-violet-300 truncate">{slot.coach_name}</p>
                     )}
                     {heightPx >= 44 && (
-                      <p className="text-[9px] text-violet-600">{formatTime(slot.start_datetime)}</p>
+                      <p className="text-[9px] text-violet-600 dark:text-violet-400">{formatTime(slot.start_datetime)}</p>
                     )}
                   </div>
                 </button>
               ))}
             </div>
-          ))}
+          )})}
         </div>
       </div>
     </div>
+  </div>
   )
 }
 
@@ -456,7 +491,7 @@ function UpcomingBookingsSidebar() {
           const cfg = STATUS_CONFIG[b.status] ?? STATUS_CONFIG.confirmed
           const isCancelling = cancellingId === b.id
           return (
-            <div key={b.id} className="px-4 py-3 border-b border-slate-50 last:border-0">
+            <div key={b.id} className="px-4 py-3 border-b border-slate-50 dark:border-slate-800 last:border-0">
               <div className="flex items-start justify-between gap-1">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{b.lesson_type_name}</p>
@@ -575,14 +610,14 @@ export default function MemberLessonsPage() {
             <div className="flex items-center gap-1">
               <button
                 onClick={prevWeek}
-                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                 aria-label="Previous week"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 onClick={nextWeek}
-                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                 aria-label="Next week"
               >
                 <ChevronRight size={18} />

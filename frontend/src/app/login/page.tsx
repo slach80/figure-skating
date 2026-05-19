@@ -70,6 +70,7 @@ function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit(e as unknown as FormEvent) }}
           className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           placeholder="••••••••"
         />
@@ -101,8 +102,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-primary/20 to-slate-900 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">⛸</div>
-          <h1 className="font-serif text-3xl font-bold text-white">Line Creek FSC</h1>
+          <Link href="/home" className="inline-block hover:opacity-80 transition-opacity">
+            <div className="text-5xl mb-3">⛸</div>
+            <h1 className="font-serif text-3xl font-bold text-white">Line Creek FSC</h1>
+          </Link>
           <p className="text-slate-400 mt-2 text-sm">Club Management Platform</p>
         </div>
         <Suspense fallback={<div className="h-64 rounded-2xl bg-white/10 animate-pulse" />}>

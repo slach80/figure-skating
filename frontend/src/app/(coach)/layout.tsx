@@ -42,9 +42,6 @@ export default function CoachLayout({ children }: { children: React.ReactNode })
             <h2 className="text-base font-semibold text-slate-700 dark:text-slate-200">Coach Portal</h2>
             <div className="flex items-center gap-3">
               <ThemeToggle />
-              <Link href="/dashboard" className="text-xs text-slate-500 dark:text-slate-400 hover:text-primary underline">
-                Switch to Admin →
-              </Link>
             </div>
           </div>
         </header>

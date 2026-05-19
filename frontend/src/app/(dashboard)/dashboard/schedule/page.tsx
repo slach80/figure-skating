@@ -31,10 +31,10 @@ function timeToMinutes(t: string) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  available: 'bg-emerald-100 border-emerald-400 text-emerald-800',
-  partially_booked: 'bg-blue-100 border-blue-400 text-blue-800',
-  fully_booked: 'bg-slate-100 border-slate-400 text-slate-500',
-  cancelled: 'bg-red-100 border-red-300 text-red-600 dark:text-red-400 line-through opacity-60',
+  available: 'bg-emerald-100 dark:bg-emerald-900/40 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-400',
+  partially_booked: 'bg-blue-100 dark:bg-blue-900/40 border-blue-400 dark:border-blue-700 text-blue-800 dark:text-blue-400',
+  fully_booked: 'bg-slate-100 dark:bg-slate-800 border-slate-400 dark:border-slate-600 text-slate-500 dark:text-slate-400',
+  cancelled: 'bg-red-100 dark:bg-red-900/40 border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 line-through opacity-60',
 }
 
 function SlotPill({ slot }: { slot: AvailabilitySlot }) {
@@ -169,13 +169,13 @@ export default function SchedulePage() {
           <div className="flex border border-slate-300 dark:border-slate-600 rounded overflow-hidden">
             <button
               onClick={() => setView('week')}
-              className={`px-2.5 py-1 text-xs flex items-center gap-1 ${view === 'week' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`px-2.5 py-1 text-xs flex items-center gap-1 ${view === 'week' ? 'bg-primary text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
             >
               <CalendarDays size={13} /> Week
             </button>
             <button
               onClick={() => setView('list')}
-              className={`px-2.5 py-1 text-xs flex items-center gap-1 ${view === 'list' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`px-2.5 py-1 text-xs flex items-center gap-1 ${view === 'list' ? 'bg-primary text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
             >
               <List size={13} /> List
             </button>
@@ -202,7 +202,7 @@ export default function SchedulePage() {
                   className={`py-2 text-center text-xs font-medium border-r border-slate-200 dark:border-slate-700 last:border-0 ${isToday ? 'bg-primary/5 text-primary' : 'text-slate-600'}`}
                 >
                   <div>{DAYS[i]}</div>
-                  <div className={`text-lg font-bold ${isToday ? 'text-primary' : 'text-slate-800'}`}>
+                  <div className={`text-lg font-bold ${isToday ? 'text-primary' : 'text-slate-800 dark:text-slate-200'}`}>
                     {d.getDate()}
                   </div>
                 </div>

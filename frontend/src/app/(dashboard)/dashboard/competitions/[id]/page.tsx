@@ -24,17 +24,17 @@ import type { EventCategory, CompetitionEntry } from '@/types/competition'
 // ── Status badge ─────────────────────────────────────────────────────────────
 
 const ENTRY_STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-slate-100 text-slate-500',
-  submitted: 'bg-blue-100 text-blue-700',
-  confirmed: 'bg-violet-100 text-violet-700',
-  accepted: 'bg-emerald-100 text-emerald-700',
-  scratched: 'bg-red-100 text-red-500 line-through',
+  draft: 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400',
+  submitted: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
+  confirmed: 'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-400',
+  accepted: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+  scratched: 'bg-red-100 dark:bg-red-900/40 text-red-500 dark:text-red-400 line-through',
 }
 
 function EntryStatusBadge({ status }: { status: CompetitionEntry['status'] }) {
   const label = status.charAt(0).toUpperCase() + status.slice(1)
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${ENTRY_STATUS_STYLES[status] ?? 'bg-slate-100 text-slate-600'}`}>
+    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${ENTRY_STATUS_STYLES[status] ?? 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'}`}>
       {label}
     </span>
   )
@@ -218,7 +218,7 @@ function DrawInput({ entry }: { entry: CompetitionEntry }) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:dark:text-slate-300 tabular-nums"
+        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 tabular-nums"
       >
         {entry.draw_number != null ? `#${entry.draw_number}` : '—'}
         {entry.skating_order != null ? ` / ${entry.skating_order}` : ''}
@@ -272,7 +272,7 @@ function ResultInput({ entry }: { entry: CompetitionEntry }) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:dark:text-slate-300 tabular-nums"
+        className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 tabular-nums"
       >
         {entry.placement != null ? `${entry.placement}${ordinalSuffix(entry.placement)}` : '—'}
         {entry.score != null ? ` (${entry.score})` : ''}
@@ -357,7 +357,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
       <div className="flex items-start gap-4">
         <button
           onClick={() => router.push('/dashboard/competitions')}
-          className="mt-1 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-500"
+          className="mt-1 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500"
         >
           <ArrowLeft size={18} />
         </button>
@@ -375,12 +375,12 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
               </span>
             )}
             {comp.is_published && comp.is_entry_open && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircle size={11} /> Open
               </span>
             )}
             {comp.is_published && !comp.is_entry_open && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:text-red-400 flex items-center gap-1">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center gap-1">
                 <AlertCircle size={11} /> Closed
               </span>
             )}
@@ -477,7 +477,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                       <div className="flex items-center gap-1 justify-end">
                         <button
                           onClick={() => { setEditingCatId(cat.id); setShowCatForm(false) }}
-                          className="p-1 rounded hover:bg-slate-100 dark:hover:dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                          className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                         >
                           <Pencil size={13} />
                         </button>
@@ -487,7 +487,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                               deleteCategory.mutate({ id: cat.id, competitionId: id })
                             }
                           }}
-                          className="p-1 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
+                          className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -587,7 +587,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                           <button
                             onClick={() => acceptEntry.mutate(entry.id)}
                             title="Accept"
-                            className="p-1 rounded hover:bg-emerald-50 dark:hover:dark:bg-emerald-950/40 text-slate-400 hover:text-emerald-600"
+                            className="p-1 rounded hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-400 hover:text-emerald-600"
                           >
                             <Check size={14} />
                           </button>
@@ -600,7 +600,7 @@ export default function CompetitionDetailPage({ params }: { params: Promise<{ id
                               }
                             }}
                             title="Scratch"
-                            className="p-1 rounded hover:bg-red-50 dark:hover:dark:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
+                            className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-400 hover:text-red-600 dark:hover:text-red-400"
                           >
                             <X size={14} />
                           </button>

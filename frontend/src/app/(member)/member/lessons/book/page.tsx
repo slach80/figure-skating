@@ -93,9 +93,9 @@ export default function BookLessonPage() {
         {(['Pick type', 'Find time', 'Confirm'] as const).map((label, i) => (
           <div key={label} className="flex items-center gap-2">
             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-              step > i + 1 ? 'bg-emerald-500 text-white' : step === i + 1 ? 'bg-primary text-white' : 'bg-slate-200 text-slate-500'
+              step > i + 1 ? 'bg-emerald-500 text-white' : step === i + 1 ? 'bg-primary text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
             }`}>{step > i + 1 ? '✓' : i + 1}</div>
-            <span className={`text-xs ${step === i + 1 ? 'font-medium text-slate-800' : 'text-slate-400'}`}>{label}</span>
+            <span className={`text-xs ${step === i + 1 ? 'font-medium text-slate-800 dark:text-slate-200' : 'text-slate-400'}`}>{label}</span>
             {i < 2 && <div className="w-6 h-px bg-slate-200 dark:bg-slate-700" />}
           </div>
         ))}
@@ -109,7 +109,7 @@ export default function BookLessonPage() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedCoach(null)}
-                className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${!selectedCoach ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 dark:text-slate-400 hover:border-slate-400'}`}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${!selectedCoach ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-500'}`}
               >
                 Any coach
               </button>
@@ -117,7 +117,7 @@ export default function BookLessonPage() {
                 <button
                   key={c.id}
                   onClick={() => setSelectedCoach(c)}
-                  className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${selectedCoach?.id === c.id ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 text-slate-600 dark:text-slate-400 hover:border-slate-400'}`}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${selectedCoach?.id === c.id ? 'border-primary bg-primary/5 text-primary font-medium' : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-500'}`}
                 >
                   {c.user_name}
                 </button>
