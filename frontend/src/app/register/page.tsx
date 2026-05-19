@@ -125,7 +125,7 @@ function SkaterForm({
   const minor = isMinor(form.date_of_birth)
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="First name" required error={errors.first_name}>
           <input className={inputCls} value={form.first_name} onChange={e => onChange('first_name', e.target.value)} />
         </Field>
@@ -188,8 +188,8 @@ function AddressForm({
       <Field label="Address line 2">
         <input className={inputCls} placeholder="Apt, Suite, etc." value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
       </Field>
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-span-3">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
+        <div className="col-span-2 sm:col-span-3">
           <Field label="City" required error={errors.city}>
             <input className={inputCls} value={form.city} onChange={e => onChange('city', e.target.value)} />
           </Field>
@@ -202,7 +202,7 @@ function AddressForm({
             </select>
           </Field>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-1 sm:col-span-2">
           <Field label="ZIP" required error={errors.zip_code}>
             <input className={inputCls} placeholder="00000" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
           </Field>
@@ -405,37 +405,68 @@ export default function RegisterPage() {
         </header>
 
         <main className="max-w-3xl mx-auto px-4 py-8">
-          <div className="flex gap-6">
-            {/* Skater list sidebar */}
-            <div className="w-48 shrink-0 space-y-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+            {/* Skater list — horizontal scrollable tabs on mobile, vertical sidebar on sm+ */}
+            <div className="sm:w-48 sm:shrink-0 sm:space-y-2">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Skaters</p>
-              {skaters.map((s, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <button
-                    onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
-                    className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50'}`}
-                  >
-                    {s.first_name || `Skater ${i + 1}`}
-                  </button>
-                  {skaters.length > 1 && (
-                    <button onClick={() => removeSkater(i)} className="text-slate-300 hover:text-red-400 transition-colors">
-                      <Trash2 className="w-3.5 h-3.5" />
+
+              {/* Mobile: horizontal scroll row */}
+              <div className="flex gap-2 overflow-x-auto pb-1 sm:hidden">
+                {skaters.map((s, i) => (
+                  <div key={i} className="flex items-center gap-1 shrink-0">
+                    <button
+                      onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
+                      className={`px-3 py-1.5 rounded-lg text-sm transition-colors whitespace-nowrap ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'}`}
+                    >
+                      {s.first_name || `Skater ${i + 1}`}
                     </button>
-                  )}
-                </div>
-              ))}
-              {skaters.length < 10 && (
-                <button
-                  onClick={addSkater}
-                  className="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-primary border border-dashed border-primary/40 hover:bg-primary/5 dark:hover:dark:bg-primary/20 transition-colors"
-                >
-                  <Plus className="w-3.5 h-3.5" /> Add skater
-                </button>
-              )}
+                    {skaters.length > 1 && (
+                      <button onClick={() => removeSkater(i)} className="text-slate-300 hover:text-red-400 transition-colors">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {skaters.length < 10 && (
+                  <button
+                    onClick={addSkater}
+                    className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-primary border border-dashed border-primary/40 hover:bg-primary/5 transition-colors whitespace-nowrap"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add
+                  </button>
+                )}
+              </div>
+
+              {/* Desktop: vertical list */}
+              <div className="hidden sm:flex sm:flex-col sm:gap-2">
+                {skaters.map((s, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <button
+                      onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
+                      className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50'}`}
+                    >
+                      {s.first_name || `Skater ${i + 1}`}
+                    </button>
+                    {skaters.length > 1 && (
+                      <button onClick={() => removeSkater(i)} className="text-slate-300 hover:text-red-400 transition-colors">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {skaters.length < 10 && (
+                  <button
+                    onClick={addSkater}
+                    className="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-primary border border-dashed border-primary/40 hover:bg-primary/5 dark:hover:dark:bg-primary/20 transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add skater
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Wizard form */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               {familyStep < 5 && (
                 <>
                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4">
@@ -493,7 +524,7 @@ export default function RegisterPage() {
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Emergency Contact</h2>
                     <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <Field label="Contact name">
                           <input className={inputCls} value={currentForm.emergency_contact_name} onChange={e => setFamilyField(activeSkaterIdx, 'emergency_contact_name', e.target.value)} />
                         </Field>
@@ -667,7 +698,7 @@ export default function RegisterPage() {
           {step === 4 && (
             <div className="space-y-5">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Emergency Contact</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Contact name">
                   <input className={inputCls} value={form.emergency_contact_name} onChange={e => setField('emergency_contact_name', e.target.value)} />
                 </Field>
