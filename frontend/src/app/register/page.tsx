@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useMembershipTypes, useRegisterSkater, useRegisterFamily } from '@/hooks/useRegistration'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorAlert } from '@/components/ui/ErrorAlert'
 import {
   CheckCircle2, ChevronRight, ChevronLeft, User, MapPin,
-  CreditCard, Shield, ClipboardCheck, Plus, Trash2, Users
+  CreditCard, Shield, ClipboardCheck, Plus, Trash2, Users, Loader2
 } from 'lucide-react'
 import type { RegistrationFormData } from '@/types/registration'
 import { EMPTY_FORM, US_STATES } from '@/types/registration'
@@ -64,6 +64,40 @@ function Field({ label, required, error, children }: {
 }
 
 const inputCls = "w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white dark:bg-slate-800"
+
+// US Census Geocoder — free, no API key
+async function validateUSAddress(
+  line1: string, city: string, state: string, zip: string
+): Promise<{ valid: boolean; normalized?: { line1: string; city: string; state: string; zip: string } }> {
+  try {
+    const params = new URLSearchParams({
+      street: line1,
+      city,
+      state,
+      zip,
+      benchmark: 'Public_AR_Current',
+      format: 'json',
+    })
+    const res = await fetch(`https://geocoding.geo.census.gov/geocoder/locations/address?${params}`)
+    if (!res.ok) return { valid: false }
+    const data = await res.json()
+    const matches = data?.result?.addressMatches
+    if (!matches || matches.length === 0) return { valid: false }
+    const m = matches[0]
+    return {
+      valid: true,
+      normalized: {
+        line1: m.matchedAddress.split(',')[0].trim(),
+        city: m.addressComponents.city,
+        state: m.addressComponents.state,
+        zip: m.addressComponents.zip,
+      },
+    }
+  } catch {
+    // Network error — don't block the user, just skip validation
+    return { valid: true }
+  }
+}
 
 function isMinor(dob: string) {
   if (!dob) return false
@@ -146,15 +180,28 @@ function SkaterForm({
 }
 
 function AddressForm({
-  form, errors, onChange,
+  form, errors, onChange, addrStatus,
 }: {
   form: RegistrationFormData
   errors: FieldErrors
   onChange: (field: keyof RegistrationFormData, value: string | boolean) => void
+  addrStatus?: 'idle' | 'checking' | 'valid' | 'invalid'
 }) {
   return (
     <div className="space-y-5">
       <p className="text-sm text-slate-500">Required for USFS registration. Must match official records.</p>
+      {addrStatus === 'invalid' && (
+        <div className="flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 px-4 py-3 text-red-700 dark:text-red-400 text-sm">
+          <MapPin size={16} className="shrink-0" />
+          Address not found. Please double-check and try again.
+        </div>
+      )}
+      {addrStatus === 'valid' && (
+        <div className="flex items-center gap-2 rounded-lg bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 px-4 py-3 text-green-700 dark:text-green-400 text-sm">
+          <CheckCircle2 size={16} className="shrink-0" />
+          Address verified.
+        </div>
+      )}
       <Field label="Address line 1" required error={errors.address_line1}>
         <input className={inputCls} placeholder="123 Main St" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
       </Field>
@@ -194,6 +241,7 @@ export default function RegisterPage() {
   const [step, setStep]     = useState(1)
   const [form, setForm]     = useState<RegistrationFormData>(EMPTY_FORM)
   const [errors, setErrors] = useState<FieldErrors>({})
+  const [addrStatus, setAddrStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
 
   // Family wizard state
   const [skaters, setSkaters]               = useState<RegistrationFormData[]>([{ ...EMPTY_FORM }])
@@ -201,6 +249,7 @@ export default function RegisterPage() {
   const [familyStep, setFamilyStep]          = useState(1)
   const [familyErrors, setFamilyErrors]      = useState<FieldErrors>({})
   const [familyGlobalError, setFamilyGlobalError] = useState('')
+  const [familyAddrStatus, setFamilyAddrStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
 
   const { data: membershipTypes, isLoading: typesLoading, error: typesError } = useMembershipTypes()
   const singleMutation = useRegisterSkater()
@@ -212,11 +261,25 @@ export default function RegisterPage() {
     setErrors(e => ({ ...e, [field]: undefined }))
   }
 
-  function nextStep() {
+  const nextStep = useCallback(async () => {
     const e = validateStep(step, form)
     if (Object.keys(e).length) { setErrors(e); return }
+    if (step === 2) {
+      setAddrStatus('checking')
+      const result = await validateUSAddress(form.address_line1, form.city, form.state, form.zip_code)
+      if (!result.valid) { setAddrStatus('invalid'); return }
+      setAddrStatus('valid')
+      if (result.normalized) {
+        setForm(f => ({ ...f,
+          address_line1: result.normalized!.line1,
+          city: result.normalized!.city,
+          state: result.normalized!.state,
+          zip_code: result.normalized!.zip,
+        }))
+      }
+    }
     setStep(s => s + 1)
-  }
+  }, [step, form])
 
   async function submitSingle() {
     const e = validateStep(4, form)
@@ -254,14 +317,30 @@ export default function RegisterPage() {
     setActiveSkaterIdx(Math.max(0, idx - 1))
   }
 
-  function nextFamilyStep() {
-    const e = validateStep(familyStep, skaters[activeSkaterIdx])
+  const nextFamilyStep = useCallback(async () => {
+    const current = skaters[activeSkaterIdx]
+    const e = validateStep(familyStep, current)
     if (Object.keys(e).length) { setFamilyErrors(e); return }
     setFamilyErrors({})
+    if (familyStep === 2) {
+      setFamilyAddrStatus('checking')
+      const result = await validateUSAddress(current.address_line1, current.city, current.state, current.zip_code)
+      if (!result.valid) { setFamilyAddrStatus('invalid'); return }
+      setFamilyAddrStatus('valid')
+      if (result.normalized) {
+        setSkaters(prev => prev.map((s, i) => i === activeSkaterIdx ? { ...s,
+          address_line1: result.normalized!.line1,
+          city: result.normalized!.city,
+          state: result.normalized!.state,
+          zip_code: result.normalized!.zip,
+        } : s))
+      }
+    } else {
+      setFamilyAddrStatus('idle')
+    }
     if (familyStep < 4) { setFamilyStep(s => s + 1); return }
-    // Validated current skater — go to review
     setFamilyStep(5)
-  }
+  }, [familyStep, skaters, activeSkaterIdx])
 
   async function submitFamily() {
     // Validate all skaters
@@ -397,7 +476,7 @@ export default function RegisterPage() {
                 {familyStep === 2 && (
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Home Address</h2>
-                    <AddressForm form={currentForm} errors={familyErrors} onChange={(f, v) => setFamilyField(activeSkaterIdx, f, v)} />
+                    <AddressForm form={currentForm} errors={familyErrors} onChange={(f, v) => { setFamilyField(activeSkaterIdx, f, v); setFamilyAddrStatus('idle') }} addrStatus={familyAddrStatus} />
                   </>
                 )}
 
@@ -510,8 +589,8 @@ export default function RegisterPage() {
                   ) : <div />}
 
                   {familyStep < 5 ? (
-                    <button onClick={nextFamilyStep} className="flex items-center gap-1.5 px-5 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold transition-colors">
-                      Continue <ChevronRight className="w-4 h-4" />
+                    <button onClick={nextFamilyStep} disabled={familyAddrStatus === 'checking'} className="flex items-center gap-1.5 px-5 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-60 text-white font-semibold transition-colors">
+                      {familyAddrStatus === 'checking' ? <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</> : <>Continue <ChevronRight className="w-4 h-4" /></>}
                     </button>
                   ) : (
                     <button
@@ -568,7 +647,7 @@ export default function RegisterPage() {
           {step === 2 && (
             <>
               <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Home Address</h2>
-              <AddressForm form={form} errors={errors} onChange={setField} />
+              <AddressForm form={form} errors={errors} onChange={(f, v) => { setField(f, v); setAddrStatus('idle') }} addrStatus={addrStatus} />
             </>
           )}
 
@@ -679,8 +758,8 @@ export default function RegisterPage() {
             ) : <div />}
 
             {step < 5 ? (
-              <button onClick={nextStep} className="flex items-center gap-1.5 px-5 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold transition-colors">
-                Continue <ChevronRight className="w-4 h-4" />
+              <button onClick={nextStep} disabled={addrStatus === 'checking'} className="flex items-center gap-1.5 px-5 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-60 text-white font-semibold transition-colors">
+                {addrStatus === 'checking' ? <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</> : <>Continue <ChevronRight className="w-4 h-4" /></>}
               </button>
             ) : (
               <button onClick={submitSingle} disabled={singleMutation.isPending} className="flex items-center gap-2 px-6 py-2.5 text-sm rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold transition-colors disabled:opacity-60">
