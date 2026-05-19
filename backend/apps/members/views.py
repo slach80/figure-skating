@@ -88,15 +88,12 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
     @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
     def me(self, request):
         """Return the skater profile for the currently authenticated member."""
-        from django.db.models import Q
         user = request.user
-        skater = (
-            Skater.objects
-            .filter(Q(managed_by=user) | Q(user=user))
-            .filter(deleted_at__isnull=True)
-            .select_related("membership_type", "managed_by", "family_group", "club")
-            .first()
+        qs = Skater.objects.filter(deleted_at__isnull=True).select_related(
+            "membership_type", "managed_by", "family_group", "club"
         )
+        # Prefer the skater whose user field directly links to this account
+        skater = qs.filter(user=user).first() or qs.filter(managed_by=user).first()
         if skater is None:
             raise NotFound("No skater profile linked to this account.")
         return Response(SkaterDetailSerializer(skater, context={"request": request}).data)
