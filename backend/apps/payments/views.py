@@ -70,6 +70,7 @@ class MemberPaymentSerializer(serializers.ModelSerializer):
             "currency",
             "description",
             "created_at",
+            "stripe_receipt_url",
         ]
 
 

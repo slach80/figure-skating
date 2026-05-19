@@ -6,7 +6,7 @@ import api from '@/lib/api'
 interface Payment {
   id: string
   amount: string
-  status: 'pending' | 'paid' | 'failed' | 'refunded'
+  status: 'pending' | 'paid' | 'succeeded' | 'failed' | 'refunded' | 'partially_refunded'
   payment_type: string
   description: string
   created_at: string
@@ -18,10 +18,21 @@ interface PaginatedResponse<T> {
 }
 
 const STATUS_COLOR: Record<string, string> = {
+  succeeded: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
   paid: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
   pending: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400',
   failed: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
   refunded: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400',
+  partially_refunded: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400',
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  succeeded: 'Paid',
+  paid: 'Paid',
+  pending: 'Pending',
+  failed: 'Failed',
+  refunded: 'Refunded',
+  partially_refunded: 'Part. Refunded',
 }
 
 function useMyPayments() {
@@ -39,7 +50,7 @@ export default function MemberPaymentsPage() {
   const { data: payments = [], isLoading } = useMyPayments()
 
   const total = payments
-    .filter(p => p.status === 'paid')
+    .filter(p => p.status === 'paid' || p.status === 'succeeded')
     .reduce((sum, p) => sum + parseFloat(p.amount), 0)
 
   return (
@@ -50,7 +61,7 @@ export default function MemberPaymentsPage() {
       <div className="bg-gradient-to-br from-primary to-accent rounded-2xl p-5 text-white">
         <p className="text-white/70 text-xs uppercase tracking-wider mb-1">Total paid this season</p>
         <p className="text-4xl font-bold">${total.toFixed(2)}</p>
-        <p className="text-white/60 text-xs mt-2">{payments.filter(p => p.status === 'paid').length} payments</p>
+        <p className="text-white/60 text-xs mt-2">{payments.filter(p => p.status === 'paid' || p.status === 'succeeded').length} payments</p>
       </div>
 
       {isLoading && (
@@ -86,7 +97,7 @@ export default function MemberPaymentsPage() {
                 <p className="font-bold text-slate-900 dark:text-slate-100">${parseFloat(p.amount).toFixed(2)}</p>
                 <div className="flex items-center justify-end gap-1.5 mt-0.5">
                   <span className={`text-xs px-1.5 py-0.5 rounded-full ${STATUS_COLOR[p.status] ?? STATUS_COLOR.pending}`}>
-                    {p.status}
+                    {STATUS_LABEL[p.status] ?? p.status}
                   </span>
                   {p.stripe_receipt_url && (
                     <a
