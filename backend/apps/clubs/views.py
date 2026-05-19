@@ -36,7 +36,8 @@ class ClubMeView(RetrieveUpdateAPIView):
         if club is None and self.request.user.is_authenticated:
             club = getattr(self.request.user, 'club', None)
         if club is None:
-            raise PermissionDenied("No club context.")
+            from rest_framework.exceptions import NotFound
+            raise NotFound("No club associated with this account. Use the super-admin panel to manage clubs.")
         return club
 
 

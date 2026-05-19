@@ -427,7 +427,15 @@ export default function SettingsPage() {
   }
 
   if (clubLoading) return <LoadingSpinner />
-  if (clubError) return <ErrorAlert message="Failed to load club settings." />
+  if (clubError) return (
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+      <p className="text-amber-800 font-medium">No club linked to this account.</p>
+      <p className="text-amber-700 text-sm">Super-admin accounts manage clubs from the super-admin panel.</p>
+      <a href="/super-admin" className="inline-block px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors">
+        Go to Super-Admin Panel
+      </a>
+    </div>
+  )
 
   const tabCls = (t: TabKey) =>
     `px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
