@@ -18,6 +18,9 @@ class ClubScopedViewMixin:
 
     def get_queryset(self):
         qs = super().get_queryset()
+        user = getattr(self.request, "user", None)
+        if user and user.is_authenticated and getattr(user, "role", None) == "super_admin":
+            return qs  # super_admin sees all records across clubs
         club = self._get_club()
         if club is None:
             raise PermissionDenied("Club context required.")
