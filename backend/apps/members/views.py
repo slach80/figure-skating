@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -84,6 +84,22 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
                 membership_expiry__gte=today,
             ).count(),
         })
+
+    @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
+    def me(self, request):
+        """Return the skater profile for the currently authenticated member."""
+        from django.db.models import Q
+        user = request.user
+        skater = (
+            Skater.objects
+            .filter(Q(managed_by=user) | Q(user=user))
+            .filter(deleted_at__isnull=True)
+            .select_related("membership_type", "managed_by", "family_group", "club")
+            .first()
+        )
+        if skater is None:
+            raise NotFound("No skater profile linked to this account.")
+        return Response(SkaterDetailSerializer(skater, context={"request": request}).data)
 
     @action(detail=True, methods=["get"], url_path="skater-stats")
     def skater_stats(self, request, pk=None):
