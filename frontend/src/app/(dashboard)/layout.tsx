@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart3, Users, Calendar, CreditCard, Mail, Settings, Trophy, Globe } from 'lucide-react'
+import { BarChart3, Users, Calendar, CreditCard, Mail, Settings, Trophy } from 'lucide-react'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/ui/LogoutButton'
 import { NavLink } from '@/components/ui/NavLink'
@@ -26,10 +26,10 @@ export default function DashboardLayout({
       <aside className="w-64 bg-slate-dark text-white border-r border-slate-700 flex flex-col">
         {/* Logo */}
         <div className="p-6 border-b border-slate-700">
-          <div className="flex items-center gap-3">
+          <Link href="/home" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="text-3xl">⛸</div>
             <h1 className="font-serif text-xl font-bold">Line Creek FSC</h1>
-          </div>
+          </Link>
         </div>
 
         {/* Navigation */}
@@ -40,14 +40,7 @@ export default function DashboardLayout({
         </nav>
 
         {/* Bottom section */}
-        <div className="p-4 border-t border-slate-700 space-y-2">
-          <Link
-            href="/home"
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors text-sm font-medium"
-          >
-            <Globe size={18} strokeWidth={1.75} />
-            Club Site
-          </Link>
+        <div className="p-4 border-t border-slate-700">
           <LogoutButton />
         </div>
       </aside>
