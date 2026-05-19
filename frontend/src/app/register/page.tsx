@@ -237,7 +237,7 @@ function AddressForm({
   addrStatus?: 'idle' | 'checking' | 'valid' | 'invalid'
 }) {
   return (
-    <div className="space-y-5">
+    <form autoComplete="on" onSubmit={e => e.preventDefault()} className="space-y-5">
       <p className="text-sm text-slate-500">Required for USFS registration. Must match official records.</p>
       {addrStatus === 'invalid' && (
         <div className="flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 px-4 py-3 text-red-700 dark:text-red-400 text-sm">
@@ -252,20 +252,20 @@ function AddressForm({
         </div>
       )}
       <Field label="Address line 1" required error={errors.address_line1}>
-        <input className={inputCls} placeholder="123 Main St" autoComplete="address-line1" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
+        <input name="address-line1" className={inputCls} placeholder="123 Main St" autoComplete="address-line1" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
       </Field>
       <Field label="Address line 2">
-        <input className={inputCls} placeholder="Apt, Suite, etc." autoComplete="address-line2" value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
+        <input name="address-line2" className={inputCls} placeholder="Apt, Suite, etc." autoComplete="address-line2" value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
       </Field>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
         <div className="col-span-2 sm:col-span-3">
           <Field label="City" required error={errors.city}>
-            <input className={inputCls} autoComplete="address-level2" value={form.city} onChange={e => onChange('city', e.target.value)} />
+            <input name="address-level2" className={inputCls} autoComplete="address-level2" value={form.city} onChange={e => onChange('city', e.target.value)} />
           </Field>
         </div>
         <div className="col-span-1">
           <Field label="State" required error={errors.state}>
-            <select className={inputCls} autoComplete="address-level1" value={form.state} onChange={e => onChange('state', e.target.value)}>
+            <select name="address-level1" className={inputCls} autoComplete="address-level1" value={form.state} onChange={e => onChange('state', e.target.value)}>
               <option value="">—</option>
               {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
@@ -273,11 +273,11 @@ function AddressForm({
         </div>
         <div className="col-span-1 sm:col-span-2">
           <Field label="ZIP" required error={errors.zip_code}>
-            <input className={inputCls} placeholder="00000" inputMode="numeric" pattern="[0-9]*" autoComplete="postal-code" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
+            <input name="postal-code" className={inputCls} placeholder="00000" inputMode="numeric" pattern="[0-9]*" autoComplete="postal-code" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
           </Field>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 
