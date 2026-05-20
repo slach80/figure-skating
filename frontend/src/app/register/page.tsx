@@ -676,7 +676,7 @@ export default function RegisterPage() {
                           onClick={() => copyEmergencyFromSkater1(activeSkaterIdx)}
                           className="flex items-center gap-1.5 text-sm text-primary hover:underline"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5" /> Same as {skaters[0].first_name || 'Skater 1'}'s emergency contact
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Same as {skaters[0].first_name || 'Skater 1'}&apos;s emergency contact
                         </button>
                       )}
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
