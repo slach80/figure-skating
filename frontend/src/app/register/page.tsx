@@ -401,15 +401,12 @@ export default function RegisterPage() {
     } : s))
   }
 
-  // Compute per-skater line prices (50% off skaters 2+)
   function computeLinePrices() {
-    return skaters.map((s, i) => {
+    return skaters.map((s) => {
       const mt = membershipTypes?.find(t => t.id === s.membership_type_id)
       if (!mt) return { base: 0, charged: 0, familyDiscount: 0 }
       const base = parseFloat(mt.price_in_club)
-      if (i === 0) return { base, charged: base, familyDiscount: 0 }
-      const fam = parseFloat((base * 0.5).toFixed(2))
-      return { base, charged: base - fam, familyDiscount: fam }
+      return { base, charged: base, familyDiscount: 0 }
     })
   }
 
@@ -635,19 +632,12 @@ export default function RegisterPage() {
                 {familyStep === 3 && (
                   <>
                     <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-5">Membership Type</h2>
-                    {activeSkaterIdx > 0 && (
-                      <div className="mb-4 flex items-center gap-2 rounded-lg bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 px-3 py-2 text-sm text-purple-800 dark:text-purple-300">
-                        <Tag className="w-3.5 h-3.5 shrink-0" />
-                        50% family discount applies to this skater
-                      </div>
-                    )}
                     {typesLoading && <LoadingSpinner />}
                     {typesError && <ErrorAlert message="Failed to load membership types." />}
                     {membershipTypes && (
                       <div className="space-y-3">
                         {membershipTypes.map(type => {
                           const base = parseFloat(type.price_in_club)
-                          const discounted = activeSkaterIdx > 0 ? base * 0.5 : base
                           return (
                             <button
                               key={type.id}
@@ -661,14 +651,7 @@ export default function RegisterPage() {
                                   {type.usfs_category && <p className="text-xs text-slate-500 mt-0.5">USFS: {type.usfs_category}</p>}
                                 </div>
                                 <div className="text-right ml-4 shrink-0">
-                                  {activeSkaterIdx > 0 ? (
-                                    <>
-                                      <p className="text-xl font-bold text-primary">${discounted.toFixed(0)}</p>
-                                      <p className="text-xs text-slate-400 line-through">${base.toFixed(0)}</p>
-                                    </>
-                                  ) : (
-                                    <p className="text-xl font-bold text-primary">${base.toFixed(0)}</p>
-                                  )}
+                                  <p className="text-xl font-bold text-primary">${base.toFixed(0)}</p>
                                 </div>
                               </div>
                             </button>
@@ -732,7 +715,6 @@ export default function RegisterPage() {
                 {familyStep === 5 && (() => {
                   const lines = computeLinePrices()
                   const subtotal = lines.reduce((s, l) => s + l.charged, 0)
-                  const totalFamilyDiscount = lines.reduce((s, l) => s + l.familyDiscount, 0)
                   const promoDiscount = discountResult?.valid ? parseFloat(discountResult.discount_amount!) : 0
                   const finalTotal = subtotal - promoDiscount
                   return (
@@ -748,25 +730,14 @@ export default function RegisterPage() {
                                 <p className="font-medium text-slate-900 dark:text-slate-100 text-sm">{s.first_name} {s.last_name}</p>
                                 <p className="text-xs text-slate-500">
                                   {mt?.name ?? '—'}{isMinor(s.date_of_birth) ? ' · minor' : ''}
-                                  {i > 0 && line.familyDiscount > 0 && <span className="text-purple-600 ml-1">· 50% family discount</span>}
                                 </p>
                               </div>
                               <div className="text-right ml-4 shrink-0">
                                 <p className="font-bold text-primary text-sm">${line.charged.toFixed(2)}</p>
-                                {i > 0 && line.familyDiscount > 0 && (
-                                  <p className="text-xs text-slate-400 line-through">${line.base.toFixed(2)}</p>
-                                )}
                               </div>
                             </div>
                           )
                         })}
-
-                        {totalFamilyDiscount > 0 && (
-                          <div className="flex items-center justify-between px-4 py-2 text-sm text-purple-700 dark:text-purple-400">
-                            <span>Family discount</span>
-                            <span>−${totalFamilyDiscount.toFixed(2)}</span>
-                          </div>
-                        )}
 
                         {/* Discount code input */}
                         <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
