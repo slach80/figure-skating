@@ -27,7 +27,20 @@ interface FamilyRegistrationResponse {
   skater_ids: string[]
   checkout_url: string
   payment_id: string
+  subtotal_amount: string
+  family_discount_amount: string
+  promo_discount_amount: string
   total_amount: string
+}
+
+export interface DiscountValidationResult {
+  valid: boolean
+  error?: string
+  discount_type?: 'percent' | 'fixed'
+  value?: string
+  discount_amount?: string
+  final_amount?: string
+  description?: string
 }
 
 function toApiPayload(data: RegistrationFormData) {
@@ -36,6 +49,8 @@ function toApiPayload(data: RegistrationFormData) {
     last_name: data.last_name,
     date_of_birth: data.date_of_birth,
     gender: data.gender || undefined,
+    usfs_number: data.usfs_number || undefined,
+    is_us_citizen: data.is_us_citizen,
     address_line1: data.address_line1,
     address_line2: data.address_line2 || undefined,
     city: data.city,
@@ -62,10 +77,20 @@ export function useRegisterSkater() {
 
 export function useRegisterFamily() {
   return useMutation({
-    mutationFn: async (skaters: RegistrationFormData[]): Promise<FamilyRegistrationResponse> => {
+    mutationFn: async ({ skaters, discountCode }: { skaters: RegistrationFormData[], discountCode?: string }): Promise<FamilyRegistrationResponse> => {
       const res = await api.post<FamilyRegistrationResponse>('/api/v1/members/register/family/', {
         skaters: skaters.map(toApiPayload),
+        discount_code: discountCode || '',
       })
+      return res.data
+    },
+  })
+}
+
+export function useValidateDiscount() {
+  return useMutation({
+    mutationFn: async ({ code, subtotal }: { code: string, subtotal: number }): Promise<DiscountValidationResult> => {
+      const res = await api.post<DiscountValidationResult>('/api/v1/members/validate-discount/', { code, subtotal })
       return res.data
     },
   })

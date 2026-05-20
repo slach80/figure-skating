@@ -183,20 +183,20 @@ function AddressForm({
         </div>
       )}
       <Field label="Address line 1" required error={errors.address_line1}>
-        <input className={inputCls} placeholder="123 Main St" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
+        <input className={inputCls} placeholder="123 Main St" autoComplete="address-line1" value={form.address_line1} onChange={e => onChange('address_line1', e.target.value)} />
       </Field>
       <Field label="Address line 2">
-        <input className={inputCls} placeholder="Apt, Suite, etc." value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
+        <input className={inputCls} placeholder="Apt, Suite, etc." autoComplete="address-line2" value={form.address_line2} onChange={e => onChange('address_line2', e.target.value)} />
       </Field>
       <div className="grid grid-cols-6 gap-4">
         <div className="col-span-3">
           <Field label="City" required error={errors.city}>
-            <input className={inputCls} value={form.city} onChange={e => onChange('city', e.target.value)} />
+            <input className={inputCls} placeholder="Kansas City" autoComplete="address-level2" value={form.city} onChange={e => onChange('city', e.target.value)} />
           </Field>
         </div>
         <div className="col-span-1">
           <Field label="State" required error={errors.state}>
-            <select className={inputCls} value={form.state} onChange={e => onChange('state', e.target.value)}>
+            <select className={inputCls} autoComplete="address-level1" value={form.state} onChange={e => onChange('state', e.target.value)}>
               <option value="">—</option>
               {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
@@ -204,7 +204,7 @@ function AddressForm({
         </div>
         <div className="col-span-2">
           <Field label="ZIP" required error={errors.zip_code}>
-            <input className={inputCls} placeholder="00000" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
+            <input className={inputCls} placeholder="00000" autoComplete="postal-code" value={form.zip_code} onChange={e => onChange('zip_code', e.target.value)} />
           </Field>
         </div>
       </div>
@@ -337,7 +337,7 @@ export default function RegisterPage() {
       }
     }
     try {
-      const result = await familyMutation.mutateAsync(skaters)
+      const result = await familyMutation.mutateAsync({ skaters })
       window.location.href = result.checkout_url
     } catch { /* shown via familyMutation.error */ }
   }
