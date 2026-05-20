@@ -85,6 +85,8 @@ class RegistrationSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     date_of_birth = serializers.DateField()
     gender = serializers.ChoiceField(choices=["F", "M", "X"], required=False, allow_blank=True)
+    usfs_number = serializers.CharField(required=False, allow_blank=True, default="")
+    is_us_citizen = serializers.BooleanField(required=False, allow_null=True, default=None)
     address_line1 = serializers.CharField()
     address_line2 = serializers.CharField(required=False, allow_blank=True, default="")
     city = serializers.CharField()
@@ -148,6 +150,8 @@ class RegistrationView(CreateAPIView):
                     last_name=data["last_name"],
                     date_of_birth=dob,
                     gender=data.get("gender", ""),
+                    usfs_number=data.get("usfs_number", ""),
+                    is_us_citizen=data.get("is_us_citizen"),
                     address_line1=data["address_line1"],
                     address_line2=data.get("address_line2", ""),
                     city=data["city"],
@@ -220,6 +224,8 @@ class SkaterRegistrationSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     date_of_birth = serializers.DateField()
     gender = serializers.ChoiceField(choices=["F", "M", "X"], required=False, allow_blank=True)
+    usfs_number = serializers.CharField(required=False, allow_blank=True, default="")
+    is_us_citizen = serializers.BooleanField(required=False, allow_null=True, default=None)
     address_line1 = serializers.CharField()
     address_line2 = serializers.CharField(required=False, allow_blank=True, default="")
     city = serializers.CharField()
@@ -390,6 +396,8 @@ class FamilyRegistrationView(CreateAPIView):
                         last_name=sd["last_name"],
                         date_of_birth=sd["date_of_birth"],
                         gender=sd.get("gender", ""),
+                        usfs_number=sd.get("usfs_number", ""),
+                        is_us_citizen=sd.get("is_us_citizen"),
                         address_line1=sd["address_line1"],
                         address_line2=sd.get("address_line2", ""),
                         city=sd["city"],

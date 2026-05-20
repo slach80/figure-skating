@@ -49,6 +49,8 @@ function toApiPayload(data: RegistrationFormData) {
     last_name: data.last_name,
     date_of_birth: data.date_of_birth,
     gender: data.gender || undefined,
+    usfs_number: data.usfs_number || undefined,
+    is_us_citizen: data.is_us_citizen,
     address_line1: data.address_line1,
     address_line2: data.address_line2 || undefined,
     city: data.city,

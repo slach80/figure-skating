@@ -218,6 +218,20 @@ function SkaterForm({
           <option value="X">Non-binary / Other</option>
         </select>
       </Field>
+      <Field label="USFS # (if known)">
+        <input className={inputCls} placeholder="e.g. 12345678 or LTS USA #" value={form.usfs_number} onChange={e => onChange('usfs_number', e.target.value)} />
+      </Field>
+      <Field label="U.S. Citizen?">
+        <select
+          className={inputCls}
+          value={form.is_us_citizen === null ? '' : form.is_us_citizen ? 'yes' : 'no'}
+          onChange={e => onChange('is_us_citizen', e.target.value === '' ? null as unknown as boolean : e.target.value === 'yes')}
+        >
+          <option value="">Prefer not to say</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </Field>
       <Field label="Contact email">
         <EmailInput value={form.email} onChange={v => onChange('email', v)} placeholder="skater@example.com" />
       </Field>
