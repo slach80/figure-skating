@@ -251,7 +251,7 @@ function AddressForm({
   addrStatus?: 'idle' | 'checking' | 'valid' | 'invalid'
 }) {
   return (
-    <form autoComplete="on" onSubmit={e => e.preventDefault()} className="space-y-5">
+    <div className="space-y-5">
       <p className="text-sm text-slate-500">Required for USFS registration. Must match official records.</p>
       {addrStatus === 'invalid' && (
         <div className="flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 px-4 py-3 text-red-700 dark:text-red-400 text-sm">
@@ -291,7 +291,7 @@ function AddressForm({
           </Field>
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 
