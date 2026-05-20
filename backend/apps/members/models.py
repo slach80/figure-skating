@@ -89,6 +89,9 @@ class Skater(ClubScopedModel, SoftDeleteModel):
     phone = models.CharField(max_length=20, blank=True)
     email = models.EmailField(blank=True)
 
+    # USFS eligibility
+    is_us_citizen = models.BooleanField(null=True, blank=True, help_text="U.S. citizenship status for USFS eligibility")
+
     # USFS registration
     usfs_number = models.CharField(max_length=20, blank=True, db_index=True)
     membership_type = models.ForeignKey(

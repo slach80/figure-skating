@@ -5,6 +5,7 @@ export interface MembershipType {
   price_in_club: string
   price_out_of_club: string
   is_family_plan: boolean
+  family_additional_discount_pct: string
 }
 
 export interface RegistrationFormData {
@@ -13,6 +14,8 @@ export interface RegistrationFormData {
   last_name: string
   date_of_birth: string
   gender: 'F' | 'M' | 'X' | ''
+  usfs_number: string
+  is_us_citizen: boolean | null
   address_line1: string
   address_line2: string
   city: string
@@ -35,6 +38,8 @@ export const EMPTY_FORM: RegistrationFormData = {
   last_name: '',
   date_of_birth: '',
   gender: '',
+  usfs_number: '',
+  is_us_citizen: null,
   address_line1: '',
   address_line2: '',
   city: '',

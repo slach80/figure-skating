@@ -45,6 +45,17 @@ class Payment(ClubScopedModel):
     stripe_checkout_session_id = models.CharField(max_length=100, blank=True, db_index=True)
     stripe_subscription_id = models.CharField(max_length=100, blank=True, db_index=True)
 
+    # Discount tracking
+    subtotal_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0,
+        help_text="Pre-discount total; equals amount when no discount applied",
+    )
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    family_discount_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0,
+        help_text="50% discount applied to skaters 2+ in a family registration",
+    )
+
     # Refund tracking
     refunded_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     refunded_at = models.DateTimeField(null=True, blank=True)
@@ -73,3 +84,7 @@ class StripeEvent(models.Model):
 
     def __str__(self):
         return f"{self.event_type} — {self.stripe_event_id}"
+
+
+# Register discount models with this app so they appear in payments migrations
+from apps.payments.discount_models import DiscountCode, DiscountCodeUse  # noqa: E402, F401

@@ -104,6 +104,13 @@ def _handle_checkout_session_completed(event):
             )
             if updated:
                 send_payment_confirmation.delay(payment_id)
+                # Confirm any pending discount code use tied to this payment
+                try:
+                    from apps.payments.discount_models import DiscountCodeUse
+                    dcu = DiscountCodeUse.objects.get(payment_id=payment_id, status=DiscountCodeUse.STATUS_PENDING)
+                    dcu.confirm()
+                except DiscountCodeUse.DoesNotExist:
+                    pass
         except Exception:
             logger.warning(
                 "checkout.session.completed: failed to update/notify payment=%s event=%s",
