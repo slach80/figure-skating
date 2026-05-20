@@ -21,6 +21,10 @@ class MembershipType(ClubScopedModel):
     )
     is_family_plan = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_skating = models.BooleanField(
+        default=True,
+        help_text="Uncheck for non-skating members (e.g. parents, Associate Professional) to block ice/test session booking."
+    )
     sort_order = models.PositiveSmallIntegerField(default=0)
 
     class Meta:

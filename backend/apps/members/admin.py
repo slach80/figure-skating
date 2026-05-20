@@ -61,8 +61,8 @@ class SkaterAdmin(admin.ModelAdmin):
 
 @admin.register(MembershipType)
 class MembershipTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'club', 'price_in_club', 'price_out_of_club', 'is_active']
-    list_filter = ['club', 'is_active']
+    list_display = ['name', 'club', 'price_in_club', 'price_out_of_club', 'is_active', 'is_skating']
+    list_filter = ['club', 'is_active', 'is_skating']
     search_fields = ['name']
 
 

@@ -214,40 +214,46 @@ class SkaterViewSet(ClubScopedViewMixin, viewsets.ModelViewSet):
                     description=f"{membership_type.name} renewal — {skater.full_name}",
                 )
 
-                unit_amount = int(Decimal(str(membership_type.price_in_club)) * 100)
-                session = stripe.checkout.Session.create(
-                    payment_method_types=["card"],
-                    mode="payment",
-                    line_items=[{
-                        "price_data": {
-                            "currency": "usd",
-                            "product_data": {"name": f"{membership_type.name} — {skater.full_name}"},
-                            "unit_amount": unit_amount,
-                        },
-                        "quantity": 1,
-                    }],
-                    metadata={
-                        "skater_id": str(skater.id),
-                        "membership_type_id": str(membership_type.id),
-                        "club_id": str(club.id),
-                        "payment_id": str(payment.id),
-                    },
-                    success_url=f"{settings.FRONTEND_URL}/register/success?session_id={{CHECKOUT_SESSION_ID}}",
-                    cancel_url=f"{settings.FRONTEND_URL}/dashboard/members/{skater.id}",
-                )
-
-                payment.stripe_checkout_session_id = session.id
-                payment.save(update_fields=["stripe_checkout_session_id"])
-
                 skater.membership_type = membership_type
                 skater.membership_status = "pending"
                 skater.save(update_fields=["membership_type", "membership_status"])
+
+                if settings.STRIPE_TEST_MODE:
+                    fake_session_id = f"fake_{skater.id}_renew"
+                    payment.stripe_checkout_session_id = fake_session_id
+                    payment.save(update_fields=["stripe_checkout_session_id"])
+                    checkout_url = f"{settings.FRONTEND_URL}/fake-checkout?payment_id={payment.id}"
+                else:
+                    unit_amount = int(Decimal(str(membership_type.price_in_club)) * 100)
+                    session = stripe.checkout.Session.create(
+                        payment_method_types=["card"],
+                        mode="payment",
+                        line_items=[{
+                            "price_data": {
+                                "currency": "usd",
+                                "product_data": {"name": f"{membership_type.name} — {skater.full_name}"},
+                                "unit_amount": unit_amount,
+                            },
+                            "quantity": 1,
+                        }],
+                        metadata={
+                            "skater_id": str(skater.id),
+                            "membership_type_id": str(membership_type.id),
+                            "club_id": str(club.id),
+                            "payment_id": str(payment.id),
+                        },
+                        success_url=f"{settings.FRONTEND_URL}/register/success?session_id={{CHECKOUT_SESSION_ID}}",
+                        cancel_url=f"{settings.FRONTEND_URL}/dashboard/members/{skater.id}",
+                    )
+                    payment.stripe_checkout_session_id = session.id
+                    payment.save(update_fields=["stripe_checkout_session_id"])
+                    checkout_url = session.url
 
         except stripe.error.StripeError as exc:
             raise ValidationError({"stripe": str(exc)}) from exc
 
         return Response({
-            "checkout_url": session.url,
+            "checkout_url": checkout_url,
             "payment_id": str(payment.id),
         }, status=201)
 
