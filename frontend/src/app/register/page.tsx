@@ -548,7 +548,7 @@ export default function RegisterPage() {
                   <div key={i} className="flex items-center gap-1 shrink-0">
                     <button
                       onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
-                      className={`px-3 py-1.5 rounded-lg text-sm transition-colors whitespace-nowrap ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'}`}
+                      className={`px-3 py-1.5 rounded-lg text-sm transition-colors whitespace-nowrap ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-primary dark:text-primary font-medium'}`}
                     >
                       {s.first_name || `Skater ${i + 1}`}
                     </button>
@@ -575,7 +575,7 @@ export default function RegisterPage() {
                   <div key={i} className="flex items-center gap-2">
                     <button
                       onClick={() => { setActiveSkaterIdx(i); setFamilyStep(1); setFamilyErrors({}) }}
-                      className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50'}`}
+                      className={`flex-1 text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeSkaterIdx === i ? 'bg-primary text-white' : 'bg-white border border-slate-200 dark:border-slate-700 text-primary dark:text-primary font-medium hover:bg-slate-50'}`}
                     >
                       {s.first_name || `Skater ${i + 1}`}
                     </button>
